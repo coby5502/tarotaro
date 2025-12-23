@@ -62,8 +62,6 @@ const Home = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
         >
-          <h2 className="section-title">{t('selectSpread')}</h2>
-          
           <div className="spread-list">
             {spreadList.map((spread, index) => (
               <Link 
