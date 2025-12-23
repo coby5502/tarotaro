@@ -391,10 +391,8 @@
 
 .share-message {
   color: var(--color-text-secondary);
-  font-size: 0.85rem;
-  line-height: 1.6;
-  max-height: 80px;
-  overflow: hidden;
+  font-size: 0.8rem;
+  line-height: 1.5;
 }
 
 .share-card-footer {

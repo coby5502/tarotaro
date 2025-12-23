@@ -60,7 +60,8 @@ const Result = () => {
     for (const pattern of patterns) {
       const match = aiReading.match(pattern);
       if (match) {
-        return match[1].trim().replace(/\*\*/g, '').substring(0, 200);
+        const text = match[1].trim().replace(/\*\*/g, '').replace(/\n/g, ' ');
+        return text.length > 120 ? text.substring(0, 117) + '...' : text;
       }
     }
     
@@ -68,7 +69,8 @@ const Result = () => {
     const firstParagraph = aiReading.split('\n').find(line => 
       line.trim() && !line.startsWith('#') && !line.startsWith('-')
     );
-    return firstParagraph?.replace(/\*\*/g, '').substring(0, 200) || '';
+    const text = firstParagraph?.replace(/\*\*/g, '') || '';
+    return text.length > 120 ? text.substring(0, 117) + '...' : text;
   };
 
   // 이미지 생성 및 저장
