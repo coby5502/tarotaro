@@ -137,6 +137,8 @@
   margin: 0 auto var(--spacing-sm);
   width: 100%;
   justify-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 .selected-slots.slots-1 {
@@ -266,6 +268,7 @@
   overflow: visible;
   padding-top: 140px;
   margin-top: calc(var(--spacing-sm) - 140px);
+  z-index: 0;
 }
 
 .card-fan-scroll {

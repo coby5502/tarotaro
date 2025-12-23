@@ -34,6 +34,7 @@ const Reading = () => {
   const scrollStartY = useRef(0);
   const scrollLeft = useRef(0);
   const dragStartRef = useRef(null);
+  const cardDragDirectionRef = useRef(new Map()); // 카드별 드래그 방향 추적
 
   // 전체 덱 섞기
   const shuffleDeck = useMemo(() => {
@@ -124,12 +125,16 @@ const Reading = () => {
       
       setSelectedCardIds(prev => [...prev, card.id]);
       setSelectedCards(prev => [...prev, drawnCard]);
-      setClickingCardId(null);
+      
+      // 애니메이션 완료 후 상태 초기화
+      setTimeout(() => {
+        setClickingCardId(null);
+      }, 200);
 
       if (selectedCards.length + 1 === spread.cardCount) {
-        setTimeout(() => setPhase('revealing'), 400);
+        setTimeout(() => setPhase('revealing'), 600);
       }
-    }, 300); // 애니메이션 시간
+    }, 400); // 애니메이션 시간 증가
   };
 
   const revealNext = () => {
@@ -339,28 +344,52 @@ const Reading = () => {
                           key={card.id}
                           className={`fan-card-wrapper ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
                           drag={!isSelected && !isDisabled && !isClicking ? "y" : false}
-                          dragConstraints={{ top: -200, bottom: 0 }}
+                          dragConstraints={(info, { point }) => {
+                            // 드래그 방향 확인
+                            if (!cardDragDirectionRef.current.has(card.id)) {
+                              cardDragDirectionRef.current.set(card.id, null);
+                            }
+                            
+                            if (dragStartRef.current) {
+                              const deltaX = Math.abs(point.x - dragStartRef.current.x);
+                              const deltaY = Math.abs(point.y - dragStartRef.current.y);
+                              
+                              // 가로 드래그가 세로보다 크면 가로 드래그로 표시
+                              if (deltaX > deltaY && deltaX > 10) {
+                                cardDragDirectionRef.current.set(card.id, 'horizontal');
+                                // 가로 스크롤 적용
+                                if (scrollRef.current) {
+                                  const walk = (point.x - dragStartRef.current.x) * 1.2;
+                                  scrollRef.current.scrollLeft = scrollLeft.current - walk;
+                                }
+                              } else if (deltaY > deltaX && deltaY > 10) {
+                                cardDragDirectionRef.current.set(card.id, 'vertical');
+                              }
+                            }
+                            
+                            // 가로 드래그 중이면 y 드래그 제약
+                            const dragDirection = cardDragDirectionRef.current.get(card.id);
+                            if (dragDirection === 'horizontal') {
+                              return { top: 0, bottom: 0 }; // y 이동 제한
+                            }
+                            
+                            return { top: -200, bottom: 0 };
+                          }}
                           dragElastic={{ top: 0.1, bottom: 0.5 }}
-                          onDragStart={(e) => {
+                          onDragStart={(e, info) => {
                             // 드래그 시작 시점 저장 (가로/세로 구분용)
                             dragStartRef.current = { x: e.pageX, y: e.pageY };
-                          }}
-                          onDrag={(e, info) => {
-                            // 가로 드래그 감지 시 스크롤
-                            if (scrollRef.current && dragStartRef.current) {
-                              const deltaX = Math.abs(info.point.x - dragStartRef.current.x);
-                              const deltaY = Math.abs(info.point.y - dragStartRef.current.y);
-                              
-                              // 가로 드래그가 세로보다 크면 스크롤 (감도 개선)
-                              if (deltaX > deltaY && deltaX > 15) {
-                                const walk = (info.point.x - dragStartRef.current.x) * 1.2;
-                                scrollRef.current.scrollLeft = scrollLeft.current - walk;
-                              }
+                            cardDragDirectionRef.current.set(card.id, null);
+                            if (scrollRef.current) {
+                              scrollLeft.current = scrollRef.current.scrollLeft;
                             }
                           }}
                           onDragEnd={(e, info) => {
-                            // 위로 충분히 드래그했으면 선택 (임계값 높임)
-                            if (info.offset.y < -80 && Math.abs(info.offset.x) < Math.abs(info.offset.y) * 0.8) {
+                            const dragDirection = cardDragDirectionRef.current.get(card.id);
+                            cardDragDirectionRef.current.delete(card.id);
+                            
+                            // 세로 드래그일 때만 카드 선택
+                            if (dragDirection !== 'horizontal' && info.offset.y < -80 && Math.abs(info.offset.x) < Math.abs(info.offset.y) * 0.8) {
                               selectCard(card);
                             }
                           }}
@@ -371,16 +400,16 @@ const Reading = () => {
                           animate={{ 
                             opacity: isSelected ? 0 : 1,
                             x: 0,
-                            y: isClicking ? -150 : 0,
+                            y: isClicking ? -200 : 0,
                             rotate: 0,
-                            scale: isClicking ? 1.2 : 1,
+                            scale: isClicking ? 1.3 : 1,
                           }}
                           whileTap={!isSelected && !isDisabled && !isClicking ? { scale: 0.95 } : {}}
                           transition={{ 
                             delay: index * 0.01,
                             type: "spring",
-                            stiffness: isClicking ? 300 : 200,
-                            damping: isClicking ? 25 : 20,
+                            stiffness: isClicking ? 400 : 200,
+                            damping: isClicking ? 30 : 20,
                             layout: false
                           }}
                           style={{
@@ -389,7 +418,7 @@ const Reading = () => {
                             bottom: '100px',
                             transformOrigin: 'center bottom',
                             cursor: isSelected || isDisabled || isClicking ? 'default' : 'grab',
-                            zIndex: isClicking ? 9999 : index,
+                            zIndex: isClicking ? 10000 : index,
                             pointerEvents: isSelected || isClicking ? 'none' : 'auto',
                           }}
                           onClick={() => !isSelected && !isDisabled && !isClicking && selectCard(card)}
@@ -404,7 +433,6 @@ const Reading = () => {
                     })}
                   </div>
                 </div>
-                <p className="card-fan-hint">{t('dragToSelect')}</p>
               </div>
             </motion.div>
           )}
