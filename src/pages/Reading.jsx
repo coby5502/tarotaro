@@ -243,64 +243,74 @@ const Reading = () => {
                 {t('selectCard')} <strong>{selectedCards.length}/{spread.cardCount}</strong>
               </p>
 
-              {/* 카드 원형 배치 */}
-              <div className="card-circle-container" ref={containerRef}>
+              {/* 카드 부채꼴 배치 */}
+              <div className="card-fan-container" ref={containerRef}>
                 <motion.div 
-                  className="card-circle"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  className="card-fan"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   transition={{ delay: 0.2, duration: 0.5 }}
                 >
                   {shuffledDeck.map((card, index) => {
                     const isSelected = selectedCardIds.includes(card.id);
                     const isDisabled = selectedCards.length >= spread.cardCount;
                     
-                    // 원형 배치 계산 (전체 카드 중 반원 아래 부분 배치)
+                    // 부채꼴 배치 계산
                     const totalCards = shuffledDeck.length;
-                    const angleStep = (Math.PI * 1.4) / totalCards; // 252도 범위 (아래쪽 잘림)
-                    const angle = (index * angleStep) - (Math.PI * 0.7) + (angleStep * 0.5); // 아래쪽 중심
-                    const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 800;
-                    const radius = Math.min(viewportWidth * 0.35, 320); // 반지름 (화면 크기에 따라)
+                    const spreadAngle = Math.PI * 1.1; // 198도 범위 (부채꼴 각도)
+                    const startAngle = -spreadAngle / 2; // 시작 각도
+                    const angle = startAngle + (index / (totalCards - 1 || 1)) * spreadAngle;
+                    
+                    // 반지름 계산 (중앙에서 멀어질수록 커짐)
+                    const baseRadius = 150;
+                    const radiusVariation = 80; // 반지름 변화량
+                    const radius = baseRadius + (Math.abs(index - totalCards / 2) / totalCards) * radiusVariation;
+                    
                     const x = Math.sin(angle) * radius;
-                    const y = Math.cos(angle) * radius;
+                    const y = Math.cos(angle) * radius * 0.7; // 아래로 더 펼쳐짐
+                    const rotation = angle * (180 / Math.PI); // 각도를 도(degree)로 변환
                     
                     return (
                       <motion.button
                         key={card.id}
-                        className={`circle-card ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
+                        className={`fan-card ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
                         onClick={() => !isSelected && !isDisabled && selectCard(card)}
                         disabled={isSelected || isDisabled}
                         initial={{ 
                           opacity: 0, 
                           scale: 0,
-                          x: 0,
-                          y: 0
+                          rotate: rotation + (Math.random() - 0.5) * 20,
+                          y: 100
                         }}
                         animate={{ 
                           opacity: isSelected ? 0.3 : 1,
                           scale: isSelected ? 0.85 : 1,
+                          rotate: rotation,
+                          x: x,
+                          y: y,
                         }}
                         whileHover={!isSelected && !isDisabled ? { 
                           scale: 1.15,
-                          zIndex: 10,
+                          y: y - 15,
+                          zIndex: 100,
                           transition: { duration: 0.2 }
                         } : {}}
                         whileTap={!isSelected && !isDisabled ? { scale: 0.9 } : {}}
                         transition={{ 
-                          delay: index * 0.015,
+                          delay: index * 0.02,
                           type: "spring",
-                          stiffness: 200,
-                          damping: 20
+                          stiffness: 150,
+                          damping: 15
                         }}
                         style={{
                           position: 'absolute',
-                          left: `calc(50% + ${x}px)`,
-                          top: `calc(50% + ${y}px)`,
-                          transform: 'translate(-50%, -50%)',
+                          left: '50%',
+                          top: '40%',
+                          transformOrigin: 'center bottom',
                         }}
                       >
                         {/* 카드 뒷면 표시 */}
-                        <div className="circle-card-back">
+                        <div className="fan-card-back">
                           <div className="card-back-design">
                             <span>✦</span>
                           </div>
