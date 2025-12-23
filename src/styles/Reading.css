@@ -129,7 +129,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 12px;
+  gap: var(--spacing-md);
   padding: var(--spacing-md);
   max-width: 600px;
   margin: 0 auto var(--spacing-md);
@@ -141,7 +141,7 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 12px;
-  max-width: 500px;
+  max-width: 600px;
   width: 100%;
 }
 
@@ -394,7 +394,7 @@
 
 .reveal-grid.grid-3 {
   grid-template-columns: repeat(3, 1fr);
-  max-width: 380px;
+  max-width: 400px;
   margin: 0 auto;
 }
 
@@ -447,8 +447,8 @@
   }
   
   .selected-slots.slots-10 {
-    max-width: 450px;
-    gap: 10px;
+    max-width: 500px;
+    gap: 12px;
   }
   
   .reveal-grid.grid-10 {
@@ -478,6 +478,10 @@
   .selected-slots {
     gap: 10px;
     padding: var(--spacing-md);
+  }
+  
+  .selected-slots {
+    gap: var(--spacing-md);
   }
   
   .selected-slots.slots-10 {
