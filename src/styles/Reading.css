@@ -29,14 +29,16 @@
 }
 
 .phase-hint {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--color-text-secondary);
   text-align: center;
+  line-height: 1.6;
 }
 
 .phase-hint strong {
   color: var(--color-accent-gold);
   font-size: 1.1rem;
+  font-weight: 600;
 }
 
 /* 질문 입력 */
@@ -459,7 +461,7 @@
 
 @media (max-width: 600px) {
   .reading-content {
-    padding: calc(60px + var(--spacing-md)) var(--spacing-sm) var(--spacing-md);
+    padding: calc(60px + var(--spacing-md)) var(--spacing-md) var(--spacing-md);
   }
   
   .card-fan-container {
@@ -507,6 +509,10 @@
   }
   
   .phase-hint {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+  }
+  
+  .phase-hint strong {
+    font-size: 1.05rem;
   }
 }

@@ -28,6 +28,7 @@
   font-style: italic;
   color: var(--color-accent-purple-light);
   font-size: 1.1rem;
+  line-height: 1.6;
   margin-bottom: var(--spacing-lg);
   padding: var(--spacing-md);
   background: rgba(124, 92, 191, 0.1);
@@ -86,9 +87,10 @@
 
 .card-tap-hint {
   text-align: center;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: var(--color-text-muted);
   margin-bottom: var(--spacing-lg);
+  line-height: 1.5;
 }
 
 /* AI 해석 */
@@ -469,7 +471,7 @@
 /* 반응형 */
 @media (max-width: 600px) {
   .result-content {
-    padding: calc(60px + var(--spacing-md)) var(--spacing-sm) var(--spacing-lg);
+    padding: calc(60px + var(--spacing-md)) var(--spacing-md) var(--spacing-lg);
   }
   
   .result-reading {
