@@ -223,6 +223,10 @@ const Reading = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
+              <p className="phase-hint select-hint">
+                {t('selectCard')} <strong>{selectedCards.length}/{spread.cardCount}</strong>
+              </p>
+
               {/* 선택된 카드 슬롯 */}
               <div className={`selected-slots ${spread.cardCount === 10 ? 'slots-10' : ''}`}>
                 {spread.positions.map((pos, i) => {
@@ -233,7 +237,11 @@ const Reading = () => {
                       className={`slot ${card ? 'filled' : ''}`}
                     >
                       {card ? (
-                        <div className="slot-card">✓</div>
+                        <TarotCard 
+                          card={card} 
+                          isRevealed={false} 
+                          size="small"
+                        />
                       ) : (
                         <div className="slot-empty">
                           <span className="slot-num">{i + 1}</span>
@@ -244,28 +252,25 @@ const Reading = () => {
                 })}
               </div>
 
-              <p className="phase-hint select-hint">
-                {t('selectCard')} <strong>{selectedCards.length}/{spread.cardCount}</strong>
-              </p>
-
-              {/* 카드 부채꼴 배치 */}
+              {/* 카드 부채꼴 배치 - 스크롤 가능 */}
               <div className="card-fan-container" ref={containerRef}>
-                <div className="card-fan">
+                <div className="card-fan-scroll">
                   {shuffledDeck.map((card, index) => {
                     const isSelected = selectedCardIds.includes(card.id);
                     const isDisabled = selectedCards.length >= spread.cardCount;
                     
-                    // 부채꼴 배치 계산
+                    // 부채꼴 배치 계산 - 더 넓게
                     const totalCards = shuffledDeck.length;
-                    const spreadAngle = Math.PI * 0.9; // 162도 범위
+                    const spreadAngle = Math.PI * 1.2; // 216도 범위 (더 넓게)
                     const startAngle = -spreadAngle / 2;
                     const angle = startAngle + (index / (totalCards - 1 || 1)) * spreadAngle;
                     
-                    const baseRadius = 120;
-                    const radius = baseRadius + (Math.abs(index - totalCards / 2) / totalCards) * 60;
+                    const baseRadius = 180; // 더 큰 반지름
+                    const radiusVariation = 100;
+                    const radius = baseRadius + (Math.abs(index - totalCards / 2) / totalCards) * radiusVariation;
                     
                     const x = Math.sin(angle) * radius;
-                    const y = -Math.cos(angle) * radius * 0.6;
+                    const y = -Math.cos(angle) * radius * 0.5;
                     const rotation = angle * (180 / Math.PI);
                     
                     return (
@@ -274,29 +279,30 @@ const Reading = () => {
                         className={`fan-card-wrapper ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
                         initial={{ 
                           opacity: 0,
-                          y: 50,
+                          scale: 0.8,
                         }}
                         animate={{ 
                           opacity: isSelected ? 0.3 : 1,
                           x: x,
                           y: y,
                           rotate: rotation,
+                          scale: 1,
                         }}
                         whileHover={!isSelected && !isDisabled ? { 
-                          y: y - 10,
-                          scale: 1.1,
+                          y: y - 15,
+                          scale: 1.15,
                           zIndex: 100,
                         } : {}}
                         transition={{ 
-                          delay: index * 0.01,
+                          delay: index * 0.005,
                           type: "spring",
-                          stiffness: 200,
-                          damping: 20
+                          stiffness: 180,
+                          damping: 18
                         }}
                         style={{
                           position: 'absolute',
-                          left: '50%',
-                          top: '30%',
+                          left: `${50 + (index / totalCards) * 40}%`, // 가로로 펼쳐짐
+                          bottom: '0',
                           transformOrigin: 'center bottom',
                           cursor: isDisabled ? 'not-allowed' : 'pointer',
                         }}
@@ -307,15 +313,11 @@ const Reading = () => {
                           isRevealed={false} 
                           size="small"
                         />
-                        {isSelected && (
-                          <div className="card-selected-overlay">
-                            <span>✓</span>
-                          </div>
-                        )}
                       </motion.div>
                     );
                   })}
                 </div>
+                <p className="card-fan-hint">{t('dragToSelect')}</p>
               </div>
             </motion.div>
           )}
