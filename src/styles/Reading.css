@@ -138,7 +138,7 @@
   width: 100%;
   justify-items: center;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .selected-slots.slots-1 {
@@ -163,6 +163,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  z-index: 1;
 }
 
 .slot-empty {
@@ -206,6 +207,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1;
 }
 
 .slot-card .tarot-card {
@@ -268,7 +270,7 @@
   overflow: visible;
   padding-top: 140px;
   margin-top: calc(var(--spacing-sm) - 140px);
-  z-index: 0;
+  z-index: 1;
 }
 
 .card-fan-scroll {
