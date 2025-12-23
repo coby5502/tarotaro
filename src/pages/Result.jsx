@@ -47,30 +47,46 @@ const Result = () => {
     setIsLoading(false);
   };
 
-  const extractKeyMessage = () => {
+  // 공유용 메시지 추출 - 전체 메시지 (생략 없음)
+  const extractFullMessage = () => {
     if (!aiReading) return '';
-    const patterns = [/## ✨.*?\n([\s\S]*?)(?=\n##|$)/, /## 🎯.*?\n([\s\S]*?)(?=\n##|$)/];
+    
+    // 종합 해석 섹션 찾기
+    const patterns = [
+      /## ✨.*?\n([\s\S]*?)(?=\n##|$)/,
+      /## 🎯.*?\n([\s\S]*?)(?=\n##|$)/,
+      /## 💫.*?\n([\s\S]*?)(?=\n##|$)/
+    ];
+    
     for (const pattern of patterns) {
       const match = aiReading.match(pattern);
       if (match) {
-        const text = match[1].trim().replace(/\*\*/g, '').replace(/\n/g, ' ');
-        return text.length > 40 ? text.substring(0, 37) + '...' : text;
+        return match[1].trim().replace(/\*\*/g, '').replace(/\n+/g, '\n');
       }
     }
+    
+    // 첫 번째 섹션이라도 반환
+    const firstSection = aiReading.split('##')[1];
+    if (firstSection) {
+      const content = firstSection.split('\n').slice(1).join('\n').trim();
+      return content.replace(/\*\*/g, '').substring(0, 300);
+    }
+    
     return '';
   };
 
   const handleSaveImage = async () => {
     if (!shareCardRef.current) return;
     setIsGeneratingImage(true);
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 150));
     
     try {
       const canvas = await html2canvas(shareCardRef.current, {
-        backgroundColor: '#0c0c14',
+        backgroundColor: '#0f0f1a',
         scale: 2,
         logging: false,
         useCORS: true,
+        allowTaint: true,
       });
       const link = document.createElement('a');
       link.download = `tarotaro-${Date.now()}.png`;
@@ -83,7 +99,8 @@ const Result = () => {
   };
 
   const handleCopyText = () => {
-    const text = `🔮 TaroTaro\n\n${question ? `Q: ${question}\n\n` : ''}${extractKeyMessage()}\n\n👉 www.tarotaro.co.kr`;
+    const cardNames = cards.map(c => `${c.name.ko || c.name.en}${c.isReversed ? '(역방향)' : ''}`).join(', ');
+    const text = `🔮 TaroTaro - ${getSpreadName()}\n\n${question ? `Q: ${question}\n\n` : ''}🃏 ${cardNames}\n\n${extractFullMessage()}\n\n👉 www.tarotaro.co.kr`;
     navigator.clipboard.writeText(text);
     alert(t('copied') || 'Copied!');
   };
@@ -260,7 +277,7 @@ const Result = () => {
             >
               <button className="modal-close" onClick={() => setShowShareModal(false)}>×</button>
               
-              {/* 공유용 이미지 - 카드 이미지 포함 */}
+              {/* 공유용 이미지 - 예쁜 디자인, 전체 내용 */}
               <div ref={shareCardRef} className="share-card">
                 <div className="share-header">
                   <span>🔮</span>
@@ -270,19 +287,30 @@ const Result = () => {
                   <p className="share-spread">{getSpreadName()}</p>
                   {question && <p className="share-question">"{question}"</p>}
                   
-                  {/* 카드 이미지들 */}
+                  {/* 카드 이미지들 - 모든 카드 표시 */}
                   <div className="share-cards-row">
-                    {cards.slice(0, 3).map((card, i) => (
+                    {cards.map((card, i) => (
                       <div key={i} className={`share-card-img ${card.isReversed ? 'reversed' : ''}`}>
                         <img src={card.image} alt="" crossOrigin="anonymous" />
                       </div>
                     ))}
                   </div>
-                  {cards.length > 3 && <p className="share-more">+{cards.length - 3} more</p>}
                   
-                  <p className="share-message">✨ {extractKeyMessage()}</p>
+                  {/* 카드 이름들 */}
+                  <div className="share-card-names">
+                    {cards.map((card, i) => (
+                      <span key={i} className="share-card-name">
+                        {card.name.ko || card.name.en}{card.isReversed ? ' ↺' : ''}
+                      </span>
+                    ))}
+                  </div>
+                  
+                  {/* 전체 메시지 - 생략 없음 */}
+                  <div className="share-message">
+                    {extractFullMessage()}
+                  </div>
                 </div>
-                <div className="share-footer">www.tarotaro.co.kr</div>
+                <div className="share-footer">✨ www.tarotaro.co.kr ✨</div>
               </div>
 
               <div className="share-buttons">

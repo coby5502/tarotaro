@@ -5,15 +5,15 @@
 }
 
 .reading-content {
-  min-height: calc(100vh - 50px);
-  min-height: calc(100dvh - 50px);
-  padding: calc(50px + var(--spacing-lg)) var(--spacing-md) var(--spacing-xl);
+  min-height: calc(100vh - 60px);
+  min-height: calc(100dvh - 60px);
+  padding: calc(60px + var(--spacing-lg)) var(--spacing-md) var(--spacing-xl);
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   z-index: 1;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -27,27 +27,29 @@
 }
 
 .phase-hint {
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   color: var(--color-text-secondary);
   text-align: center;
 }
 
 .phase-hint strong {
   color: var(--color-accent-gold);
+  font-size: 1.2rem;
 }
 
 /* 질문 입력 */
 .question-input {
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--color-border);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: var(--spacing-md);
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   color: var(--color-text-primary);
   font-family: var(--font-body);
   resize: none;
+  line-height: 1.6;
 }
 
 .question-input:focus {
@@ -62,28 +64,28 @@
 /* 셔플 */
 .shuffle-phase {
   justify-content: center;
-  min-height: 300px;
+  min-height: 350px;
 }
 
 .shuffle-animation {
   position: relative;
-  width: 50px;
-  height: 70px;
+  width: 70px;
+  height: 100px;
 }
 
 .shuffle-card {
   position: absolute;
-  width: 50px;
-  height: 70px;
+  width: 70px;
+  height: 100px;
   background: linear-gradient(145deg, #1c1c2e, #141420);
-  border: 1.5px solid var(--color-accent-gold);
-  border-radius: 4px;
+  border: 2px solid var(--color-accent-gold);
+  border-radius: 6px;
 }
 
 .shuffle-text {
   color: var(--color-text-muted);
-  font-size: 0.85rem;
-  margin-top: var(--spacing-lg);
+  font-size: 1rem;
+  margin-top: var(--spacing-xl);
 }
 
 /* 선택된 카드 슬롯 */
@@ -91,46 +93,47 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 6px;
-  padding: var(--spacing-sm);
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  margin-bottom: var(--spacing-md);
+  gap: 10px;
+  padding: var(--spacing-md);
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
+  margin-bottom: var(--spacing-lg);
 }
 
 .slot {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
 }
 
 .slot-icon,
 .slot-num {
-  width: 32px;
-  height: 46px;
+  width: 44px;
+  height: 66px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
-  font-size: 0.7rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
 }
 
 .slot-num {
-  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border: 2px dashed rgba(255, 255, 255, 0.15);
   color: var(--color-text-muted);
 }
 
 .slot-icon {
   background: linear-gradient(145deg, #1c1c2e, #141420);
-  border: 1px solid var(--color-accent-gold);
+  border: 2px solid var(--color-accent-gold);
   color: var(--color-accent-gold);
+  font-size: 1rem;
 }
 
 .slot-name {
-  font-size: 0.5rem;
+  font-size: 0.65rem;
   color: var(--color-text-muted);
-  max-width: 40px;
+  max-width: 50px;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -140,55 +143,56 @@
 /* 카드 덱 */
 .card-deck {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
-  gap: 4px;
+  grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+  gap: 6px;
   width: 100%;
-  max-width: 600px;
-  padding: var(--spacing-sm);
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+  max-width: 700px;
+  padding: var(--spacing-md);
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
 }
 
 .deck-card {
   aspect-ratio: 2/3;
   background: linear-gradient(145deg, #1c1c2e, #141420);
-  border: 1px solid var(--color-accent-gold);
-  border-radius: 3px;
+  border: 1.5px solid var(--color-accent-gold);
+  border-radius: 4px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-accent-gold);
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   transition: all 0.2s;
   padding: 0;
 }
 
 .deck-card:hover:not(.selected):not(:disabled) {
-  transform: scale(1.1);
+  transform: scale(1.15);
   border-color: var(--color-accent-purple);
+  box-shadow: 0 0 15px rgba(124, 92, 191, 0.4);
   z-index: 1;
 }
 
 .deck-card.selected {
-  opacity: 0.2;
+  opacity: 0.15;
   border-color: transparent;
   cursor: default;
 }
 
 .deck-card:disabled:not(.selected) {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
 /* 카드 공개 */
 .reveal-actions {
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
 }
 
 .reveal-grid {
   display: grid;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
   justify-content: center;
   margin-bottom: var(--spacing-xl);
   width: 100%;
@@ -196,58 +200,62 @@
 
 .reveal-grid.grid-1 {
   grid-template-columns: 1fr;
-  max-width: 100px;
+  max-width: 130px;
 }
 
 .reveal-grid.grid-3 {
   grid-template-columns: repeat(3, 1fr);
-  max-width: 280px;
+  max-width: 380px;
 }
 
 .reveal-grid.grid-10 {
   grid-template-columns: repeat(5, 1fr);
-  max-width: 400px;
+  max-width: 520px;
 }
 
 .reveal-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
 }
 
 .reveal-label {
-  font-size: 0.55rem;
+  font-size: 0.7rem;
   color: var(--color-accent-purple-light);
   text-align: center;
-  max-width: 70px;
+  max-width: 90px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 /* 반응형 */
-@media (max-width: 500px) {
+@media (max-width: 600px) {
   .reading-content {
-    padding: calc(50px + var(--spacing-md)) var(--spacing-sm) var(--spacing-lg);
+    padding: calc(60px + var(--spacing-md)) var(--spacing-sm) var(--spacing-lg);
   }
   
   .card-deck {
-    grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
-    gap: 3px;
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    gap: 5px;
   }
   
   .selected-slots {
-    gap: 4px;
+    gap: 8px;
   }
   
   .slot-icon,
   .slot-num {
-    width: 28px;
-    height: 40px;
+    width: 36px;
+    height: 54px;
   }
   
   .reveal-grid.grid-10 {
     grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .phase-hint {
+    font-size: 1rem;
   }
 }

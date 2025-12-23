@@ -6,15 +6,15 @@
 }
 
 .tarot-card.small {
-  width: clamp(50px, 10vw, 70px);
+  width: clamp(60px, 12vw, 90px);
 }
 
 .tarot-card.normal {
-  width: clamp(80px, 15vw, 110px);
+  width: clamp(100px, 18vw, 140px);
 }
 
 .tarot-card.large {
-  width: clamp(110px, 20vw, 150px);
+  width: clamp(140px, 24vw, 200px);
 }
 
 .tarot-card::before {
@@ -43,10 +43,10 @@
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
-  border-radius: 5px;
+  border-radius: 6px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--color-accent-gold);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  border: 2px solid var(--color-accent-gold);
 }
 
 .card-front {
@@ -66,20 +66,20 @@
 
 .card-back-design {
   position: absolute;
-  inset: 4px;
+  inset: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(201, 162, 39, 0.2);
-  border-radius: 3px;
+  border: 1px solid rgba(201, 162, 39, 0.25);
+  border-radius: 4px;
 }
 
 .card-back-design span {
-  font-size: clamp(0.8rem, 2.5vw, 1.5rem);
+  font-size: clamp(1rem, 3vw, 2rem);
   color: var(--color-accent-gold);
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .tarot-card:not(.flipped):hover .card-back {
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 10px rgba(124, 92, 191, 0.2);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(124, 92, 191, 0.3);
 }

@@ -9,9 +9,9 @@ const getLanguageName = (lang) => {
 
 const getLanguageInstruction = (lang) => {
   const instructions = {
-    ko: '반드시 한국어로만 답변하세요. 영어나 일본어를 섞지 마세요.',
-    en: 'You must respond only in English. Do not mix Korean or Japanese.',
-    ja: '必ず日本語のみで回答してください。韓国語や英語を混ぜないでください。'
+    ko: '반드시 한국어로만 답변하세요. 영어나 일본어를 절대 섞지 마세요.',
+    en: 'You must respond ONLY in English. Do NOT mix any Korean or Japanese.',
+    ja: '必ず日本語のみで回答してください。韓国語や英語を絶対に混ぜないでください。'
   };
   return instructions[lang] || instructions['en'];
 };
@@ -23,59 +23,89 @@ const buildPrompt = (cards, spread, question, lang) => {
   const cardInfo = cards.map((card, i) => {
     const name = card.name.en || card.name.ko;
     const position = card.position?.meaning || card.position?.name || `Position ${i + 1}`;
-    const direction = card.isReversed ? 'Reversed' : 'Upright';
-    return `${i + 1}. ${name} (${direction}) - ${position}`;
+    const direction = card.isReversed ? 'REVERSED' : 'Upright';
+    const keywords = card.keywords?.join(', ') || '';
+    return `${i + 1}. **${name}** (${direction}) - Position: ${position}${keywords ? ` | Keywords: ${keywords}` : ''}`;
   }).join('\n');
 
   const sectionTitles = {
     ko: {
-      answer: '## 🎯 질문에 대한 답',
-      cards: '## 🃏 카드 해석',
-      overall: '## ✨ 종합 메시지',
-      advice: '## 💫 조언'
+      answer: '## 🎯 당신의 질문에 대한 직접적인 답변',
+      cards: '## 🃏 각 카드의 의미',
+      overall: '## ✨ 종합 해석',
+      advice: '## 💫 실질적인 조언',
+      warning: '## ⚠️ 주의할 점',
+      future: '## 🔮 앞으로의 전망'
     },
     en: {
-      answer: '## 🎯 Answer to Your Question',
-      cards: '## 🃏 Card Interpretation',
-      overall: '## ✨ Overall Message',
-      advice: '## 💫 Advice'
+      answer: '## 🎯 Direct Answer to Your Question',
+      cards: '## 🃏 Each Card\'s Meaning',
+      overall: '## ✨ Overall Interpretation',
+      advice: '## 💫 Practical Advice',
+      warning: '## ⚠️ Points to Watch',
+      future: '## 🔮 Future Outlook'
     },
     ja: {
-      answer: '## 🎯 質問への答え',
-      cards: '## 🃏 カード解釈',
-      overall: '## ✨ 総合メッセージ',
-      advice: '## 💫 アドバイス'
+      answer: '## 🎯 あなたの質問への直接的な答え',
+      cards: '## 🃏 各カードの意味',
+      overall: '## ✨ 総合解釈',
+      advice: '## 💫 実践的なアドバイス',
+      warning: '## ⚠️ 注意点',
+      future: '## 🔮 今後の展望'
     }
   };
 
   const titles = sectionTitles[lang] || sectionTitles['en'];
 
-  return `[LANGUAGE: ${langName.toUpperCase()} ONLY]
+  return `[STRICT LANGUAGE REQUIREMENT: ${langName.toUpperCase()} ONLY - ABSOLUTELY NO OTHER LANGUAGES]
 ${langInstruction}
 
-You are a professional tarot reader. Interpret the following tarot reading.
+You are a renowned, intuitive tarot reader with decades of experience. You speak directly, honestly, and don't sugarcoat readings. Your interpretations are insightful, specific, and actionable.
 
-Spread: ${spread.name}
-${question ? `Question: ${question}` : 'General reading'}
+=== READING DETAILS ===
+Spread Type: ${spread.name}
+${question ? `
+🔮 THE QUERENT'S QUESTION: "${question}"
+This is the most important context. Your entire reading should revolve around answering this question directly and thoroughly.
+` : 'This is a general life guidance reading.'}
 
-Cards drawn:
+=== CARDS DRAWN ===
 ${cardInfo}
 
-Please provide a warm, insightful reading using these sections:
+=== YOUR TASK ===
+Provide a deep, meaningful reading. Be DIRECT and HONEST - don't be vague or overly diplomatic. If the cards show challenges, say so clearly. If they show opportunities, be specific about them.
 
 ${question ? `${titles.answer}
-(Directly answer the question based on the cards)
+Start by directly answering the querent's question. Don't beat around the bush. Tell them what the cards say about their specific situation. Be bold and clear.
 
 ` : ''}${titles.cards}
-(Brief interpretation of each card in its position)
+For EACH card:
+- Explain what this card means in its specific position
+- How it relates to the question/situation
+- ${cards.length <= 3 ? 'Give 3-4 sentences per card' : 'Give 2-3 sentences per card'}
+- If reversed, emphasize the blocked/challenged energy
 
 ${titles.overall}
-(The main message from all cards combined - 2-3 sentences)
+Weave all the cards together into a coherent narrative. What story are they telling? What's the bigger picture? (4-5 sentences)
 
 ${titles.advice}
-(Practical guidance - 1-2 sentences)
+Give specific, actionable advice. Not generic platitudes, but real steps they can take. Be practical and direct. (3-4 bullet points)
 
-IMPORTANT: Respond ONLY in ${langName}. Do NOT mix other languages!`;
+${titles.warning}
+What should they be careful about? What pitfalls might they face? Be honest about challenges. (2-3 points)
+
+${titles.future}
+Based on the cards, what's likely to unfold if they follow the guidance? Give them hope but be realistic. (2-3 sentences)
+
+=== STYLE REQUIREMENTS ===
+- Be warm but direct - like a wise friend who tells the truth
+- Use vivid, descriptive language
+- Be specific, not generic
+- Don't be afraid to point out difficulties
+- Give real, practical advice
+- Make them feel understood and guided
+
+CRITICAL: Respond ONLY in ${langName}. ANY other language will invalidate the reading!`;
 };
 
 export const generateTarotReading = async (cards, spread, question, language) => {
@@ -84,7 +114,7 @@ export const generateTarotReading = async (cards, spread, question, language) =>
   const messages = [
     {
       role: 'system',
-      content: `You are a mystical tarot reader. Always respond in ${getLanguageName(language)} only. ${getLanguageInstruction(language)}`
+      content: `You are a master tarot reader known for insightful, honest, and transformative readings. You speak in ${getLanguageName(language)} ONLY. ${getLanguageInstruction(language)} Your readings are detailed, specific, and genuinely helpful - never vague or generic.`
     },
     {
       role: 'user',

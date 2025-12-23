@@ -38,12 +38,12 @@
   --shadow-glow: 0 0 20px rgba(201, 162, 39, 0.2);
   
   /* 간격 */
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
-  --spacing-2xl: 48px;
+  --spacing-xs: 6px;
+  --spacing-sm: 12px;
+  --spacing-md: 20px;
+  --spacing-lg: 32px;
+  --spacing-xl: 48px;
+  --spacing-2xl: 64px;
 }
 
 /* 언어별 폰트 적용 */
@@ -52,7 +52,7 @@ html[lang="en"] { --font-body: var(--font-en); }
 html[lang="ja"] { --font-body: var(--font-ja); }
 
 html {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 html, body {
@@ -61,7 +61,7 @@ html, body {
   color: var(--color-text-primary);
   min-height: 100vh;
   overflow-x: hidden;
-  line-height: 1.7;
+  line-height: 1.8;
 }
 
 .app {
@@ -94,7 +94,7 @@ html, body {
   align-items: center;
   padding: var(--spacing-sm) var(--spacing-md);
   z-index: 100;
-  background: rgba(12, 12, 20, 0.9);
+  background: rgba(12, 12, 20, 0.95);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--color-border);
 }
@@ -102,24 +102,24 @@ html, body {
 .navbar-brand {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   text-decoration: none;
   color: var(--color-accent-gold);
 }
 
 .navbar-logo {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }
 
 .navbar-title {
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 600;
   letter-spacing: 0.05em;
 }
 
 .navbar-center {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--color-text-secondary);
 }
 
@@ -127,9 +127,9 @@ html, body {
   background: none;
   border: none;
   color: var(--color-text-secondary);
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 6px 10px;
   transition: color 0.2s;
 }
 
@@ -140,9 +140,9 @@ html, body {
 /* 버튼 스타일 */
 .btn {
   font-family: var(--font-body);
-  font-size: 0.9rem;
-  padding: 12px 24px;
-  border-radius: 8px;
+  font-size: 1rem;
+  padding: 14px 28px;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.2s ease;
   border: none;
@@ -156,6 +156,7 @@ html, body {
 
 .btn-primary:hover {
   background: var(--color-accent-gold-light);
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
@@ -181,20 +182,20 @@ html, body {
 .page {
   min-height: 100vh;
   min-height: 100dvh;
-  padding-top: 50px;
+  padding-top: 60px;
   position: relative;
   z-index: 1;
 }
 
 .page-content {
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
   padding: var(--spacing-lg) var(--spacing-md);
 }
 
 /* 스크롤바 */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -203,7 +204,7 @@ html, body {
 
 ::-webkit-scrollbar-thumb {
   background: rgba(201, 162, 39, 0.3);
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
 /* 언어 선택기 */
@@ -215,9 +216,9 @@ html, body {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--color-border);
   color: var(--color-text-secondary);
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.75rem;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
   cursor: pointer;
   font-family: var(--font-body);
 }
@@ -230,23 +231,23 @@ html, body {
   position: absolute;
   top: 100%;
   right: 0;
-  margin-top: 4px;
+  margin-top: 6px;
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
-  min-width: 100px;
+  min-width: 120px;
   z-index: 1000;
 }
 
 .language-option {
   display: block;
   width: 100%;
-  padding: 8px 12px;
+  padding: 10px 14px;
   background: none;
   border: none;
   color: var(--color-text-secondary);
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   cursor: pointer;
   text-align: left;
   font-family: var(--font-body);
