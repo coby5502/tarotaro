@@ -68,7 +68,9 @@ export const translations = {
     shareResult: '결과 공유하기',
     saveImage: '이미지 저장',
     copyText: '텍스트 복사',
+    shareLink: '링크 공유',
     copied: '복사되었습니다!',
+    linkCopied: '링크가 복사되었습니다!',
     generatingImage: '이미지 생성 중',
   },
   
@@ -136,7 +138,9 @@ export const translations = {
     shareResult: 'Share Result',
     saveImage: 'Save Image',
     copyText: 'Copy Text',
+    shareLink: 'Share Link',
     copied: 'Copied!',
+    linkCopied: 'Link copied!',
     generatingImage: 'Generating image',
   },
   
@@ -204,7 +208,9 @@ export const translations = {
     shareResult: '結果をシェア',
     saveImage: '画像を保存',
     copyText: 'テキストをコピー',
+    shareLink: 'リンクをシェア',
     copied: 'コピーしました！',
+    linkCopied: 'リンクをコピーしました！',
     generatingImage: '画像生成中',
   }
 };

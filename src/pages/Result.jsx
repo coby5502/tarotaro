@@ -51,13 +51,12 @@ const Result = () => {
   const extractKeyMessage = () => {
     if (!aiReading) return '';
     
-    // ✨ 핵심 메시지 또는 Key Message 섹션 찾기
     const patterns = [
       /## ✨.*?\n([\s\S]*?)(?=\n##|$)/,
       /## 🎯.*?\n([\s\S]*?)(?=\n##|$)/,
     ];
     
-    const maxLength = 60;
+    const maxLength = 50;
     
     for (const pattern of patterns) {
       const match = aiReading.match(pattern);
@@ -67,7 +66,6 @@ const Result = () => {
       }
     }
     
-    // 못 찾으면 첫 문단 반환
     const firstParagraph = aiReading.split('\n').find(line => 
       line.trim() && !line.startsWith('#') && !line.startsWith('-')
     );
@@ -75,40 +73,66 @@ const Result = () => {
     return text.length > maxLength ? text.substring(0, maxLength - 3) + '...' : text;
   };
 
-  // 이미지 생성 및 저장
-  const handleShare = async () => {
-    setShowShareModal(true);
+  // 카드 이름 목록
+  const getCardNames = () => {
+    return cards.map(card => card.name.ko || card.name.en).join(', ');
+  };
+
+  // 이미지 저장
+  const handleSaveImage = async () => {
+    if (!shareCardRef.current) return;
+    
     setIsGeneratingImage(true);
     
-    // 모달이 렌더링될 때까지 대기
     await new Promise(resolve => setTimeout(resolve, 100));
     
-    if (shareCardRef.current) {
-      try {
-        const canvas = await html2canvas(shareCardRef.current, {
-          backgroundColor: '#0a0a1a',
-          scale: 2,
-          useCORS: true,
-          allowTaint: true,
-        });
-        
-        const link = document.createElement('a');
-        link.download = `tarotaro-${Date.now()}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      } catch (err) {
-        console.error('Image generation failed:', err);
-      }
+    try {
+      const canvas = await html2canvas(shareCardRef.current, {
+        backgroundColor: '#0a0a1a',
+        scale: 2,
+        logging: false,
+      });
+      
+      const link = document.createElement('a');
+      link.download = `tarotaro-${Date.now()}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (err) {
+      console.error('Image generation failed:', err);
+      alert('이미지 생성에 실패했습니다.');
     }
     
     setIsGeneratingImage(false);
   };
 
-  // 클립보드에 복사
+  // 텍스트 복사
   const handleCopyText = () => {
-    const text = `🔮 TaroTaro ${t('readingResult')}\n\n${question ? `Q: ${question}\n\n` : ''}${extractKeyMessage()}\n\nwww.tarotaro.co.kr`;
+    const text = `🔮 TaroTaro ${t('readingResult')}\n\n${question ? `Q: ${question}\n\n` : ''}${extractKeyMessage()}\n\n👉 www.tarotaro.co.kr`;
     navigator.clipboard.writeText(text);
     alert(t('copied') || 'Copied!');
+  };
+
+  // 링크 공유 (Web Share API 또는 클립보드)
+  const handleShareLink = async () => {
+    const shareData = {
+      title: 'TaroTaro - 타로 리딩',
+      text: `🔮 ${extractKeyMessage()}`,
+      url: 'https://www.tarotaro.co.kr'
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText('https://www.tarotaro.co.kr');
+        alert(t('linkCopied') || '링크가 복사되었습니다!');
+      }
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        await navigator.clipboard.writeText('https://www.tarotaro.co.kr');
+        alert(t('linkCopied') || '링크가 복사되었습니다!');
+      }
+    }
   };
 
   if (!cards || !spread) {
@@ -297,7 +321,7 @@ const Result = () => {
           >
             <motion.button 
               className="share-button"
-              onClick={handleShare}
+              onClick={() => setShowShareModal(true)}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -355,34 +379,39 @@ const Result = () => {
             >
               <button className="close-modal" onClick={() => setShowShareModal(false)}>×</button>
               
-              {/* 공유용 카드 */}
+              {/* 공유용 카드 (텍스트 기반) */}
               <div className="share-card" ref={shareCardRef}>
-                <div className="share-card-header">
-                  <span className="share-logo">🔮</span>
-                  <span className="share-title">TaroTaro</span>
-                </div>
-                
-                <div className="share-card-body">
-                  {question && (
-                    <p className="share-question">"{question}"</p>
-                  )}
-                  
-                  <div className="share-cards">
-                    {cards.slice(0, 3).map((card, i) => (
-                      <div key={i} className="share-card-item">
-                        <img src={card.image} alt={card.name.en} />
-                      </div>
-                    ))}
-                    {cards.length > 3 && (
-                      <span className="share-more">+{cards.length - 3}</span>
-                    )}
+                <div className="share-card-inner">
+                  <div className="share-card-header">
+                    <span className="share-logo">🔮</span>
+                    <span className="share-title">TaroTaro</span>
                   </div>
                   
-                  <p className="share-message">{extractKeyMessage()}</p>
-                </div>
-                
-                <div className="share-card-footer">
-                  <span>www.tarotaro.co.kr</span>
+                  <div className="share-card-body">
+                    <p className="share-spread">{getSpreadName()}</p>
+                    
+                    {question && (
+                      <p className="share-question">"{question}"</p>
+                    )}
+                    
+                    <div className="share-card-names">
+                      {cards.slice(0, 5).map((card, i) => (
+                        <span key={i} className="share-card-name">
+                          {card.name.ko || card.name.en}
+                          {card.isReversed && ' ↺'}
+                        </span>
+                      ))}
+                      {cards.length > 5 && (
+                        <span className="share-card-name more">+{cards.length - 5}</span>
+                      )}
+                    </div>
+                    
+                    <p className="share-message">✨ {extractKeyMessage()}</p>
+                  </div>
+                  
+                  <div className="share-card-footer">
+                    <span>www.tarotaro.co.kr</span>
+                  </div>
                 </div>
               </div>
 
@@ -393,10 +422,17 @@ const Result = () => {
                   <>
                     <motion.button 
                       className="share-action-btn"
-                      onClick={handleShare}
+                      onClick={handleSaveImage}
                       whileHover={{ scale: 1.02 }}
                     >
                       📥 {t('saveImage')}
+                    </motion.button>
+                    <motion.button 
+                      className="share-action-btn secondary"
+                      onClick={handleShareLink}
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      🔗 {t('shareLink')}
                     </motion.button>
                     <motion.button 
                       className="share-action-btn secondary"
