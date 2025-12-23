@@ -153,7 +153,7 @@ const Result = () => {
   return (
     <div className="result">
       <div className="stars"></div>
-      <Navbar title={getSpreadName()} showBack />
+      <Navbar showBack />
       
       <main className="result-content">
         {question && (

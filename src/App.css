@@ -118,10 +118,6 @@ html, body {
   letter-spacing: 0.05em;
 }
 
-.navbar-center {
-  font-size: 1rem;
-  color: var(--color-text-secondary);
-}
 
 .navbar-back {
   background: none;

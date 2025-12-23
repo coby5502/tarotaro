@@ -1,11 +1,9 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useLanguage } from '../i18n/LanguageContext';
 import LanguageSelector from './LanguageSelector';
 
-const Navbar = ({ title, showBack = false }) => {
+const Navbar = ({ showBack = false }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { t } = useLanguage();
   
   const isHome = location.pathname === '/';
 
@@ -22,12 +20,9 @@ const Navbar = ({ title, showBack = false }) => {
         </a>
       )}
       
-      {title && <span className="navbar-center">{title}</span>}
-      
       <LanguageSelector />
     </nav>
   );
 };
 
 export default Navbar;
-

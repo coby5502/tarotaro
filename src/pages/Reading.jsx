@@ -131,7 +131,7 @@ const Reading = () => {
   return (
     <div className="reading">
       <div className="stars"></div>
-      <Navbar title={getSpreadName()} showBack />
+      <Navbar showBack />
 
       <main className="reading-content">
         <AnimatePresence mode="wait">
