@@ -420,7 +420,6 @@ const Reading = () => {
                             bottom: '100px',
                             transformOrigin: 'center bottom',
                             cursor: isSelected || isDisabled || isClicking ? 'default' : 'grab',
-                            zIndex: isClicking ? 1000 : index + 10,
                             pointerEvents: isSelected || isClicking ? 'none' : 'auto',
                           }}
                           onClick={() => !isSelected && !isDisabled && !isClicking && selectCard(card)}
