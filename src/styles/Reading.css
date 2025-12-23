@@ -153,7 +153,7 @@
 }
 
 .slot {
-  width: clamp(70px, 14vw, 100px);
+  width: clamp(60px, 12vw, 90px);
   aspect-ratio: 2 / 3;
 }
 
@@ -307,7 +307,7 @@
 }
 
 .fan-card-wrapper .tarot-card {
-  width: clamp(100px, 18vw, 140px) !important; /* normal 사이즈로 변경 */
+  width: clamp(60px, 12vw, 90px) !important; /* small 사이즈로 변경 - 선택된 카드와 동일 */
 }
 
 .fan-card-wrapper.selected {
@@ -428,7 +428,7 @@
   }
   
   .fan-card-wrapper .tarot-card {
-    width: clamp(85px, 15vw, 110px) !important;
+    width: clamp(60px, 12vw, 90px) !important; /* small 사이즈로 통일 */
   }
   
   .selected-slots.slots-10 {
@@ -456,7 +456,7 @@
   }
   
   .fan-card-wrapper .tarot-card {
-    width: clamp(75px, 12vw, 95px) !important;
+    width: clamp(60px, 12vw, 90px) !important; /* small 사이즈로 통일 */
   }
   
   .selected-slots {
@@ -471,7 +471,7 @@
   }
   
   .slot {
-    width: clamp(55px, 11vw, 75px);
+    width: clamp(60px, 12vw, 90px); /* small 사이즈로 통일 */
     aspect-ratio: 2 / 3;
   }
   

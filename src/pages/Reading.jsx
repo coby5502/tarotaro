@@ -323,7 +323,7 @@ const Reading = () => {
                           <TarotCard 
                             card={card} 
                             isRevealed={false} 
-                            size="normal"
+                            size="small"
                           />
                         </motion.div>
                       );
