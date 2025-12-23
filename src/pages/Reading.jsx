@@ -28,6 +28,10 @@ const Reading = () => {
   const [aiError, setAiError] = useState(null);
   const hasFetchedRef = useRef(false);
   const containerRef = useRef(null);
+  const scrollRef = useRef(null);
+  const [isDraggingScroll, setIsDraggingScroll] = useState(false);
+  const scrollStartX = useRef(0);
+  const scrollLeft = useRef(0);
 
   // 전체 덱 섞기
   const shuffleDeck = useMemo(() => {
@@ -47,6 +51,22 @@ const Reading = () => {
   useEffect(() => {
     if (!spread) navigate('/');
   }, [spread, navigate]);
+
+  // 초기 스크롤 위치를 중앙으로 설정
+  useEffect(() => {
+    if (phase === 'selecting' && scrollRef.current && shuffledDeck.length > 0) {
+      // 짧은 지연 후 스크롤 위치 설정 (렌더링 완료 대기)
+      const timer = setTimeout(() => {
+        if (scrollRef.current) {
+          const totalWidth = (shuffledDeck.length - 1) * 35; // 마지막 카드의 위치
+          const containerWidth = scrollRef.current.clientWidth;
+          const scrollLeft = Math.max(0, (totalWidth - containerWidth) / 2);
+          scrollRef.current.scrollLeft = scrollLeft;
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [phase, shuffledDeck.length]);
 
   // 모든 카드 공개되면 API 호출 시작
   useEffect(() => {
@@ -261,15 +281,41 @@ const Reading = () => {
 
               {/* 카드 부채꼴 배치 - 스크롤 가능 */}
               <div className="card-fan-container" ref={containerRef}>
-                <div className="card-fan-scroll">
+                <div 
+                  className="card-fan-scroll"
+                  ref={scrollRef}
+                  onMouseDown={(e) => {
+                    // 배경 영역에서 드래그 시작
+                    const target = e.target;
+                    if (target === scrollRef.current || target.closest('.card-fan-inner') === scrollRef.current?.querySelector('.card-fan-inner')) {
+                      setIsDraggingScroll(true);
+                      scrollStartX.current = e.pageX - scrollRef.current.offsetLeft;
+                      scrollLeft.current = scrollRef.current.scrollLeft;
+                      e.preventDefault();
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    setIsDraggingScroll(false);
+                  }}
+                  onMouseUp={() => {
+                    setIsDraggingScroll(false);
+                  }}
+                  onMouseMove={(e) => {
+                    if (!isDraggingScroll || !scrollRef.current) return;
+                    e.preventDefault();
+                    const x = e.pageX - scrollRef.current.offsetLeft;
+                    const walk = (x - scrollStartX.current) * 2; // 스크롤 속도 조절
+                    scrollRef.current.scrollLeft = scrollLeft.current - walk;
+                  }}
+                >
                   <div className="card-fan-inner">
                     {shuffledDeck.map((card, index) => {
                       const isSelected = selectedCardIds.includes(card.id);
                       const isDisabled = selectedCards.length >= spread.cardCount;
                       const isClicking = clickingCardId === card.id;
                       
-                      // 가로 위치 (스크롤을 위해, 겹치게 배치)
-                      const horizontalOffset = (index - shuffledDeck.length / 2) * 35; // 겹치게 (35px 간격, 더 크게)
+                      // 가로 위치 - 첫 카드가 왼쪽에서 시작, 35px 간격으로 배치
+                      const horizontalOffset = index * 35;
                       
                       return (
                         <motion.div
@@ -311,7 +357,7 @@ const Reading = () => {
                           }}
                           style={{
                             position: 'absolute',
-                            left: `calc(50% + ${horizontalOffset}px)`,
+                            left: `${horizontalOffset}px`,
                             bottom: '100px',
                             transformOrigin: 'center bottom',
                             cursor: isSelected || isDisabled || isClicking ? 'default' : 'grab',
