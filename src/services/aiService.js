@@ -24,7 +24,7 @@ const buildPrompt = (cards, spread, question, lang) => {
     const name = card.name.en || card.name.ko;
     const position = card.position?.meaning || card.position?.name || `Position ${i + 1}`;
     const direction = card.isReversed ? 'REVERSED' : 'Upright';
-    const keywords = card.keywords?.join(', ') || '';
+    const keywords = Array.isArray(card.keywords) ? card.keywords.join(', ') : (card.keywords || '');
     return `${i + 1}. **${name}** (${direction}) - Position: ${position}${keywords ? ` | Keywords: ${keywords}` : ''}`;
   }).join('\n');
 

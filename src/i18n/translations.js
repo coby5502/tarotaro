@@ -26,7 +26,8 @@ export const translations = {
     
     // 리딩
     enterQuestion: '질문을 입력하세요 (선택사항)',
-    questionPlaceholder: '예: 나의 연애운은 어떨까요?',
+    questionPlaceholder: '오늘의 운세를 알려주세요',
+    defaultQuestion: '오늘의 운세를 알려주세요',
     startReading: '카드 섞기',
     shuffling: '카드를 섞는 중...',
     selectCard: '카드를 선택하세요',
@@ -99,7 +100,8 @@ export const translations = {
     
     // Reading
     enterQuestion: 'Enter your question (optional)',
-    questionPlaceholder: 'e.g., What does my love life look like?',
+    questionPlaceholder: 'Tell me my fortune for today',
+    defaultQuestion: 'Tell me my fortune for today',
     startReading: 'Shuffle Cards',
     shuffling: 'Shuffling cards...',
     selectCard: 'Select a card',
@@ -172,7 +174,8 @@ export const translations = {
     
     // リーディング
     enterQuestion: '質問を入力してください（任意）',
-    questionPlaceholder: '例：私の恋愛運はどうでしょうか？',
+    questionPlaceholder: '今日の運勢を教えてください',
+    defaultQuestion: '今日の運勢を教えてください',
     startReading: 'カードをシャッフル',
     shuffling: 'カードをシャッフル中...',
     selectCard: 'カードを選んでください',

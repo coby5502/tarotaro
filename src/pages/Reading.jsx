@@ -71,8 +71,10 @@ const Reading = () => {
   };
 
   const goToResult = () => {
+    // 질문이 비어있으면 placeholder 텍스트를 기본 질문으로 사용
+    const finalQuestion = question.trim() || t('defaultQuestion');
     navigate('/result', { 
-      state: { cards: selectedCards, spread, question } 
+      state: { cards: selectedCards, spread, question: finalQuestion } 
     });
   };
 
