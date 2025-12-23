@@ -147,9 +147,11 @@
 .selected-slots.slots-1 {
   grid-template-columns: 1fr;
   max-width: 120px;
-  margin-left: auto;
-  margin-right: auto;
-  width: auto;
+  width: 120px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /* 10장일 때 5x2 그리드 */
@@ -550,11 +552,13 @@
   }
   
   .selected-slots.slots-1 {
-    max-width: 120px;
+    max-width: 120px !important;
+    width: 120px !important;
     gap: var(--spacing-md);
-    width: auto;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 0;
+    padding-right: 0;
   }
   
   .selected-slots.slots-10 {
