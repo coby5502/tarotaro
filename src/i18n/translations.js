@@ -64,6 +64,9 @@ export const translations = {
     swords: '소드',
     pentacles: '펜타클',
     
+    // 결과
+    clickToEnlarge: '카드를 터치하면 크게 볼 수 있어요',
+    
     // 공유
     shareResult: '결과 공유하기',
     saveImage: '이미지 저장',
@@ -134,6 +137,9 @@ export const translations = {
     swords: 'Swords',
     pentacles: 'Pentacles',
     
+    // Result
+    clickToEnlarge: 'Tap a card to enlarge',
+    
     // Share
     shareResult: 'Share Result',
     saveImage: 'Save Image',
@@ -203,6 +209,9 @@ export const translations = {
     cups: 'カップ',
     swords: 'ソード',
     pentacles: 'ペンタクル',
+    
+    // 結果
+    clickToEnlarge: 'カードをタップすると拡大できます',
     
     // シェア
     shareResult: '結果をシェア',

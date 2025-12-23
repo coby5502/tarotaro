@@ -25,6 +25,7 @@ const Result = () => {
   const [error, setError] = useState('');
   const [showShareModal, setShowShareModal] = useState(false);
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
 
   useEffect(() => {
     if (cards && spread) {
@@ -212,7 +213,7 @@ const Result = () => {
           </motion.div>
         )}
 
-        {/* 카드 미리보기 */}
+        {/* 카드 미리보기 - 클릭하면 크게 보기 */}
         <motion.div 
           className={`cards-overview cards-count-${cards.length}`}
           initial={{ opacity: 0 }}
@@ -222,16 +223,18 @@ const Result = () => {
           {cards.map((card, index) => (
             <motion.div 
               key={card.id} 
-              className="card-item"
+              className="card-item clickable"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + index * 0.05 }}
+              onClick={() => setSelectedCard(card)}
             >
               <TarotCard card={card} isRevealed={true} size="small" />
               <span className="card-position">{card.position.name}</span>
             </motion.div>
           ))}
         </motion.div>
+        <p className="card-hint">{t('clickToEnlarge')}</p>
 
         {/* AI 해석 결과 */}
         <motion.section 
@@ -309,6 +312,44 @@ const Result = () => {
           {t('disclaimer')}
         </p>
       </main>
+
+      {/* 카드 상세보기 모달 */}
+      <AnimatePresence>
+        {selectedCard && (
+          <motion.div 
+            className="card-modal-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedCard(null)}
+          >
+            <motion.div 
+              className="card-modal"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              onClick={e => e.stopPropagation()}
+            >
+              <button className="close-modal" onClick={() => setSelectedCard(null)}>×</button>
+              
+              <div className="card-modal-content">
+                <div className={`card-modal-image ${selectedCard.isReversed ? 'reversed' : ''}`}>
+                  <img src={selectedCard.image} alt={selectedCard.name.ko} />
+                </div>
+                
+                <div className="card-modal-info">
+                  <h3>{selectedCard.name.ko || selectedCard.name.en}</h3>
+                  <p className="card-modal-position">{selectedCard.position.name}</p>
+                  {selectedCard.isReversed && (
+                    <span className="reversed-tag">{t('reversed')}</span>
+                  )}
+                  <p className="card-modal-desc">{selectedCard.position.description}</p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* 공유 모달 */}
       <AnimatePresence>
