@@ -461,9 +461,29 @@
     width: clamp(60px, 12vw, 90px) !important; /* small 사이즈로 통일 */
   }
   
+  .selected-slots {
+    gap: var(--spacing-md);
+  }
+  
+  .selected-slots.slots-1 {
+    gap: var(--spacing-md);
+  }
+  
   .selected-slots.slots-10 {
     max-width: 500px;
     gap: 12px;
+  }
+  
+  .reveal-grid {
+    gap: var(--spacing-md);
+  }
+  
+  .reveal-grid.grid-1 {
+    gap: var(--spacing-md);
+  }
+  
+  .reveal-grid.grid-3 {
+    gap: var(--spacing-md);
   }
   
   .reveal-grid.grid-10 {
