@@ -354,12 +354,6 @@ const Reading = () => {
                             rotate: 0,
                             scale: isClicking ? 1.2 : 1,
                           }}
-                          whileHover={!isSelected && !isDisabled && !isClicking ? { 
-                            y: -20,
-                            scale: 1.1,
-                            zIndex: index + 1000,
-                            transition: { duration: 0.15, ease: "easeOut" }
-                          } : {}}
                           whileTap={!isSelected && !isDisabled && !isClicking ? { scale: 0.95 } : {}}
                           transition={{ 
                             delay: index * 0.01,

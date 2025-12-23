@@ -309,16 +309,10 @@
   will-change: transform;
   user-select: none;
   -webkit-user-select: none;
-  transition: transform 0.15s ease-out !important;
 }
 
 .fan-card-wrapper:active {
   cursor: grabbing !important;
-}
-
-/* 호버 해제 시 빠르게 원래 위치로 */
-.fan-card-wrapper:not(:hover) {
-  transition: transform 0.15s ease-out !important;
 }
 
 .fan-card-wrapper.selected {
