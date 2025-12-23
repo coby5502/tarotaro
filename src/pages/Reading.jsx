@@ -287,27 +287,36 @@ const Reading = () => {
                   className="card-fan-scroll"
                   ref={scrollRef}
                   onMouseDown={(e) => {
-                    // 배경 영역에서 드래그 시작
+                    // 카드가 아닌 배경 영역에서만 드래그 시작
                     const target = e.target;
-                    if (target === scrollRef.current || target.closest('.card-fan-inner') === scrollRef.current?.querySelector('.card-fan-inner')) {
+                    if (!target.closest('.fan-card-wrapper')) {
                       setIsDraggingScroll(true);
+                      dragStartRef.current = { x: e.pageX, y: e.pageY };
                       scrollStartX.current = e.pageX - scrollRef.current.offsetLeft;
                       scrollLeft.current = scrollRef.current.scrollLeft;
-                      e.preventDefault();
                     }
                   }}
                   onMouseLeave={() => {
                     setIsDraggingScroll(false);
+                    dragStartRef.current = null;
                   }}
                   onMouseUp={() => {
                     setIsDraggingScroll(false);
+                    dragStartRef.current = null;
                   }}
                   onMouseMove={(e) => {
-                    if (!isDraggingScroll || !scrollRef.current) return;
-                    e.preventDefault();
-                    const x = e.pageX - scrollRef.current.offsetLeft;
-                    const walk = (x - scrollStartX.current) * 2; // 스크롤 속도 조절
-                    scrollRef.current.scrollLeft = scrollLeft.current - walk;
+                    if (!isDraggingScroll || !scrollRef.current || !dragStartRef.current) return;
+                    
+                    const deltaX = Math.abs(e.pageX - dragStartRef.current.x);
+                    const deltaY = Math.abs(e.pageY - dragStartRef.current.y);
+                    
+                    // 가로 드래그가 세로 드래그보다 크면 스크롤
+                    if (deltaX > deltaY && deltaX > 5) {
+                      e.preventDefault();
+                      const x = e.pageX - scrollRef.current.offsetLeft;
+                      const walk = (x - scrollStartX.current) * 2;
+                      scrollRef.current.scrollLeft = scrollLeft.current - walk;
+                    }
                   }}
                 >
                   <div className="card-fan-inner">
