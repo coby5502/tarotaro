@@ -344,37 +344,7 @@ const Reading = () => {
                           key={card.id}
                           className={`fan-card-wrapper ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
                           drag={!isSelected && !isDisabled && !isClicking ? "y" : false}
-                          dragConstraints={(info, { point }) => {
-                            // 드래그 방향 확인
-                            if (!cardDragDirectionRef.current.has(card.id)) {
-                              cardDragDirectionRef.current.set(card.id, null);
-                            }
-                            
-                            if (dragStartRef.current) {
-                              const deltaX = Math.abs(point.x - dragStartRef.current.x);
-                              const deltaY = Math.abs(point.y - dragStartRef.current.y);
-                              
-                              // 가로 드래그가 세로보다 크면 가로 드래그로 표시
-                              if (deltaX > deltaY && deltaX > 10) {
-                                cardDragDirectionRef.current.set(card.id, 'horizontal');
-                                // 가로 스크롤 적용
-                                if (scrollRef.current) {
-                                  const walk = (point.x - dragStartRef.current.x) * 1.2;
-                                  scrollRef.current.scrollLeft = scrollLeft.current - walk;
-                                }
-                              } else if (deltaY > deltaX && deltaY > 10) {
-                                cardDragDirectionRef.current.set(card.id, 'vertical');
-                              }
-                            }
-                            
-                            // 가로 드래그 중이면 y 드래그 제약
-                            const dragDirection = cardDragDirectionRef.current.get(card.id);
-                            if (dragDirection === 'horizontal') {
-                              return { top: 0, bottom: 0 }; // y 이동 제한
-                            }
-                            
-                            return { top: -200, bottom: 0 };
-                          }}
+                          dragConstraints={{ top: -200, bottom: 0 }}
                           dragElastic={{ top: 0.1, bottom: 0.5 }}
                           onDragStart={(e, info) => {
                             // 드래그 시작 시점 저장 (가로/세로 구분용)
@@ -384,11 +354,39 @@ const Reading = () => {
                               scrollLeft.current = scrollRef.current.scrollLeft;
                             }
                           }}
+                          onDrag={(e, info) => {
+                            // 드래그 방향 확인
+                            if (dragStartRef.current && scrollRef.current) {
+                              const deltaX = Math.abs(info.point.x - dragStartRef.current.x);
+                              const deltaY = Math.abs(info.point.y - dragStartRef.current.y);
+                              
+                              // 가로 드래그가 세로보다 크면 가로 드래그로 표시
+                              if (deltaX > deltaY && deltaX > 10) {
+                                cardDragDirectionRef.current.set(card.id, 'horizontal');
+                                // 가로 스크롤 적용
+                                const walk = (info.point.x - dragStartRef.current.x) * 1.2;
+                                scrollRef.current.scrollLeft = scrollLeft.current - walk;
+                                // y 드래그 취소를 위해 카드 위치를 원래대로
+                                if (info.offset.y !== 0) {
+                                  // framer-motion의 제약을 통해 y 위치를 0으로 제한
+                                  // 이는 onDragEnd에서 처리하기 어려우므로, 
+                                  // 대신 animate를 통해 위치를 리셋
+                                }
+                              } else if (deltaY > deltaX && deltaY > 10) {
+                                cardDragDirectionRef.current.set(card.id, 'vertical');
+                              }
+                            }
+                          }}
+                          animate={{
+                            ...(cardDragDirectionRef.current.get(card.id) === 'horizontal' 
+                              ? { y: 0 } 
+                              : {})
+                          }}
                           onDragEnd={(e, info) => {
                             const dragDirection = cardDragDirectionRef.current.get(card.id);
                             cardDragDirectionRef.current.delete(card.id);
                             
-                            // 세로 드래그일 때만 카드 선택
+                            // 세로 드래그일 때만 카드 선택 (가로 드래그 중에는 선택 안 함)
                             if (dragDirection !== 'horizontal' && info.offset.y < -80 && Math.abs(info.offset.x) < Math.abs(info.offset.y) * 0.8) {
                               selectCard(card);
                             }
