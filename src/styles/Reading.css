@@ -476,12 +476,8 @@
   }
   
   .selected-slots {
-    gap: 10px;
-    padding: var(--spacing-md);
-  }
-  
-  .selected-slots {
     gap: var(--spacing-md);
+    padding: var(--spacing-md);
   }
   
   .selected-slots.slots-10 {
