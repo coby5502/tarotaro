@@ -214,6 +214,8 @@
 .reveal-grid.grid-10 {
   grid-template-columns: repeat(5, 1fr);
   max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .reveal-item {
