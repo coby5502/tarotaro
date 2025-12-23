@@ -259,7 +259,7 @@ const Reading = () => {
               exit={{ opacity: 0 }}
             >
               <p className="phase-hint select-hint">
-                {t('selectCard')} <strong>{selectedCards.length}/{spread.cardCount}</strong>
+                {t('selectCard')} {spread.cardCount > 1 && <strong>{selectedCards.length}/{spread.cardCount}</strong>}
               </p>
 
               {/* 선택된 카드 슬롯 */}
@@ -478,7 +478,7 @@ const Reading = () => {
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                   >
-                    {t('revealAll')}
+                    {t('flipCard')}
                   </motion.button>
                 ) : (
                   <motion.button 

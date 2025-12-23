@@ -39,6 +39,7 @@ export const translations = {
     
     // 결과
     revealAll: '모두 공개',
+    flipCard: '카드 뒤집기',
     readingResult: '리딩 결과',
     yourQuestion: '당신의 질문',
     aiInterpretation: '타로 해석',
@@ -193,6 +194,7 @@ export const translations = {
     
     // 結果
     revealAll: 'すべて公開',
+    flipCard: 'カードをめくる',
     readingResult: 'リーディング結果',
     yourQuestion: 'あなたの質問',
     aiInterpretation: 'タロット解釈',
