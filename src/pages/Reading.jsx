@@ -255,67 +255,69 @@ const Reading = () => {
               {/* 카드 부채꼴 배치 - 스크롤 가능 */}
               <div className="card-fan-container" ref={containerRef}>
                 <div className="card-fan-scroll">
-                  {shuffledDeck.map((card, index) => {
-                    const isSelected = selectedCardIds.includes(card.id);
-                    const isDisabled = selectedCards.length >= spread.cardCount;
-                    
-                    // 부채꼴 배치 계산 - 더 넓게
-                    const totalCards = shuffledDeck.length;
-                    const spreadAngle = Math.PI * 1.2; // 216도 범위 (더 넓게)
-                    const startAngle = -spreadAngle / 2;
-                    const angle = startAngle + (index / (totalCards - 1 || 1)) * spreadAngle;
-                    
-                    const baseRadius = 180; // 더 큰 반지름
-                    const radiusVariation = 100;
-                    const radius = baseRadius + (Math.abs(index - totalCards / 2) / totalCards) * radiusVariation;
-                    
-                    const x = Math.sin(angle) * radius;
-                    const y = -Math.cos(angle) * radius * 0.5;
-                    const rotation = angle * (180 / Math.PI);
-                    
-                    return (
-                      <motion.div
-                        key={card.id}
-                        className={`fan-card-wrapper ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
-                        initial={{ 
-                          opacity: 0,
-                          scale: 0.8,
-                        }}
-                        animate={{ 
-                          opacity: isSelected ? 0.3 : 1,
-                          x: x,
-                          y: y,
-                          rotate: rotation,
-                          scale: 1,
-                        }}
-                        whileHover={!isSelected && !isDisabled ? { 
-                          y: y - 15,
-                          scale: 1.15,
-                          zIndex: 100,
-                        } : {}}
-                        transition={{ 
-                          delay: index * 0.005,
-                          type: "spring",
-                          stiffness: 180,
-                          damping: 18
-                        }}
-                        style={{
-                          position: 'absolute',
-                          left: `${50 + (index / totalCards) * 40}%`, // 가로로 펼쳐짐
-                          bottom: '0',
-                          transformOrigin: 'center bottom',
-                          cursor: isDisabled ? 'not-allowed' : 'pointer',
-                        }}
-                        onClick={() => !isSelected && !isDisabled && selectCard(card)}
-                      >
-                        <TarotCard 
-                          card={card} 
-                          isRevealed={false} 
-                          size="small"
-                        />
-                      </motion.div>
-                    );
-                  })}
+                  <div className="card-fan-inner">
+                    {shuffledDeck.map((card, index) => {
+                      const isSelected = selectedCardIds.includes(card.id);
+                      const isDisabled = selectedCards.length >= spread.cardCount;
+                      
+                      // 부채꼴 배치 계산 - 더 넓게
+                      const totalCards = shuffledDeck.length;
+                      const spreadAngle = Math.PI * 1.3; // 234도 범위 (더 넓게)
+                      const startAngle = -spreadAngle / 2;
+                      const angle = startAngle + (index / (totalCards - 1 || 1)) * spreadAngle;
+                      
+                      const baseRadius = 200; // 더 큰 반지름
+                      const radiusVariation = 120;
+                      const radius = baseRadius + (Math.abs(index - totalCards / 2) / totalCards) * radiusVariation;
+                      
+                      const x = Math.sin(angle) * radius;
+                      const y = -Math.cos(angle) * radius * 0.5;
+                      const rotation = angle * (180 / Math.PI);
+                      
+                      return (
+                        <motion.div
+                          key={card.id}
+                          className={`fan-card-wrapper ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
+                          initial={{ 
+                            opacity: 0,
+                            scale: 0.8,
+                          }}
+                          animate={{ 
+                            opacity: isSelected ? 0.3 : 1,
+                            x: x,
+                            y: y,
+                            rotate: rotation,
+                            scale: 1,
+                          }}
+                          whileHover={!isSelected && !isDisabled ? { 
+                            y: y - 15,
+                            scale: 1.15,
+                            zIndex: 100,
+                          } : {}}
+                          transition={{ 
+                            delay: index * 0.005,
+                            type: "spring",
+                            stiffness: 180,
+                            damping: 18
+                          }}
+                          style={{
+                            position: 'absolute',
+                            left: `${index * 60}px`, // 가로로 순차 배치
+                            bottom: '0',
+                            transformOrigin: 'center bottom',
+                            cursor: isDisabled ? 'not-allowed' : 'pointer',
+                          }}
+                          onClick={() => !isSelected && !isDisabled && selectCard(card)}
+                        >
+                          <TarotCard 
+                            card={card} 
+                            isRevealed={false} 
+                            size="small"
+                          />
+                        </motion.div>
+                      );
+                    })}
+                  </div>
                 </div>
                 <p className="card-fan-hint">{t('dragToSelect')}</p>
               </div>
