@@ -1,96 +1,77 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../i18n/LanguageContext';
-import LanguageSelector from '../components/LanguageSelector';
+import Navbar from '../components/Navbar';
 import '../styles/Home.css';
 
 const Home = () => {
   const { t } = useLanguage();
 
-  const spreadList = [
+  const spreads = [
     { 
       key: 'oneCard', 
       name: t('oneCard'),
-      description: t('oneCardDesc'),
-      cardCount: 1
+      desc: t('oneCardDesc'),
+      count: 1
     },
     { 
       key: 'threeCard', 
       name: t('threeCard'),
-      description: t('threeCardDesc'),
-      cardCount: 3
+      desc: t('threeCardDesc'),
+      count: 3
     },
     { 
       key: 'celticCross', 
       name: t('celticCross'),
-      description: t('celticCrossDesc'),
-      cardCount: 10
+      desc: t('celticCrossDesc'),
+      count: 10
     },
   ];
 
   return (
     <div className="home">
       <div className="stars"></div>
+      <Navbar />
       
-      <div className="language-wrapper">
-        <LanguageSelector />
-      </div>
-      
-      <main className="home-main">
-        <motion.header 
-          className="home-header"
-          initial={{ opacity: 0, y: -20 }}
+      <main className="home-content">
+        <motion.div 
+          className="home-hero"
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <motion.div 
-            className="logo"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-          >
-            🔮
-          </motion.div>
-          
-          <h1 className="title">{t('appName')}</h1>
-          <p className="subtitle">{t('subtitle')}</p>
-        </motion.header>
+          <div className="hero-icon">🔮</div>
+          <h1 className="hero-title">{t('appName')}</h1>
+          <p className="hero-subtitle">{t('subtitle')}</p>
+        </motion.div>
         
-        <motion.section 
-          className="spread-section"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
+        <motion.div 
+          className="spread-list"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
         >
-          <div className="spread-list">
-            {spreadList.map((spread, index) => (
-              <Link 
-                key={spread.key}
-                to={`/reading/${spread.key}`} 
-                className="spread-card"
-              >
-                <motion.div 
-                  className="spread-card-content"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 + index * 0.1 }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <div className="spread-header">
-                    <h3 className="spread-name">{spread.name}</h3>
-                    <span className="spread-count">{spread.cardCount}{t('cards')}</span>
-                  </div>
-                  <p className="spread-desc">{spread.description}</p>
-                </motion.div>
+          {spreads.map((spread, index) => (
+            <motion.div
+              key={spread.key}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 + index * 0.1 }}
+            >
+              <Link to={`/reading/${spread.key}`} className="spread-card">
+                <div className="spread-info">
+                  <h3>{spread.name}</h3>
+                  <p>{spread.desc}</p>
+                </div>
+                <span className="spread-count">{spread.count}</span>
               </Link>
-            ))}
-          </div>
-        </motion.section>
+            </motion.div>
+          ))}
+        </motion.div>
       </main>
       
       <footer className="home-footer">
-        <p>✨ {t('footerMessage')} ✨</p>
+        <p>{t('footerMessage')}</p>
       </footer>
     </div>
   );

@@ -1,6 +1,5 @@
 // ============================================
 // Result Page
-// 타로 리딩 결과 페이지
 // ============================================
 
 import { useState, useEffect, useRef } from 'react';
@@ -8,7 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import html2canvas from 'html2canvas';
 import TarotCard from '../components/TarotCard';
-import LanguageSelector from '../components/LanguageSelector';
+import Navbar from '../components/Navbar';
 import { useLanguage } from '../i18n/LanguageContext';
 import { generateTarotReading } from '../services/groqService';
 import '../styles/Result.css';
@@ -48,47 +47,31 @@ const Result = () => {
     setIsLoading(false);
   };
 
-  // 핵심 메시지 추출
   const extractKeyMessage = () => {
     if (!aiReading) return '';
-    
-    const patterns = [
-      /## ✨.*?\n([\s\S]*?)(?=\n##|$)/,
-      /## 🎯.*?\n([\s\S]*?)(?=\n##|$)/,
-    ];
-    
-    const maxLength = 50;
-    
+    const patterns = [/## ✨.*?\n([\s\S]*?)(?=\n##|$)/, /## 🎯.*?\n([\s\S]*?)(?=\n##|$)/];
     for (const pattern of patterns) {
       const match = aiReading.match(pattern);
       if (match) {
         const text = match[1].trim().replace(/\*\*/g, '').replace(/\n/g, ' ');
-        return text.length > maxLength ? text.substring(0, maxLength - 3) + '...' : text;
+        return text.length > 40 ? text.substring(0, 37) + '...' : text;
       }
     }
-    
-    const firstParagraph = aiReading.split('\n').find(line => 
-      line.trim() && !line.startsWith('#') && !line.startsWith('-')
-    );
-    const text = firstParagraph?.replace(/\*\*/g, '') || '';
-    return text.length > maxLength ? text.substring(0, maxLength - 3) + '...' : text;
+    return '';
   };
 
-  // 이미지 저장
   const handleSaveImage = async () => {
     if (!shareCardRef.current) return;
-    
     setIsGeneratingImage(true);
-    
     await new Promise(resolve => setTimeout(resolve, 100));
     
     try {
       const canvas = await html2canvas(shareCardRef.current, {
-        backgroundColor: '#0a0a1a',
+        backgroundColor: '#0c0c14',
         scale: 2,
         logging: false,
+        useCORS: true,
       });
-      
       const link = document.createElement('a');
       link.download = `tarotaro-${Date.now()}.png`;
       link.href = canvas.toDataURL('image/png');
@@ -96,11 +79,9 @@ const Result = () => {
     } catch (err) {
       console.error('Image generation failed:', err);
     }
-    
     setIsGeneratingImage(false);
   };
 
-  // 텍스트 복사
   const handleCopyText = () => {
     const text = `🔮 TaroTaro\n\n${question ? `Q: ${question}\n\n` : ''}${extractKeyMessage()}\n\n👉 www.tarotaro.co.kr`;
     navigator.clipboard.writeText(text);
@@ -111,15 +92,12 @@ const Result = () => {
     return (
       <div className="result">
         <div className="stars"></div>
+        <Navbar />
         <div className="result-error">
           <p>{t('cannotLoad')}</p>
-          <motion.button 
-            className="action-button"
-            onClick={() => navigate('/')}
-            whileHover={{ scale: 1.03 }}
-          >
+          <button className="btn btn-primary" onClick={() => navigate('/')}>
             {t('backToHome')}
-          </motion.button>
+          </button>
         </div>
       </div>
     );
@@ -139,212 +117,124 @@ const Result = () => {
 
   const parseMarkdown = (text) => {
     if (!text) return '';
-    
-    return text
-      .split('\n')
-      .map((line, index) => {
-        if (line.startsWith('## ')) {
-          return (
-            <h3 key={index} className="ai-heading">
-              {line.replace('## ', '')}
-            </h3>
-          );
-        }
-        if (line.startsWith('### ')) {
-          return (
-            <h4 key={index} className="ai-subheading">
-              {line.replace('### ', '')}
-            </h4>
-          );
-        }
-        
-        if (line.startsWith('- ')) {
-          const content = line.replace('- ', '');
-          return (
-            <li key={index} className="ai-list-item">
-              {parseBold(content)}
-            </li>
-          );
-        }
-        
-        if (line.trim() === '') {
-          return <div key={index} className="ai-spacer" />;
-        }
-        
-        return (
-          <p key={index} className="ai-paragraph">
-            {parseBold(line)}
-          </p>
-        );
-      });
+    return text.split('\n').map((line, index) => {
+      if (line.startsWith('## ')) return <h3 key={index} className="md-h2">{line.replace('## ', '')}</h3>;
+      if (line.startsWith('### ')) return <h4 key={index} className="md-h3">{line.replace('### ', '')}</h4>;
+      if (line.startsWith('- ')) return <li key={index} className="md-li">{parseBold(line.replace('- ', ''))}</li>;
+      if (line.trim() === '') return <div key={index} className="md-space" />;
+      return <p key={index} className="md-p">{parseBold(line)}</p>;
+    });
   };
 
   const parseBold = (text) => {
     const parts = text.split(/\*\*(.*?)\*\*/g);
-    return parts.map((part, i) => 
-      i % 2 === 1 ? <strong key={i}>{part}</strong> : part
-    );
+    return parts.map((part, i) => i % 2 === 1 ? <strong key={i}>{part}</strong> : part);
   };
 
   return (
     <div className="result">
       <div className="stars"></div>
+      <Navbar title={getSpreadName()} showBack />
       
-      <div className="result-top-bar">
-        <motion.button 
-          className="back-button"
-          onClick={() => navigate('/')}
-          whileHover={{ scale: 1.05 }}
-        >
-          ←
-        </motion.button>
-        <span className="top-bar-title">{getSpreadName()}</span>
-        <LanguageSelector />
-      </div>
-      
-      <main className="result-main">
+      <main className="result-content">
         {question && (
-          <motion.div 
-            className="question-box"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <p>"{question}"</p>
+          <motion.div className="result-question" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            "{question}"
           </motion.div>
         )}
 
-        {/* 카드 미리보기 - 클릭하면 크게 보기 */}
+        {/* 카드 */}
         <motion.div 
-          className={`cards-overview cards-count-${cards.length}`}
+          className={`result-cards cards-${cards.length}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.1 }}
         >
           {cards.map((card, index) => (
             <motion.div 
               key={card.id} 
-              className="card-item clickable"
+              className="result-card-item"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 + index * 0.05 }}
+              transition={{ delay: index * 0.05 }}
               onClick={() => setSelectedCard(card)}
             >
               <TarotCard card={card} isRevealed={true} size="small" />
-              <span className="card-position">{card.position.name}</span>
+              <span className="result-card-label">{card.position.name}</span>
             </motion.div>
           ))}
         </motion.div>
-        <p className="card-hint">{t('clickToEnlarge')}</p>
+        <p className="card-tap-hint">{t('clickToEnlarge')}</p>
 
-        {/* AI 해석 결과 */}
-        <motion.section 
-          className="reading-content"
+        {/* AI 해석 */}
+        <motion.div 
+          className="result-reading"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
           {isLoading && (
-            <div className="loading-state">
+            <div className="loading">
               <div className="loading-spinner"></div>
-              <p className="loading-text">{t('aiAnalyzing')}</p>
+              <p>{t('aiAnalyzing')}</p>
             </div>
           )}
 
           {error && (
-            <div className="error-state">
-              <p className="error-text">❌ {error}</p>
-              <motion.button
-                className="retry-button"
-                onClick={fetchAiReading}
-                whileHover={{ scale: 1.02 }}
-              >
-                {t('retry')}
-              </motion.button>
+            <div className="error">
+              <p>❌ {error}</p>
+              <button className="btn btn-secondary" onClick={fetchAiReading}>{t('retry')}</button>
             </div>
           )}
 
           {aiReading && !isLoading && (
-            <motion.div 
-              className="ai-reading"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              {parseMarkdown(aiReading)}
-            </motion.div>
+            <div className="reading-text">{parseMarkdown(aiReading)}</div>
           )}
-        </motion.section>
+        </motion.div>
 
-        {/* 하단 버튼들 */}
+        {/* 버튼들 */}
         {aiReading && !isLoading && (
           <motion.div 
-            className="result-actions"
+            className="result-buttons"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
           >
-            <motion.button 
-              className="action-btn share"
-              onClick={() => setShowShareModal(true)}
-              whileHover={{ scale: 1.02 }}
-            >
+            <button className="btn btn-primary" onClick={() => setShowShareModal(true)}>
               📤 {t('shareResult')}
-            </motion.button>
-            
-            <motion.button 
-              className="action-btn secondary"
-              onClick={() => navigate(`/reading/${getSpreadKey()}`)}
-              whileHover={{ scale: 1.02 }}
-            >
-              🔄 {t('drawAgain')}
-            </motion.button>
-            
-            <motion.button 
-              className="action-btn secondary"
-              onClick={() => navigate('/')}
-              whileHover={{ scale: 1.02 }}
-            >
-              🏠 {t('backToHome')}
-            </motion.button>
+            </button>
+            <button className="btn btn-secondary" onClick={() => navigate(`/reading/${getSpreadKey()}`)}>
+              {t('drawAgain')}
+            </button>
           </motion.div>
         )}
 
-        <p className="disclaimer">
-          {t('disclaimer')}
-        </p>
+        <p className="disclaimer">{t('disclaimer')}</p>
       </main>
 
-      {/* 카드 상세보기 모달 */}
+      {/* 카드 상세 모달 */}
       <AnimatePresence>
         {selectedCard && (
           <motion.div 
-            className="card-modal-overlay"
+            className="modal-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedCard(null)}
           >
             <motion.div 
-              className="card-modal"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
+              className="card-detail-modal"
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
               onClick={e => e.stopPropagation()}
             >
-              <button className="close-modal" onClick={() => setSelectedCard(null)}>×</button>
-              
-              <div className="card-modal-content">
-                <div className={`card-modal-image ${selectedCard.isReversed ? 'reversed' : ''}`}>
-                  <img src={selectedCard.image} alt={selectedCard.name.ko} />
-                </div>
-                
-                <div className="card-modal-info">
-                  <h3>{selectedCard.name.ko || selectedCard.name.en}</h3>
-                  <p className="card-modal-position">{selectedCard.position.name}</p>
-                  {selectedCard.isReversed && (
-                    <span className="reversed-tag">{t('reversed')}</span>
-                  )}
-                  <p className="card-modal-desc">{selectedCard.position.description}</p>
-                </div>
+              <button className="modal-close" onClick={() => setSelectedCard(null)}>×</button>
+              <div className={`card-detail-img ${selectedCard.isReversed ? 'reversed' : ''}`}>
+                <img src={selectedCard.image} alt={selectedCard.name.ko} />
+              </div>
+              <div className="card-detail-info">
+                <h3>{selectedCard.name.ko || selectedCard.name.en}</h3>
+                <p className="card-detail-position">{selectedCard.position.name}</p>
+                {selectedCard.isReversed && <span className="reversed-badge">{t('reversed')}</span>}
               </div>
             </motion.div>
           </motion.div>
@@ -355,7 +245,7 @@ const Result = () => {
       <AnimatePresence>
         {showShareModal && (
           <motion.div 
-            className="share-modal-overlay"
+            className="modal-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -363,125 +253,45 @@ const Result = () => {
           >
             <motion.div 
               className="share-modal"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
               onClick={e => e.stopPropagation()}
             >
-              <button className="close-modal" onClick={() => setShowShareModal(false)}>×</button>
+              <button className="modal-close" onClick={() => setShowShareModal(false)}>×</button>
               
-              {/* 공유용 카드 */}
-              <div 
-                ref={shareCardRef}
-                style={{
-                  width: '300px',
-                  background: 'linear-gradient(145deg, #1a1a3a, #0a0a1a)',
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  border: '1px solid rgba(212, 175, 55, 0.3)',
-                  marginBottom: '16px',
-                }}
-              >
-                <div style={{
-                  background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(212, 175, 55, 0.2))',
-                  padding: '14px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                }}>
-                  <span style={{ fontSize: '22px' }}>🔮</span>
-                  <span style={{
-                    fontSize: '18px',
-                    fontWeight: '700',
-                    color: '#d4af37',
-                  }}>TaroTaro</span>
+              {/* 공유용 이미지 - 카드 이미지 포함 */}
+              <div ref={shareCardRef} className="share-card">
+                <div className="share-header">
+                  <span>🔮</span>
+                  <span>TaroTaro</span>
                 </div>
-                
-                <div style={{ padding: '16px', textAlign: 'center' }}>
-                  <p style={{
-                    fontSize: '11px',
-                    color: '#a78bfa',
-                    marginBottom: '6px',
-                  }}>{getSpreadName()}</p>
+                <div className="share-body">
+                  <p className="share-spread">{getSpreadName()}</p>
+                  {question && <p className="share-question">"{question}"</p>}
                   
-                  {question && (
-                    <p style={{
-                      fontStyle: 'italic',
-                      color: '#c4b5fd',
-                      fontSize: '12px',
-                      marginBottom: '10px',
-                    }}>"{question}"</p>
-                  )}
-                  
-                  <div style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center',
-                    gap: '4px',
-                    marginBottom: '12px',
-                  }}>
+                  {/* 카드 이미지들 */}
+                  <div className="share-cards-row">
                     {cards.slice(0, 3).map((card, i) => (
-                      <span key={i} style={{
-                        background: 'rgba(212, 175, 55, 0.15)',
-                        color: '#d4af37',
-                        padding: '3px 7px',
-                        borderRadius: '8px',
-                        fontSize: '10px',
-                        border: '1px solid rgba(212, 175, 55, 0.3)',
-                      }}>
-                        {card.name.ko || card.name.en}
-                      </span>
+                      <div key={i} className={`share-card-img ${card.isReversed ? 'reversed' : ''}`}>
+                        <img src={card.image} alt="" crossOrigin="anonymous" />
+                      </div>
                     ))}
-                    {cards.length > 3 && (
-                      <span style={{
-                        background: 'rgba(139, 92, 246, 0.15)',
-                        color: '#a78bfa',
-                        padding: '3px 7px',
-                        borderRadius: '8px',
-                        fontSize: '10px',
-                      }}>+{cards.length - 3}</span>
-                    )}
                   </div>
+                  {cards.length > 3 && <p className="share-more">+{cards.length - 3} more</p>}
                   
-                  <p style={{
-                    color: '#e2e8f0',
-                    fontSize: '12px',
-                    lineHeight: '1.5',
-                  }}>✨ {extractKeyMessage()}</p>
+                  <p className="share-message">✨ {extractKeyMessage()}</p>
                 </div>
-                
-                <div style={{
-                  background: 'rgba(0, 0, 0, 0.4)',
-                  padding: '10px',
-                  textAlign: 'center',
-                }}>
-                  <span style={{
-                    fontSize: '10px',
-                    color: '#94a3b8',
-                  }}>www.tarotaro.co.kr</span>
-                </div>
+                <div className="share-footer">www.tarotaro.co.kr</div>
               </div>
 
-              <div className="share-actions">
+              <div className="share-buttons">
                 {isGeneratingImage ? (
-                  <p className="generating-text">{t('generatingImage')}...</p>
+                  <p className="generating">{t('generatingImage')}...</p>
                 ) : (
                   <>
-                    <motion.button 
-                      className="share-action-btn"
-                      onClick={handleSaveImage}
-                      whileHover={{ scale: 1.02 }}
-                    >
-                      📥 {t('saveImage')}
-                    </motion.button>
-                    <motion.button 
-                      className="share-action-btn secondary"
-                      onClick={handleCopyText}
-                      whileHover={{ scale: 1.02 }}
-                    >
-                      📋 {t('copyText')}
-                    </motion.button>
+                    <button className="btn btn-primary" onClick={handleSaveImage}>📥 {t('saveImage')}</button>
+                    <button className="btn btn-secondary" onClick={handleCopyText}>📋 {t('copyText')}</button>
                   </>
                 )}
               </div>

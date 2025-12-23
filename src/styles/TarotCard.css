@@ -1,33 +1,32 @@
-/* 타로 카드 컴포넌트 */
+/* 타로 카드 */
 .tarot-card {
   perspective: 1000px;
   cursor: pointer;
   position: relative;
 }
 
-/* 사이즈 */
 .tarot-card.small {
-  width: clamp(55px, 10vw, 80px);
+  width: clamp(50px, 10vw, 70px);
 }
 
 .tarot-card.normal {
-  width: clamp(90px, 16vw, 120px);
+  width: clamp(80px, 15vw, 110px);
 }
 
 .tarot-card.large {
-  width: clamp(120px, 22vw, 160px);
+  width: clamp(110px, 20vw, 150px);
 }
 
 .tarot-card::before {
   content: '';
   display: block;
-  padding-top: 154%; /* 2:3 비율 */
+  padding-top: 154%;
 }
 
 .card-inner {
   position: absolute;
   inset: 0;
-  transition: transform 0.6s ease;
+  transition: transform 0.5s ease;
   transform-style: preserve-3d;
 }
 
@@ -39,20 +38,17 @@
   transform: rotateY(180deg) rotate(180deg);
 }
 
-/* 앞뒤면 공통 */
 .card-front,
 .card-back {
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
-  border-radius: 6px;
+  border-radius: 5px;
   overflow: hidden;
-  box-shadow: 
-    0 4px 15px rgba(0, 0, 0, 0.3),
-    0 0 0 1.5px var(--color-accent-gold);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--color-accent-gold);
 }
 
-/* 앞면 */
 .card-front {
   transform: rotateY(180deg);
   background: #000;
@@ -64,41 +60,26 @@
   object-fit: cover;
 }
 
-/* 뒷면 */
 .card-back {
-  background: linear-gradient(145deg, #1a1a4a 0%, #0a0a2a 100%);
+  background: linear-gradient(145deg, #1c1c2e, #0c0c14);
 }
 
 .card-back-design {
   position: absolute;
-  inset: 5px;
+  inset: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1.5px solid rgba(212, 175, 55, 0.25);
-  border-radius: 4px;
+  border: 1px solid rgba(201, 162, 39, 0.2);
+  border-radius: 3px;
 }
 
 .card-back-design span {
-  font-size: clamp(1rem, 3vw, 1.8rem);
+  font-size: clamp(0.8rem, 2.5vw, 1.5rem);
   color: var(--color-accent-gold);
-  opacity: 0.8;
+  opacity: 0.6;
 }
 
-/* 호버 효과 */
 .tarot-card:not(.flipped):hover .card-back {
-  box-shadow: 
-    0 8px 25px rgba(0, 0, 0, 0.4),
-    0 0 0 2px var(--color-accent-purple),
-    0 0 15px rgba(139, 92, 246, 0.2);
-}
-
-.tarot-card.small .card-back-design {
-  inset: 3px;
-}
-
-@media (max-width: 400px) {
-  .tarot-card.small {
-    width: clamp(45px, 9vw, 60px);
-  }
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 10px rgba(124, 92, 191, 0.2);
 }

@@ -4,117 +4,93 @@
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  position: relative;
 }
 
-/* 언어 선택기 위치 */
-.language-wrapper {
-  position: fixed;
-  top: var(--spacing-md);
-  right: var(--spacing-md);
-  z-index: 100;
-}
-
-.home-main {
+.home-content {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: var(--spacing-xl) var(--spacing-md);
+  padding: calc(60px + var(--spacing-xl)) var(--spacing-md) var(--spacing-xl);
   position: relative;
   z-index: 1;
-  gap: var(--spacing-2xl);
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-/* 헤더 */
-.home-header {
+/* 히어로 섹션 */
+.home-hero {
   text-align: center;
+  margin-bottom: var(--spacing-2xl);
 }
 
-.logo {
-  font-size: clamp(2.5rem, 10vw, 4rem);
+.hero-icon {
+  font-size: 3rem;
   margin-bottom: var(--spacing-md);
-  filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.4));
+  filter: drop-shadow(0 0 20px rgba(201, 162, 39, 0.4));
 }
 
-.title {
-  font-family: var(--font-body);
-  font-size: clamp(1.8rem, 10vw, 2.8rem);
-  font-weight: 700;
+.hero-title {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--color-accent-gold);
   letter-spacing: 0.1em;
-  background: var(--gradient-gold);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   margin-bottom: var(--spacing-sm);
 }
 
-.subtitle {
-  font-size: clamp(0.85rem, 3vw, 1rem);
+.hero-subtitle {
+  font-size: 0.9rem;
   color: var(--color-text-secondary);
-  letter-spacing: 0.1em;
-}
-
-/* 스프레드 섹션 */
-.spread-section {
-  width: 100%;
-  max-width: 500px;
+  letter-spacing: 0.05em;
 }
 
 /* 스프레드 리스트 */
 .spread-list {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
 }
 
-/* 스프레드 카드 */
 .spread-card {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
-
-.spread-card-content {
-  background: var(--gradient-card);
-  border: 1px solid var(--color-border);
-  border-radius: 14px;
-  padding: var(--spacing-lg);
-  transition: all 0.3s ease;
-}
-
-.spread-card-content:hover {
-  border-color: var(--color-accent-gold);
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.15);
-}
-
-.spread-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--spacing-sm);
+  background: var(--gradient-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: var(--spacing-lg) var(--spacing-md);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
 }
 
-.spread-name {
-  font-family: var(--font-body);
-  font-size: 1.1rem;
+.spread-card:hover {
+  border-color: var(--color-accent-gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+.spread-info h3 {
+  font-size: 1rem;
   font-weight: 600;
-  color: var(--color-accent-gold);
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+
+.spread-info p {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  line-height: 1.4;
 }
 
 .spread-count {
-  font-size: 0.8rem;
-  color: var(--color-accent-purple-light);
-  padding: 3px 10px;
-  background: rgba(139, 92, 246, 0.12);
-  border-radius: 15px;
-}
-
-.spread-desc {
-  font-size: 0.85rem;
-  color: var(--color-text-secondary);
-  line-height: 1.5;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--color-accent-gold);
+  opacity: 0.8;
 }
 
 /* 푸터 */
@@ -126,28 +102,22 @@
 }
 
 .home-footer p {
-  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  font-size: 0.7rem;
   color: var(--color-text-muted);
+  letter-spacing: 0.02em;
 }
 
-/* 모바일 최적화 */
-@media (max-width: 600px) {
-  .home-main {
-    padding: var(--spacing-lg) var(--spacing-md);
-    gap: var(--spacing-xl);
-    justify-content: flex-start;
-    padding-top: 12vh;
+/* 반응형 */
+@media (max-width: 480px) {
+  .home-content {
+    padding-top: calc(50px + var(--spacing-lg));
   }
   
-  .spread-card-content {
-    padding: var(--spacing-md);
+  .hero-title {
+    font-size: 1.8rem;
   }
   
-  .spread-name {
-    font-size: 1rem;
-  }
-  
-  .spread-desc {
-    font-size: 0.8rem;
+  .hero-icon {
+    font-size: 2.5rem;
   }
 }
