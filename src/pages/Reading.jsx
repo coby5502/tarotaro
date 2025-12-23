@@ -20,6 +20,7 @@ const Reading = () => {
   const [selectedCardIds, setSelectedCardIds] = useState([]);
   const [selectedCards, setSelectedCards] = useState([]);
   const [revealedCount, setRevealedCount] = useState(0);
+  const [lastSelectedIndex, setLastSelectedIndex] = useState(null);
   
   // API 프리로딩 상태
   const [aiReading, setAiReading] = useState(null);
@@ -30,12 +31,6 @@ const Reading = () => {
   const shuffleDeck = useMemo(() => {
     return [...fullDeck].sort(() => Math.random() - 0.5);
   }, []);
-
-  const getSpreadName = () => {
-    if (spreadType === 'oneCard') return t('oneCard');
-    if (spreadType === 'threeCard') return t('threeCard');
-    return t('celticCross');
-  };
 
   const getFinalQuestion = () => {
     return question.trim() || t('defaultQuestion');
@@ -80,12 +75,14 @@ const Reading = () => {
     setTimeout(() => {
       setShuffledDeck(shuffleDeck);
       setPhase('selecting');
-    }, 1200);
+    }, 2000);
   };
 
-  const selectCard = (card) => {
+  const selectCard = (card, index) => {
     if (selectedCards.length >= spread.cardCount) return;
     if (selectedCardIds.includes(card.id)) return;
+
+    setLastSelectedIndex(index);
 
     const drawnCard = {
       ...card,
@@ -97,7 +94,7 @@ const Reading = () => {
     setSelectedCards(prev => [...prev, drawnCard]);
 
     if (selectedCards.length + 1 === spread.cardCount) {
-      setTimeout(() => setPhase('revealing'), 400);
+      setTimeout(() => setPhase('revealing'), 600);
     }
   };
 
@@ -112,7 +109,6 @@ const Reading = () => {
   };
 
   const goToResult = () => {
-    // 결과가 있으면 바로 이동
     navigate('/result', { 
       state: { 
         cards: selectedCards, 
@@ -127,6 +123,7 @@ const Reading = () => {
   if (!spread) return null;
 
   const allRevealed = revealedCount === selectedCards.length && selectedCards.length > 0;
+  const totalCards = shuffledDeck.length;
 
   return (
     <div className="reading">
@@ -140,10 +137,20 @@ const Reading = () => {
             <motion.div 
               className="phase question-phase"
               key="question"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
             >
+              <motion.div 
+                className="question-icon"
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  rotate: [0, 5, -5, 0]
+                }}
+                transition={{ duration: 3, repeat: Infinity }}
+              >
+                🔮
+              </motion.div>
               <p className="phase-hint">{t('enterQuestion')}</p>
               
               <textarea
@@ -154,13 +161,18 @@ const Reading = () => {
                 rows={2}
               />
               
-              <button className="btn btn-primary" onClick={startShuffle}>
+              <motion.button 
+                className="btn btn-primary btn-glow"
+                onClick={startShuffle}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 {t('startReading')}
-              </button>
+              </motion.button>
             </motion.div>
           )}
 
-          {/* 셔플 */}
+          {/* 셔플 - 화려한 애니메이션 */}
           {phase === 'shuffling' && (
             <motion.div 
               className="phase shuffle-phase"
@@ -169,68 +181,138 @@ const Reading = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <div className="shuffle-animation">
-                {[...Array(3)].map((_, i) => (
+              <div className="shuffle-container">
+                {[...Array(7)].map((_, i) => (
                   <motion.div
                     key={i}
                     className="shuffle-card"
+                    initial={{ 
+                      x: 0, 
+                      y: 0, 
+                      rotateZ: 0,
+                      rotateY: 0 
+                    }}
                     animate={{
-                      x: [0, -30, 30, 0],
-                      rotateZ: [0, -5, 5, 0],
+                      x: [0, (i - 3) * 40, 0, (3 - i) * 40, 0],
+                      y: [0, -20, 0, -20, 0],
+                      rotateZ: [0, (i - 3) * 5, 0, (3 - i) * 5, 0],
+                      rotateY: [0, 180, 360, 180, 0],
                     }}
                     transition={{
-                      duration: 0.6,
+                      duration: 1.5,
                       repeat: 1,
-                      delay: i * 0.05,
+                      delay: i * 0.03,
+                      ease: "easeInOut"
                     }}
+                    style={{ zIndex: 7 - i }}
                   />
                 ))}
               </div>
-              <p className="shuffle-text">{t('shuffling')}</p>
+              <motion.p 
+                className="shuffle-text"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                {t('shuffling')}
+              </motion.p>
             </motion.div>
           )}
 
-          {/* 카드 선택 */}
+          {/* 카드 선택 - 부채꼴 배치 */}
           {phase === 'selecting' && (
             <motion.div 
               className="phase selecting-phase"
               key="selecting"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              exit={{ opacity: 0, scale: 0.9 }}
             >
-              <p className="phase-hint">
-                {t('selectCard')} <strong>{selectedCards.length}/{spread.cardCount}</strong>
-              </p>
-
               {/* 선택된 카드 슬롯 */}
               <div className="selected-slots">
                 {spread.positions.map((pos, i) => {
                   const card = selectedCards[i];
+                  const isJustSelected = selectedCards.length - 1 === i && lastSelectedIndex !== null;
                   return (
-                    <div key={i} className={`slot ${card ? 'filled' : ''}`}>
-                      {card ? <span className="slot-icon">✦</span> : <span className="slot-num">{i + 1}</span>}
+                    <motion.div 
+                      key={i} 
+                      className={`slot ${card ? 'filled' : ''}`}
+                      initial={isJustSelected ? { scale: 0, rotateY: 180 } : false}
+                      animate={isJustSelected ? { scale: 1, rotateY: 0 } : {}}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    >
+                      {card ? (
+                        <motion.span 
+                          className="slot-icon"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: "spring", stiffness: 500 }}
+                        >
+                          ✦
+                        </motion.span>
+                      ) : (
+                        <span className="slot-num">{i + 1}</span>
+                      )}
                       <span className="slot-name">{pos.name}</span>
-                    </div>
+                    </motion.div>
                   );
                 })}
               </div>
 
-              {/* 카드 덱 */}
-              <div className="card-deck">
-                {shuffledDeck.map((card) => {
-                  const isSelected = selectedCardIds.includes(card.id);
-                  return (
-                    <button
-                      key={card.id}
-                      className={`deck-card ${isSelected ? 'selected' : ''}`}
-                      onClick={() => !isSelected && selectCard(card)}
-                      disabled={isSelected || selectedCards.length >= spread.cardCount}
-                    >
-                      <span>✦</span>
-                    </button>
-                  );
-                })}
+              <p className="phase-hint">
+                {t('selectCard')} <strong>{selectedCards.length}/{spread.cardCount}</strong>
+              </p>
+
+              {/* 카드 덱 - 부채꼴 */}
+              <div className="fan-deck-container">
+                <div className="fan-deck">
+                  {shuffledDeck.map((card, index) => {
+                    const isSelected = selectedCardIds.includes(card.id);
+                    const angle = ((index - totalCards / 2) / totalCards) * 60;
+                    const radius = 280;
+                    const x = Math.sin(angle * Math.PI / 180) * radius;
+                    const y = -Math.cos(angle * Math.PI / 180) * radius + radius;
+                    
+                    return (
+                      <motion.button
+                        key={card.id}
+                        className={`fan-card ${isSelected ? 'selected' : ''}`}
+                        onClick={() => !isSelected && selectCard(card, index)}
+                        disabled={isSelected || selectedCards.length >= spread.cardCount}
+                        initial={{ 
+                          x: 0, 
+                          y: 200, 
+                          rotate: 0,
+                          opacity: 0 
+                        }}
+                        animate={{ 
+                          x: x,
+                          y: y,
+                          rotate: angle,
+                          opacity: isSelected ? 0 : 1,
+                          scale: isSelected ? 0.5 : 1,
+                        }}
+                        whileHover={!isSelected ? { 
+                          y: y - 30,
+                          scale: 1.15,
+                          zIndex: 100,
+                          transition: { duration: 0.2 }
+                        } : {}}
+                        transition={{ 
+                          duration: 0.5, 
+                          delay: index * 0.01,
+                          type: "spring",
+                          stiffness: 100
+                        }}
+                        style={{ 
+                          zIndex: isSelected ? 0 : totalCards - Math.abs(index - totalCards / 2),
+                          transformOrigin: 'bottom center'
+                        }}
+                      >
+                        <span className="card-symbol">✦</span>
+                      </motion.button>
+                    );
+                  })}
+                </div>
               </div>
             </motion.div>
           )}
@@ -240,15 +322,21 @@ const Reading = () => {
             <motion.div 
               className="phase revealing-phase"
               key="revealing"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
             >
               <p className="phase-hint">{t('tapToReveal')}</p>
               
               <div className={`reveal-grid grid-${spread.cardCount}`}>
                 {selectedCards.map((card, index) => (
-                  <div key={card.id} className="reveal-item">
+                  <motion.div 
+                    key={card.id} 
+                    className="reveal-item"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
                     <TarotCard
                       card={card}
                       isRevealed={index < revealedCount}
@@ -256,7 +344,7 @@ const Reading = () => {
                       size="small"
                     />
                     <span className="reveal-label">{card.position.name}</span>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
               
@@ -264,26 +352,33 @@ const Reading = () => {
               {allRevealed && isLoadingAI && (
                 <motion.div 
                   className="preload-status"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
                 >
                   <span className="preload-spinner"></span>
                   <span>{t('aiAnalyzing')}</span>
                 </motion.div>
               )}
               
-              {/* 버튼 - 항상 카드 아래에 고정 */}
+              {/* 버튼 */}
               <div className="reveal-actions">
                 {!allRevealed ? (
-                  <button className="btn btn-primary" onClick={revealAll}>
-                    {t('revealAll')}
-                  </button>
-                ) : (
                   <motion.button 
                     className="btn btn-primary"
+                    onClick={revealAll}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {t('revealAll')}
+                  </motion.button>
+                ) : (
+                  <motion.button 
+                    className="btn btn-primary btn-glow"
                     onClick={goToResult}
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     {t('seeResult')}
                   </motion.button>

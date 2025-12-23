@@ -2,19 +2,19 @@
 .reading {
   min-height: 100vh;
   min-height: 100dvh;
+  overflow: hidden;
 }
 
 .reading-content {
   min-height: calc(100vh - 60px);
   min-height: calc(100dvh - 60px);
-  padding: calc(60px + var(--spacing-lg)) var(--spacing-md) var(--spacing-xl);
+  padding: calc(60px + var(--spacing-md)) var(--spacing-md) var(--spacing-md);
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   position: relative;
   z-index: 1;
-  max-width: 900px;
-  margin: 0 auto;
 }
 
 /* 공통 페이즈 */
@@ -27,25 +27,34 @@
 }
 
 .phase-hint {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--color-text-secondary);
   text-align: center;
 }
 
 .phase-hint strong {
   color: var(--color-accent-gold);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
 /* 질문 입력 */
+.question-phase {
+  max-width: 500px;
+}
+
+.question-icon {
+  font-size: 4rem;
+  margin-bottom: var(--spacing-md);
+  filter: drop-shadow(0 0 30px rgba(201, 162, 39, 0.5));
+}
+
 .question-input {
   width: 100%;
-  max-width: 500px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: var(--spacing-md);
-  font-size: 1.05rem;
+  font-size: 1rem;
   color: var(--color-text-primary);
   font-family: var(--font-body);
   resize: none;
@@ -55,37 +64,67 @@
 .question-input:focus {
   outline: none;
   border-color: var(--color-accent-gold);
+  box-shadow: 0 0 20px rgba(201, 162, 39, 0.2);
 }
 
 .question-input::placeholder {
   color: var(--color-text-muted);
 }
 
-/* 셔플 */
-.shuffle-phase {
-  justify-content: center;
-  min-height: 350px;
+.btn-glow {
+  box-shadow: 0 0 20px rgba(201, 162, 39, 0.4);
 }
 
-.shuffle-animation {
+.btn-glow:hover {
+  box-shadow: 0 0 30px rgba(201, 162, 39, 0.6);
+}
+
+/* 셔플 애니메이션 */
+.shuffle-phase {
+  justify-content: center;
+  min-height: 400px;
+}
+
+.shuffle-container {
   position: relative;
-  width: 70px;
-  height: 100px;
+  width: 100px;
+  height: 140px;
+  perspective: 1000px;
 }
 
 .shuffle-card {
   position: absolute;
   width: 70px;
   height: 100px;
-  background: linear-gradient(145deg, #1c1c2e, #141420);
+  left: 50%;
+  top: 50%;
+  margin-left: -35px;
+  margin-top: -50px;
+  background: linear-gradient(145deg, #252540, #1a1a30);
   border: 2px solid var(--color-accent-gold);
-  border-radius: 6px;
+  border-radius: 8px;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.4),
+    inset 0 0 20px rgba(201, 162, 39, 0.1);
+}
+
+.shuffle-card::after {
+  content: '✦';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent-gold);
+  font-size: 1.2rem;
+  opacity: 0.6;
 }
 
 .shuffle-text {
-  color: var(--color-text-muted);
+  color: var(--color-accent-purple-light);
   font-size: 1rem;
   margin-top: var(--spacing-xl);
+  letter-spacing: 0.1em;
 }
 
 /* 선택된 카드 슬롯 */
@@ -93,11 +132,11 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 10px;
-  padding: var(--spacing-md);
-  background: rgba(0, 0, 0, 0.25);
-  border-radius: 14px;
-  margin-bottom: var(--spacing-lg);
+  gap: 8px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
 }
 
 .slot {
@@ -109,79 +148,94 @@
 
 .slot-icon,
 .slot-num {
-  width: 44px;
-  height: 66px;
+  width: 36px;
+  height: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
-  font-size: 0.85rem;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  transition: all 0.3s;
 }
 
 .slot-num {
-  border: 2px dashed rgba(255, 255, 255, 0.15);
+  border: 2px dashed rgba(255, 255, 255, 0.1);
   color: var(--color-text-muted);
 }
 
 .slot-icon {
-  background: linear-gradient(145deg, #1c1c2e, #141420);
+  background: linear-gradient(145deg, #252540, #1a1a30);
   border: 2px solid var(--color-accent-gold);
   color: var(--color-accent-gold);
-  font-size: 1rem;
+  box-shadow: 0 0 15px rgba(201, 162, 39, 0.3);
 }
 
 .slot-name {
-  font-size: 0.65rem;
+  font-size: 0.55rem;
   color: var(--color-text-muted);
-  max-width: 50px;
+  max-width: 45px;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* 카드 덱 */
-.card-deck {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
-  gap: 6px;
+/* 부채꼴 카드 덱 */
+.fan-deck-container {
   width: 100%;
-  max-width: 700px;
-  padding: var(--spacing-md);
-  background: rgba(0, 0, 0, 0.25);
-  border-radius: 14px;
+  height: 320px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  overflow: hidden;
 }
 
-.deck-card {
-  aspect-ratio: 2/3;
-  background: linear-gradient(145deg, #1c1c2e, #141420);
+.fan-deck {
+  position: relative;
+  width: 100px;
+  height: 280px;
+}
+
+.fan-card {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 50px;
+  height: 75px;
+  margin-left: -25px;
+  background: linear-gradient(145deg, #252540, #1a1a30);
   border: 1.5px solid var(--color-accent-gold);
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-accent-gold);
-  font-size: 0.75rem;
-  transition: all 0.2s;
-  padding: 0;
+  box-shadow: 
+    0 2px 10px rgba(0, 0, 0, 0.3),
+    inset 0 0 15px rgba(201, 162, 39, 0.05);
+  transition: box-shadow 0.2s;
 }
 
-.deck-card:hover:not(.selected):not(:disabled) {
-  transform: scale(1.15);
+.fan-card:hover:not(.selected):not(:disabled) {
   border-color: var(--color-accent-purple);
-  box-shadow: 0 0 15px rgba(124, 92, 191, 0.4);
-  z-index: 1;
+  box-shadow: 
+    0 0 25px rgba(124, 92, 191, 0.5),
+    0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
-.deck-card.selected {
-  opacity: 0.15;
-  border-color: transparent;
-  cursor: default;
+.fan-card .card-symbol {
+  color: var(--color-accent-gold);
+  font-size: 0.9rem;
+  opacity: 0.7;
 }
 
-.deck-card:disabled:not(.selected) {
-  opacity: 0.4;
+.fan-card.selected {
+  pointer-events: none;
+}
+
+.fan-card:disabled:not(.selected) {
+  opacity: 0.3;
   cursor: not-allowed;
 }
 
@@ -196,7 +250,7 @@
   border: 1px solid rgba(124, 92, 191, 0.3);
   border-radius: 10px;
   color: var(--color-accent-purple-light);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   margin-bottom: var(--spacing-sm);
 }
 
@@ -214,49 +268,54 @@
 }
 
 /* 카드 공개 */
+.revealing-phase {
+  max-width: 600px;
+}
+
 .reveal-actions {
   min-height: 56px;
   display: flex;
   justify-content: center;
+  margin-top: var(--spacing-md);
 }
 
 .reveal-grid {
   display: grid;
   gap: var(--spacing-md);
   justify-content: center;
-  margin-bottom: var(--spacing-xl);
   width: 100%;
 }
 
 .reveal-grid.grid-1 {
   grid-template-columns: 1fr;
-  max-width: 130px;
+  max-width: 120px;
+  margin: 0 auto;
 }
 
 .reveal-grid.grid-3 {
   grid-template-columns: repeat(3, 1fr);
-  max-width: 380px;
+  max-width: 340px;
+  margin: 0 auto;
 }
 
 .reveal-grid.grid-10 {
   grid-template-columns: repeat(5, 1fr);
-  max-width: 480px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 450px;
+  margin: 0 auto;
 }
 
 .reveal-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .reveal-label {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: var(--color-accent-purple-light);
   text-align: center;
-  max-width: 90px;
+  max-width: 80px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -265,30 +324,53 @@
 /* 반응형 */
 @media (max-width: 600px) {
   .reading-content {
-    padding: calc(60px + var(--spacing-md)) var(--spacing-sm) var(--spacing-lg);
+    padding: calc(60px + var(--spacing-sm)) var(--spacing-sm) var(--spacing-sm);
   }
   
-  .card-deck {
-    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
-    gap: 5px;
+  .fan-deck-container {
+    height: 280px;
+  }
+  
+  .fan-card {
+    width: 40px;
+    height: 60px;
+    margin-left: -20px;
   }
   
   .selected-slots {
-    gap: 8px;
+    gap: 6px;
+    padding: var(--spacing-xs) var(--spacing-sm);
   }
   
   .slot-icon,
   .slot-num {
-    width: 36px;
-    height: 54px;
+    width: 30px;
+    height: 45px;
+    font-size: 0.7rem;
+  }
+  
+  .slot-name {
+    font-size: 0.5rem;
+    max-width: 38px;
   }
   
   .reveal-grid.grid-10 {
-    grid-template-columns: repeat(5, 1fr);
-    max-width: 400px;
+    max-width: 380px;
   }
   
-  .phase-hint {
-    font-size: 1rem;
+  .question-icon {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .fan-deck-container {
+    height: 240px;
+  }
+  
+  .fan-card {
+    width: 35px;
+    height: 52px;
+    margin-left: -17px;
   }
 }
