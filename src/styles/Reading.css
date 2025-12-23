@@ -549,6 +549,9 @@
   .selected-slots.slots-1 {
     max-width: 120px;
     gap: var(--spacing-md);
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
   }
   
   .selected-slots.slots-10 {
