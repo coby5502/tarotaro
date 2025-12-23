@@ -231,7 +231,7 @@
 .grid-card {
   position: relative;
   aspect-ratio: 2 / 3;
-  background: transparent;
+  background: linear-gradient(145deg, #252540, #1a1a30);
   border: 2px solid var(--color-border);
   border-radius: 8px;
   overflow: hidden;
@@ -240,11 +240,30 @@
   transition: all 0.2s;
 }
 
-.grid-card img {
+.grid-card-back {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #252540, #1a1a30);
+}
+
+.grid-card-back .card-back-design {
+  width: 60%;
+  height: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-accent-gold);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(201, 162, 39, 0.1), rgba(124, 92, 191, 0.1));
+}
+
+.grid-card-back .card-back-design span {
+  color: var(--color-accent-gold);
+  font-size: 1.5rem;
+  opacity: 0.8;
 }
 
 .grid-card:hover:not(.selected):not(.disabled) {

@@ -132,11 +132,20 @@ export const generateTarotReading = async (cards, spread, question, language) =>
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'API request failed');
+      let errorMessage = 'API request failed';
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorMessage;
+      } catch (e) {
+        errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+      }
+      throw new Error(errorMessage);
     }
 
     const data = await response.json();
+    if (!data || !data.choices || !data.choices[0]) {
+      throw new Error('Invalid response from API');
+    }
     return data.choices[0]?.message?.content || '';
   } catch (error) {
     console.error('API Error:', error);

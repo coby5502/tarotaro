@@ -277,12 +277,12 @@ const Reading = () => {
                           stiffness: 300
                         }}
                       >
-                        <img 
-                          src={card.image} 
-                          alt={card.name.ko || card.name.en}
-                          loading="lazy"
-                          decoding="async"
-                        />
+                        {/* 카드 뒷면 표시 */}
+                        <div className="grid-card-back">
+                          <div className="card-back-design">
+                            <span>✦</span>
+                          </div>
+                        </div>
                         {isSelected && (
                           <motion.div 
                             className="card-selected-badge"
