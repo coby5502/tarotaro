@@ -213,7 +213,7 @@
 
 .reveal-grid.grid-10 {
   grid-template-columns: repeat(5, 1fr);
-  max-width: 520px;
+  max-width: 480px;
 }
 
 .reveal-item {
@@ -255,7 +255,8 @@
   }
   
   .reveal-grid.grid-10 {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
+    max-width: 400px;
   }
   
   .phase-hint {

@@ -49,6 +49,9 @@
 
 .result-cards.cards-10 {
   gap: var(--spacing-sm);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  max-width: 500px;
 }
 
 .result-card-item {
@@ -422,6 +425,11 @@
   
   .result-reading {
     padding: var(--spacing-md);
+  }
+  
+  .result-cards.cards-10 {
+    grid-template-columns: repeat(5, 1fr);
+    max-width: 400px;
   }
   
   .result-cards.cards-10 .result-card-label {
