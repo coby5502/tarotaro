@@ -263,7 +263,9 @@
   width: 100%;
   height: 400px;
   margin-top: var(--spacing-sm);
-  overflow: hidden;
+  overflow: visible;
+  padding-top: 140px;
+  margin-top: calc(var(--spacing-sm) - 140px);
 }
 
 .card-fan-scroll {
@@ -271,7 +273,7 @@
   width: 100%;
   height: 100%;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: visible;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
   /* 스크롤바 숨기기 */
@@ -443,6 +445,8 @@
   
   .card-fan-container {
     height: 380px;
+    padding-top: 130px;
+    margin-top: calc(var(--spacing-sm) - 130px);
   }
   
   .card-fan-inner {
@@ -472,6 +476,8 @@
   
   .card-fan-container {
     height: 350px;
+    padding-top: 120px;
+    margin-top: calc(var(--spacing-sm) - 120px);
   }
   
   .card-fan-inner {
