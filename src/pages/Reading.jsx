@@ -260,6 +260,18 @@ const Reading = () => {
                 ))}
               </div>
               
+              {/* 로딩 표시 */}
+              {allRevealed && isLoadingAI && (
+                <motion.div 
+                  className="preload-status"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                >
+                  <span className="preload-spinner"></span>
+                  <span>{t('aiAnalyzing')}</span>
+                </motion.div>
+              )}
+              
               {/* 버튼 - 항상 카드 아래에 고정 */}
               <div className="reveal-actions">
                 {!allRevealed ? (
@@ -268,20 +280,12 @@ const Reading = () => {
                   </button>
                 ) : (
                   <motion.button 
-                    className={`btn btn-primary ${isLoadingAI ? 'loading' : ''}`}
+                    className="btn btn-primary"
                     onClick={goToResult}
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    disabled={isLoadingAI}
                   >
-                    {isLoadingAI ? (
-                      <>
-                        <span className="btn-spinner"></span>
-                        {t('aiAnalyzing')}
-                      </>
-                    ) : (
-                      t('seeResult')
-                    )}
+                    {t('seeResult')}
                   </motion.button>
                 )}
               </div>

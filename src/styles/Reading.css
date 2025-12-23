@@ -185,33 +185,39 @@
   cursor: not-allowed;
 }
 
-/* 카드 공개 */
-.reveal-actions {
-  margin-top: var(--spacing-lg);
-  min-height: 56px;
-  display: flex;
-  justify-content: center;
-}
-
-.reveal-actions .btn.loading {
+/* 프리로딩 상태 표시 */
+.preload-status {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
-  pointer-events: none;
-  opacity: 0.9;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: rgba(124, 92, 191, 0.15);
+  border: 1px solid rgba(124, 92, 191, 0.3);
+  border-radius: 10px;
+  color: var(--color-accent-purple-light);
+  font-size: 0.9rem;
+  margin-bottom: var(--spacing-sm);
 }
 
-.btn-spinner {
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(0, 0, 0, 0.2);
-  border-top-color: var(--color-bg-primary);
+.preload-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(160, 139, 212, 0.3);
+  border-top-color: var(--color-accent-purple-light);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* 카드 공개 */
+.reveal-actions {
+  min-height: 56px;
+  display: flex;
+  justify-content: center;
 }
 
 .reveal-grid {
