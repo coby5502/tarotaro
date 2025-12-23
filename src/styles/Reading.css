@@ -210,7 +210,7 @@
 .card-fan-container {
   position: relative;
   width: 100%;
-  height: 450px;
+  height: 400px;
   margin-top: var(--spacing-lg);
   overflow: hidden;
 }
@@ -237,7 +237,7 @@
   width: max-content;
   min-width: 100%;
   height: 100%;
-  padding: 0 50%;
+  padding: 0 calc(50% - 300px);
 }
 
 .card-fan-hint {
@@ -256,6 +256,12 @@
   position: absolute;
   pointer-events: auto;
   will-change: transform;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.fan-card-wrapper:active {
+  cursor: grabbing !important;
 }
 
 .fan-card-wrapper.selected {
@@ -358,7 +364,11 @@
 /* 반응형 */
 @media (max-width: 768px) {
   .card-fan-container {
-    height: 350px;
+    height: 380px;
+  }
+  
+  .card-fan-inner {
+    padding: 0 calc(50% - 250px);
   }
   
   .selected-slots.slots-10 {
@@ -372,7 +382,11 @@
   }
   
   .card-fan-container {
-    height: 300px;
+    height: 350px;
+  }
+  
+  .card-fan-inner {
+    padding: 0 calc(50% - 200px);
   }
   
   .selected-slots {

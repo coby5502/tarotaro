@@ -260,27 +260,47 @@ const Reading = () => {
                       const isSelected = selectedCardIds.includes(card.id);
                       const isDisabled = selectedCards.length >= spread.cardCount;
                       
-                      // 부채꼴 배치 계산 - 더 넓게
+                      // 화면 너비에 따른 반응형 계산
+                      const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 800;
                       const totalCards = shuffledDeck.length;
-                      const spreadAngle = Math.PI * 1.3; // 234도 범위 (더 넓게)
+                      
+                      // 화면 너비에 따라 부채꼴 각도 조정
+                      const spreadAngle = viewportWidth > 768 
+                        ? Math.PI * 1.1  // 데스크탑: 198도
+                        : Math.PI * 0.9; // 모바일: 162도
+                      
                       const startAngle = -spreadAngle / 2;
                       const angle = startAngle + (index / (totalCards - 1 || 1)) * spreadAngle;
                       
-                      const baseRadius = 200; // 더 큰 반지름
-                      const radiusVariation = 120;
+                      // 화면 너비에 따라 반지름 조정
+                      const baseRadius = viewportWidth > 768 ? 150 : 120;
+                      const radiusVariation = viewportWidth > 768 ? 80 : 60;
                       const radius = baseRadius + (Math.abs(index - totalCards / 2) / totalCards) * radiusVariation;
                       
+                      // 부채꼴 위치 계산
                       const x = Math.sin(angle) * radius;
-                      const y = -Math.cos(angle) * radius * 0.5;
+                      const y = -Math.cos(angle) * radius * 0.7; // 위쪽으로 올라가도록
                       const rotation = angle * (180 / Math.PI);
+                      
+                      // 가로 위치 (스크롤을 위해)
+                      const horizontalOffset = (index - totalCards / 2) * 55;
                       
                       return (
                         <motion.div
                           key={card.id}
                           className={`fan-card-wrapper ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
+                          drag={!isSelected && !isDisabled ? "x" : false}
+                          dragConstraints={{ left: -100, right: 100 }}
+                          dragElastic={0.2}
+                          onDragEnd={(e, info) => {
+                            // 드래그 끝났을 때 슬롯 위에 있으면 선택
+                            if (Math.abs(info.offset.x) < 50 && Math.abs(info.offset.y) < 100) {
+                              selectCard(card);
+                            }
+                          }}
                           initial={{ 
                             opacity: 0,
-                            scale: 0.8,
+                            scale: 0.9,
                           }}
                           animate={{ 
                             opacity: isSelected ? 0.3 : 1,
@@ -290,22 +310,23 @@ const Reading = () => {
                             scale: 1,
                           }}
                           whileHover={!isSelected && !isDisabled ? { 
-                            y: y - 15,
-                            scale: 1.15,
+                            y: y - 10,
+                            scale: 1.1,
                             zIndex: 100,
                           } : {}}
+                          whileTap={!isSelected && !isDisabled ? { scale: 0.95 } : {}}
                           transition={{ 
-                            delay: index * 0.005,
+                            delay: index * 0.008,
                             type: "spring",
-                            stiffness: 180,
-                            damping: 18
+                            stiffness: 200,
+                            damping: 20
                           }}
                           style={{
                             position: 'absolute',
-                            left: `${index * 60}px`, // 가로로 순차 배치
-                            bottom: '0',
+                            left: `calc(50% + ${horizontalOffset}px)`,
+                            top: '50%',
                             transformOrigin: 'center bottom',
-                            cursor: isDisabled ? 'not-allowed' : 'pointer',
+                            cursor: isDisabled ? 'not-allowed' : (isSelected ? 'default' : 'grab'),
                           }}
                           onClick={() => !isSelected && !isDisabled && selectCard(card)}
                         >
