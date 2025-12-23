@@ -402,19 +402,19 @@
 
 .reveal-grid.grid-1 {
   grid-template-columns: 1fr;
-  max-width: 120px;
+  max-width: clamp(120px, 25vw, 200px);
   margin: 0 auto;
 }
 
 .reveal-grid.grid-3 {
   grid-template-columns: repeat(3, 1fr);
-  max-width: 600px;
+  max-width: clamp(600px, 90vw, 900px);
   margin: 0 auto;
 }
 
 .reveal-grid.grid-10 {
   grid-template-columns: repeat(5, 1fr);
-  max-width: 600px;
+  max-width: clamp(600px, 90vw, 900px);
   margin: 0 auto;
   gap: 12px;
 }
@@ -424,6 +424,24 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
+}
+
+.reveal-item .tarot-card {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 2 / 3 !important;
+}
+
+.reveal-grid.grid-1 .reveal-item .tarot-card {
+  width: clamp(100px, 20vw, 180px) !important;
+}
+
+.reveal-grid.grid-3 .reveal-item .tarot-card {
+  width: clamp(120px, 15vw, 200px) !important;
+}
+
+.reveal-grid.grid-10 .reveal-item .tarot-card {
+  width: clamp(80px, 12vw, 140px) !important;
 }
 
 .reveal-label {

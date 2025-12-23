@@ -46,21 +46,21 @@
   padding: var(--spacing-md);
   background: rgba(0, 0, 0, 0.25);
   border-radius: 16px;
-  max-width: 600px;
+  max-width: clamp(600px, 90vw, 900px);
   margin-left: auto;
   margin-right: auto;
 }
 
 .result-cards.cards-1 {
   grid-template-columns: 1fr;
-  max-width: 120px;
+  max-width: clamp(120px, 25vw, 200px);
 }
 
 .result-cards.cards-10 {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 12px;
-  max-width: 600px;
+  max-width: clamp(600px, 90vw, 900px);
   margin-left: auto;
   margin-right: auto;
 }
@@ -72,6 +72,24 @@
   gap: 8px;
   cursor: pointer;
   transition: transform 0.2s;
+}
+
+.result-card-item .tarot-card {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 2 / 3 !important;
+}
+
+.result-cards.cards-1 .result-card-item .tarot-card {
+  width: clamp(100px, 20vw, 180px) !important;
+}
+
+.result-cards.cards-3 .result-card-item .tarot-card {
+  width: clamp(120px, 15vw, 200px) !important;
+}
+
+.result-cards.cards-10 .result-card-item .tarot-card {
+  width: clamp(80px, 12vw, 140px) !important;
 }
 
 .result-card-item:hover {
