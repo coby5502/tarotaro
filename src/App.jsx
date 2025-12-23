@@ -15,7 +15,7 @@ function App() {
             <Route path="/reading/:spreadType" element={<Reading />} />
             <Route path="/result" element={<Result />} />
           </Routes>
-        </div>
+      </div>
       </Router>
     </LanguageProvider>
   );

@@ -303,22 +303,22 @@
 }
 
 .share-header {
-  background: linear-gradient(135deg, rgba(124, 92, 191, 0.3), rgba(201, 162, 39, 0.3));
-  padding: 20px;
+  background: linear-gradient(135deg, rgba(124, 92, 191, 0.2), rgba(201, 162, 39, 0.2));
+  padding: 10px 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  border-bottom: 1px solid rgba(201, 162, 39, 0.2);
+  gap: 6px;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.15);
 }
 
 .share-header span:first-child {
-  font-size: 28px;
+  font-size: 16px;
 }
 
 .share-header span:last-child {
   font-family: var(--font-display);
-  font-size: 22px;
+  font-size: 14px;
   color: #c9a227;
   font-weight: 600;
   letter-spacing: 0.05em;
