@@ -149,17 +149,21 @@
   grid-template-columns: 1fr !important;
   max-width: 120px !important;
   width: 120px !important;
+  min-width: 120px !important;
   margin-left: auto !important;
   margin-right: auto !important;
   padding: 0 !important;
   justify-items: center !important;
   justify-content: center !important;
+  box-sizing: border-box !important;
 }
 
 /* 1장일 때 내부 슬롯도 중앙 정렬 */
 .selected-slots.slots-1 > .slot {
-  margin: 0 auto;
-  justify-self: center;
+  margin: 0 auto !important;
+  justify-self: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 /* 10장일 때 5x2 그리드 */
