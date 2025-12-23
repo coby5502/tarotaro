@@ -87,7 +87,7 @@ const Result = () => {
     try {
       const canvas = await html2canvas(shareCardRef.current, {
         backgroundColor: '#0f0f1a',
-        scale: 1.5,
+        scale: 3, // 화질 향상을 위해 스케일 증가
         logging: false,
         useCORS: true,
         allowTaint: true,
@@ -98,10 +98,10 @@ const Result = () => {
         windowHeight: shareCardRef.current.scrollHeight,
       });
       
-      // JPEG로 변환, 품질 0.8로 파일 크기 대폭 감소
+      // JPEG로 변환, 품질 0.92로 화질 개선 (약 5MB 목표)
       const link = document.createElement('a');
       link.download = `tarotaro-${Date.now()}.jpg`;
-      link.href = canvas.toDataURL('image/jpeg', 0.8);
+      link.href = canvas.toDataURL('image/jpeg', 0.92);
       link.click();
     } catch (err) {
       console.error('Image generation failed:', err);
