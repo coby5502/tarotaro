@@ -379,39 +379,94 @@ const Result = () => {
             >
               <button className="close-modal" onClick={() => setShowShareModal(false)}>×</button>
               
-              {/* 공유용 카드 (텍스트 기반) */}
-              <div className="share-card" ref={shareCardRef}>
-                <div className="share-card-inner">
-                  <div className="share-card-header">
-                    <span className="share-logo">🔮</span>
-                    <span className="share-title">TaroTaro</span>
+              {/* 공유용 카드 (인라인 스타일로 안정적 캡처) */}
+              <div 
+                ref={shareCardRef}
+                style={{
+                  width: '320px',
+                  background: 'linear-gradient(145deg, #1a1a3a, #0a0a1a)',
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  border: '1px solid rgba(212, 175, 55, 0.3)',
+                  marginBottom: '20px',
+                }}
+              >
+                {/* 헤더 */}
+                <div style={{
+                  background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(212, 175, 55, 0.2))',
+                  padding: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                }}>
+                  <span style={{ fontSize: '24px' }}>🔮</span>
+                  <span style={{
+                    fontSize: '20px',
+                    fontWeight: '700',
+                    color: '#d4af37',
+                    letterSpacing: '0.05em',
+                  }}>TaroTaro</span>
+                </div>
+                
+                {/* 바디 */}
+                <div style={{ padding: '20px', textAlign: 'center' }}>
+                  <p style={{
+                    fontSize: '12px',
+                    color: '#a78bfa',
+                    marginBottom: '8px',
+                    letterSpacing: '0.1em',
+                  }}>{getSpreadName()}</p>
+                  
+                  {question && (
+                    <p style={{
+                      fontStyle: 'italic',
+                      color: '#c4b5fd',
+                      fontSize: '13px',
+                      marginBottom: '12px',
+                    }}>"{question}"</p>
+                  )}
+                  
+                  <div style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    marginBottom: '16px',
+                  }}>
+                    {cards.map((card, i) => (
+                      <span key={i} style={{
+                        background: 'rgba(212, 175, 55, 0.15)',
+                        color: '#d4af37',
+                        padding: '4px 10px',
+                        borderRadius: '12px',
+                        fontSize: '11px',
+                        border: '1px solid rgba(212, 175, 55, 0.3)',
+                      }}>
+                        {card.name.ko || card.name.en}
+                        {card.isReversed && ' ↺'}
+                      </span>
+                    ))}
                   </div>
                   
-                  <div className="share-card-body">
-                    <p className="share-spread">{getSpreadName()}</p>
-                    
-                    {question && (
-                      <p className="share-question">"{question}"</p>
-                    )}
-                    
-                    <div className="share-card-names">
-                      {cards.slice(0, 5).map((card, i) => (
-                        <span key={i} className="share-card-name">
-                          {card.name.ko || card.name.en}
-                          {card.isReversed && ' ↺'}
-                        </span>
-                      ))}
-                      {cards.length > 5 && (
-                        <span className="share-card-name more">+{cards.length - 5}</span>
-                      )}
-                    </div>
-                    
-                    <p className="share-message">✨ {extractKeyMessage()}</p>
-                  </div>
-                  
-                  <div className="share-card-footer">
-                    <span>www.tarotaro.co.kr</span>
-                  </div>
+                  <p style={{
+                    color: '#e2e8f0',
+                    fontSize: '13px',
+                    lineHeight: '1.6',
+                  }}>✨ {extractKeyMessage()}</p>
+                </div>
+                
+                {/* 푸터 */}
+                <div style={{
+                  background: 'rgba(0, 0, 0, 0.4)',
+                  padding: '12px',
+                  textAlign: 'center',
+                }}>
+                  <span style={{
+                    fontSize: '11px',
+                    color: '#94a3b8',
+                    letterSpacing: '0.1em',
+                  }}>www.tarotaro.co.kr</span>
                 </div>
               </div>
 
