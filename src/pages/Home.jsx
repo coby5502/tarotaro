@@ -35,9 +35,7 @@ const Home = () => {
   return (
     <div className="home">
       <div className="stars"></div>
-      <div className="twinkling"></div>
       
-      {/* 언어 선택기 */}
       <div className="language-wrapper">
         <LanguageSelector />
       </div>
@@ -82,16 +80,18 @@ const Home = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 + index * 0.1 }}
-                  whileHover={{ y: -8 }}
+                  whileHover={{ y: -5 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   <span className="spread-icon">{spread.icon}</span>
-                  <h3 className="spread-name">{spread.name}</h3>
-                  <span className="spread-count">{spread.cardCount}{t('cards')}</span>
-                  <p className="spread-desc">{spread.description}</p>
-                  {spread.featured && (
-                    <span className="featured-badge">{t('deepAnalysis')}</span>
-                  )}
+                  <div>
+                    <h3 className="spread-name">{spread.name}</h3>
+                    <span className="spread-count">{spread.cardCount}{t('cards')}</span>
+                    <p className="spread-desc">{spread.description}</p>
+                    {spread.featured && (
+                      <span className="featured-badge">{t('deepAnalysis')}</span>
+                    )}
+                  </div>
                 </motion.div>
               </Link>
             ))}

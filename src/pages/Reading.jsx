@@ -19,7 +19,6 @@ const Reading = () => {
   const [selectedCards, setSelectedCards] = useState([]);
   const [revealedCount, setRevealedCount] = useState(0);
 
-  // 스프레드 이름 다국어
   const getSpreadName = () => {
     if (spreadType === 'oneCard') return t('oneCard');
     if (spreadType === 'threeCard') return t('threeCard');
@@ -64,6 +63,10 @@ const Reading = () => {
     }
   };
 
+  const revealAll = () => {
+    setRevealedCount(selectedCards.length);
+  };
+
   const goToResult = () => {
     navigate('/result', { 
       state: { cards: selectedCards, spread, question, language } 
@@ -75,7 +78,6 @@ const Reading = () => {
   return (
     <div className="reading">
       <div className="stars"></div>
-      <div className="twinkling"></div>
       
       <div className="reading-top-bar">
         <motion.button 
@@ -140,14 +142,14 @@ const Reading = () => {
               exit={{ opacity: 0 }}
             >
               <div className="shuffle-deck">
-                {[...Array(6)].map((_, i) => (
+                {[...Array(5)].map((_, i) => (
                   <motion.div
                     key={i}
                     className="shuffle-card"
-                    style={{ zIndex: 6 - i }}
+                    style={{ zIndex: 5 - i }}
                     animate={{
-                      x: [0, -80, 80, -40, 40, 0],
-                      rotateZ: [0, -10, 10, -5, 5, 0],
+                      x: [0, -60, 60, -30, 30, 0],
+                      rotateZ: [0, -8, 8, -4, 4, 0],
                     }}
                     transition={{
                       duration: 1.5,
@@ -173,54 +175,47 @@ const Reading = () => {
               {/* 진행 상황 */}
               <div className="progress-area">
                 <p className="phase-desc">
-                  {t('selectCard')} ({spread.cardCount}{t('cards')})
+                  {t('selectCard')} ({selectedCards.length}/{spread.cardCount})
                 </p>
-                <div className="progress-bar-wrapper">
-                  <div className="progress-bar">
-                    <motion.div 
-                      className="progress-fill"
-                      animate={{ width: `${(selectedCards.length / spread.cardCount) * 100}%` }}
-                    />
-                  </div>
-                  <span className="progress-text">{selectedCards.length}/{spread.cardCount}</span>
+                <div className="progress-bar">
+                  <motion.div 
+                    className="progress-fill"
+                    animate={{ width: `${(selectedCards.length / spread.cardCount) * 100}%` }}
+                  />
                 </div>
               </div>
 
-              {/* 선택된 카드 미리보기 */}
-              <div className="selected-preview">
-                {spread.positions.map((pos, i) => (
-                  <motion.div 
-                    key={i}
-                    className={`preview-slot ${selectedCards[i] ? 'filled' : ''}`}
-                    initial={selectedCards[i] ? { scale: 0 } : {}}
-                    animate={selectedCards[i] ? { scale: 1 } : {}}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    {selectedCards[i] ? (
-                      <img 
-                        src={selectedCards[i].image} 
-                        alt=""
-                        className={selectedCards[i].isReversed ? 'reversed' : ''}
-                      />
-                    ) : (
-                      <span className="slot-number">{i + 1}</span>
-                    )}
-                    <span className="slot-label">{pos.name}</span>
-                  </motion.div>
-                ))}
-              </div>
+              {/* 선택된 카드 - 뒤집은 채로 */}
+              {selectedCards.length > 0 && (
+                <div className="selected-cards-row">
+                  {selectedCards.map((card, i) => (
+                    <motion.div 
+                      key={card.id}
+                      className="selected-card-slot"
+                      initial={{ scale: 0, rotateY: 180 }}
+                      animate={{ scale: 1, rotateY: 0 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      <div className="card-back-mini">
+                        <span>✦</span>
+                      </div>
+                      <span className="slot-label">{card.position.name}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
 
               {/* 카드 덱 */}
               <div className="deck-area">
                 <div className="card-deck">
-                  {shuffledDeck.slice(0, 12).map((card, index) => (
+                  {shuffledDeck.slice(0, 15).map((card, index) => (
                     <motion.button
                       key={card.id}
                       className="deck-card"
-                      initial={{ opacity: 0, y: 30 }}
+                      initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.03 }}
-                      whileHover={{ y: -15, scale: 1.05 }}
+                      transition={{ delay: index * 0.02 }}
+                      whileHover={{ y: -12, scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => selectCard(card, index)}
                     >
@@ -241,29 +236,39 @@ const Reading = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <p className="phase-desc">{t('selectCard')}</p>
+              <div className="reveal-header">
+                <p className="phase-desc">{t('selectCard')}</p>
+                {revealedCount < selectedCards.length && (
+                  <motion.button
+                    className="reveal-all-btn"
+                    onClick={revealAll}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {t('revealAll') || '모두 공개'} ✨
+                  </motion.button>
+                )}
+              </div>
               
-              {spreadType === 'celticCross' ? (
-                <CelticCrossLayout 
-                  cards={selectedCards}
-                  revealedCount={revealedCount}
-                  onReveal={revealNext}
-                />
-              ) : (
-                <div className="standard-reveal">
-                  {selectedCards.map((card, index) => (
-                    <div key={card.id} className="reveal-slot">
-                      <span className="reveal-label">{card.position.name}</span>
-                      <TarotCard
-                        card={card}
-                        isRevealed={index < revealedCount}
-                        onClick={() => index === revealedCount && revealNext()}
-                        size={spreadType === 'oneCard' ? 'large' : 'normal'}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div className={`reveal-grid reveal-grid-${spread.cardCount}`}>
+                {selectedCards.map((card, index) => (
+                  <motion.div 
+                    key={card.id} 
+                    className="reveal-slot"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                  >
+                    <span className="reveal-label">{card.position.name}</span>
+                    <TarotCard
+                      card={card}
+                      isRevealed={index < revealedCount}
+                      onClick={() => index === revealedCount && revealNext()}
+                      size="small"
+                    />
+                  </motion.div>
+                ))}
+              </div>
               
               {revealedCount === selectedCards.length && (
                 <motion.button 
@@ -280,70 +285,6 @@ const Reading = () => {
           )}
         </AnimatePresence>
       </main>
-    </div>
-  );
-};
-
-// 켈틱크로스 레이아웃 컴포넌트
-const CelticCrossLayout = ({ cards, revealedCount, onReveal }) => {
-  const renderCard = (index) => (
-    <TarotCard
-      card={cards[index]}
-      isRevealed={index < revealedCount}
-      onClick={() => index === revealedCount && onReveal()}
-      size="small"
-    />
-  );
-
-  return (
-    <div className="celtic-layout">
-      <div className="celtic-cross">
-        {/* 상단 */}
-        <div className="celtic-pos celtic-top">
-          <span className="celtic-label">{cards[2]?.position?.name}</span>
-          {renderCard(2)}
-        </div>
-        
-        {/* 중앙 행 */}
-        <div className="celtic-row">
-          <div className="celtic-pos">
-            <span className="celtic-label">{cards[4]?.position?.name}</span>
-            {renderCard(4)}
-          </div>
-          
-          <div className="celtic-center">
-            <div className="celtic-main-card">
-              <span className="celtic-label">{cards[0]?.position?.name}</span>
-              {renderCard(0)}
-            </div>
-            <div className="celtic-cross-card">
-              <span className="celtic-label">{cards[1]?.position?.name}</span>
-              <div className="rotated">{renderCard(1)}</div>
-            </div>
-          </div>
-          
-          <div className="celtic-pos">
-            <span className="celtic-label">{cards[5]?.position?.name}</span>
-            {renderCard(5)}
-          </div>
-        </div>
-        
-        {/* 하단 */}
-        <div className="celtic-pos celtic-bottom">
-          <span className="celtic-label">{cards[3]?.position?.name}</span>
-          {renderCard(3)}
-        </div>
-      </div>
-      
-      {/* 스태프 */}
-      <div className="celtic-staff">
-        {[9, 8, 7, 6].map((idx) => (
-          <div key={idx} className="staff-pos">
-            {renderCard(idx)}
-            <span className="staff-label">{cards[idx]?.position?.name}</span>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };

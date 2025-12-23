@@ -15,7 +15,7 @@
   align-items: center;
   padding: var(--spacing-md) var(--spacing-lg);
   z-index: 100;
-  background: linear-gradient(to bottom, rgba(15, 10, 30, 0.95), transparent);
+  background: linear-gradient(to bottom, rgba(10, 10, 26, 0.95), transparent);
 }
 
 .reading-main {
@@ -24,14 +24,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: calc(50px + var(--spacing-md)) var(--spacing-md) var(--spacing-xl);
+  padding: calc(60px + var(--spacing-md)) var(--spacing-md) var(--spacing-xl);
   position: relative;
   z-index: 1;
 }
 
 .reading-title {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-size: clamp(1.3rem, 5vw, 1.8rem);
   color: var(--color-accent-gold);
   margin-bottom: var(--spacing-lg);
   letter-spacing: 0.1em;
@@ -49,20 +49,16 @@
 }
 
 .phase-desc {
-  font-size: clamp(0.95rem, 3vw, 1.1rem);
+  font-size: clamp(0.9rem, 3vw, 1rem);
   color: var(--color-text-secondary);
   text-align: center;
-  margin-bottom: var(--spacing-lg);
-}
-
-.phase-desc strong {
-  color: var(--color-accent-gold);
+  margin-bottom: var(--spacing-md);
 }
 
 /* 질문 입력 */
 .question-input {
   width: 100%;
-  max-width: 450px;
+  max-width: 400px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--color-border);
   border-radius: 12px;
@@ -91,62 +87,43 @@
 
 .shuffle-deck {
   position: relative;
-  width: 80px;
-  height: 120px;
+  width: 70px;
+  height: 100px;
   margin-bottom: var(--spacing-xl);
 }
 
 .shuffle-card {
   position: absolute;
-  width: 80px;
-  height: 120px;
+  width: 70px;
+  height: 100px;
   background: linear-gradient(145deg, #1a1a4a, #0a0a2a);
   border: 2px solid var(--color-accent-gold);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .shuffle-card::after {
   content: '✦';
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
   color: var(--color-accent-gold);
+  font-size: 1.2rem;
 }
 
 .shuffle-text {
-  font-size: 1.1rem;
-  color: var(--color-accent-purple-light);
-  animation: pulse 1.5s ease-in-out infinite;
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
-}
-
-/* 카드 선택 */
-.selecting-section {
-  gap: var(--spacing-lg);
-  max-width: 100%;
-}
-
+/* 진행 상황 */
 .progress-area {
-  text-align: center;
-}
-
-.progress-bar-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-md);
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: var(--spacing-lg);
 }
 
 .progress-bar {
-  width: 120px;
+  width: 100%;
   height: 6px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 3px;
@@ -157,272 +134,214 @@
   height: 100%;
   background: var(--gradient-gold);
   border-radius: 3px;
+  transition: width 0.3s ease;
 }
 
-.progress-text {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--color-accent-gold);
-}
-
-/* 선택된 카드 미리보기 */
-.selected-preview {
+/* 선택된 카드 - 뒤집은 채로 */
+.selected-cards-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: var(--spacing-sm);
-  padding: var(--spacing-md);
-  background: rgba(139, 92, 246, 0.08);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  border-radius: 12px;
+  margin-bottom: var(--spacing-lg);
   max-width: 100%;
 }
 
-.preview-slot {
-  width: clamp(45px, 8vw, 60px);
+.selected-card-slot {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
 }
 
-.preview-slot img,
-.preview-slot .slot-number {
-  width: 100%;
-  aspect-ratio: 2/3;
-  border-radius: 4px;
-  object-fit: cover;
-}
-
-.preview-slot img {
-  border: 2px solid var(--color-accent-gold);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.preview-slot img.reversed {
-  transform: rotate(180deg);
-}
-
-.preview-slot .slot-number {
+.card-back-mini {
+  width: 45px;
+  height: 65px;
+  background: linear-gradient(145deg, #1a1a4a, #0a0a2a);
+  border: 1.5px solid var(--color-accent-gold);
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px dashed rgba(255, 255, 255, 0.2);
-  color: var(--color-text-muted);
-  font-size: clamp(0.8rem, 2vw, 1rem);
-  font-weight: 600;
+}
+
+.card-back-mini span {
+  color: var(--color-accent-gold);
+  font-size: 0.9rem;
 }
 
 .slot-label {
-  font-size: clamp(0.55rem, 1.5vw, 0.7rem);
+  font-size: 0.65rem;
   color: var(--color-text-muted);
   text-align: center;
+  max-width: 50px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-.preview-slot.filled .slot-label {
-  color: var(--color-accent-purple-light);
 }
 
 /* 카드 덱 */
 .deck-area {
   width: 100%;
-  overflow-x: auto;
-  padding: var(--spacing-md) 0;
-  -webkit-overflow-scrolling: touch;
+  display: flex;
+  justify-content: center;
 }
 
 .card-deck {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: clamp(6px, 1.5vw, 10px);
-  padding: var(--spacing-sm);
-  min-width: min-content;
+  gap: var(--spacing-sm);
+  max-width: 400px;
 }
 
 .deck-card {
-  flex-shrink: 0;
-  width: clamp(55px, 10vw, 75px);
-  aspect-ratio: 2/3;
+  width: 55px;
+  height: 80px;
   background: linear-gradient(145deg, #1a1a4a, #0a0a2a);
-  border: 2px solid var(--color-accent-gold);
+  border: 1.5px solid var(--color-accent-gold);
   border-radius: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
 }
 
 .deck-card:hover {
-  border-color: var(--color-accent-purple);
-  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+  border-color: var(--color-accent-gold-light);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
 }
 
 .deck-card-symbol {
-  font-size: clamp(1rem, 3vw, 1.5rem);
   color: var(--color-accent-gold);
+  font-size: 1rem;
 }
 
 /* 카드 공개 */
-.revealing-section {
-  gap: var(--spacing-lg);
+.reveal-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
 }
 
-.standard-reveal {
-  display: flex;
-  flex-wrap: wrap;
+.reveal-all-btn {
+  background: rgba(139, 92, 246, 0.2);
+  color: var(--color-accent-purple-light);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reveal-all-btn:hover {
+  background: rgba(139, 92, 246, 0.3);
+}
+
+/* 공개 그리드 - 반응형 */
+.reveal-grid {
+  display: grid;
+  gap: var(--spacing-md);
   justify-content: center;
-  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  width: 100%;
+  max-width: 600px;
+}
+
+.reveal-grid-1 {
+  grid-template-columns: 1fr;
+  max-width: 150px;
+}
+
+.reveal-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 350px;
+}
+
+.reveal-grid-10 {
+  grid-template-columns: repeat(5, 1fr);
+  max-width: 450px;
 }
 
 .reveal-slot {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
 }
 
 .reveal-label {
-  font-family: var(--font-display);
-  font-size: clamp(0.85rem, 2.5vw, 1rem);
+  font-size: 0.7rem;
   color: var(--color-accent-purple-light);
-  letter-spacing: 0.05em;
-}
-
-/* 켈틱크로스 레이아웃 */
-.celtic-layout {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--spacing-xl);
-  padding: var(--spacing-md);
-}
-
-.celtic-cross {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
-
-.celtic-row {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
-
-.celtic-pos {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.celtic-label {
-  font-size: clamp(0.6rem, 1.5vw, 0.7rem);
-  color: var(--color-accent-purple-light);
+  text-align: center;
+  max-width: 80px;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.celtic-center {
-  position: relative;
-  width: 100px;
-  height: 160px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.celtic-main-card,
-.celtic-cross-card {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.celtic-main-card {
-  z-index: 1;
-}
-
-.celtic-cross-card {
-  z-index: 2;
-}
-
-.rotated {
-  transform: rotate(90deg);
-}
-
-/* 스태프 */
-.celtic-staff {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-}
-
-.staff-pos {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
-
-.staff-label {
-  font-size: 0.75rem;
-  color: var(--color-accent-purple-light);
-  min-width: 70px;
-}
-
-/* 반응형 */
-@media (max-width: 768px) {
+/* 모바일 반응형 */
+@media (max-width: 600px) {
+  .reading-top-bar {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
   .reading-main {
-    padding-top: 50px;
+    padding: calc(50px + var(--spacing-sm)) var(--spacing-sm) var(--spacing-lg);
   }
   
-  .celtic-layout {
-    flex-direction: column;
-    align-items: center;
+  .card-deck {
+    gap: 6px;
   }
   
-  .celtic-staff {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+  .deck-card {
+    width: 48px;
+    height: 70px;
   }
   
-  .staff-pos {
-    flex-direction: column;
+  .card-back-mini {
+    width: 40px;
+    height: 58px;
+  }
+  
+  .reveal-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-sm);
+  }
+  
+  .reveal-grid-10 {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    max-width: 100%;
+  }
+  
+  .reveal-label {
+    font-size: 0.6rem;
+    max-width: 60px;
+  }
+}
+
+@media (max-width: 400px) {
+  .reveal-grid-10 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .selected-cards-row {
     gap: 4px;
   }
   
-  .staff-label {
-    min-width: auto;
-    text-align: center;
-    font-size: 0.65rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .selected-preview {
-    padding: var(--spacing-sm);
-  }
-  
-  .preview-slot {
-    width: 40px;
+  .card-back-mini {
+    width: 35px;
+    height: 50px;
   }
   
   .slot-label {
-    font-size: 0.5rem;
-  }
-  
-  .celtic-center {
-    width: 80px;
-    height: 130px;
+    font-size: 0.55rem;
+    max-width: 40px;
   }
 }

@@ -34,6 +34,7 @@ export const translations = {
     seeResult: '결과 보기',
     
     // 결과
+    revealAll: '모두 공개',
     readingResult: '리딩 결과',
     yourQuestion: '당신의 질문',
     aiInterpretation: 'AI 타로 해석',
@@ -94,6 +95,7 @@ export const translations = {
     seeResult: 'See Result',
     
     // Result
+    revealAll: 'Reveal All',
     readingResult: 'Reading Result',
     yourQuestion: 'Your Question',
     aiInterpretation: 'AI Tarot Interpretation',
@@ -154,6 +156,7 @@ export const translations = {
     seeResult: '結果を見る',
     
     // 結果
+    revealAll: 'すべて公開',
     readingResult: 'リーディング結果',
     yourQuestion: 'あなたの質問',
     aiInterpretation: 'AIタロット解釈',

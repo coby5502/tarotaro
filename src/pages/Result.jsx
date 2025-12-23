@@ -22,14 +22,12 @@ const Result = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // 페이지 로드 시 자동으로 AI 해석 시작
   useEffect(() => {
     if (cards && spread) {
       fetchAiReading();
     }
   }, [cards, spread, language]);
 
-  // AI 해석 생성
   const fetchAiReading = async () => {
     setIsLoading(true);
     setError('');
@@ -49,7 +47,6 @@ const Result = () => {
     return (
       <div className="result">
         <div className="stars"></div>
-        <div className="twinkling"></div>
         <div className="result-error">
           <p>{t('cannotLoad')}</p>
           <motion.button 
@@ -76,14 +73,12 @@ const Result = () => {
     return t('celticCross');
   };
 
-  // 마크다운 파싱
   const parseMarkdown = (text) => {
     if (!text) return '';
     
     return text
       .split('\n')
       .map((line, index) => {
-        // 헤더 처리
         if (line.startsWith('## ')) {
           return (
             <h3 key={index} className="ai-heading">
@@ -99,7 +94,6 @@ const Result = () => {
           );
         }
         
-        // 리스트 아이템 처리
         if (line.startsWith('- ')) {
           const content = line.replace('- ', '');
           return (
@@ -109,7 +103,6 @@ const Result = () => {
           );
         }
         
-        // 볼드 처리
         if (line.trim() === '') {
           return <div key={index} className="ai-spacer" />;
         }
@@ -122,7 +115,6 @@ const Result = () => {
       });
   };
 
-  // 볼드 텍스트 파싱
   const parseBold = (text) => {
     const parts = text.split(/\*\*(.*?)\*\*/g);
     return parts.map((part, i) => 
@@ -133,7 +125,6 @@ const Result = () => {
   return (
     <div className="result">
       <div className="stars"></div>
-      <div className="twinkling"></div>
       
       <div className="result-top-bar">
         <motion.button 
@@ -168,9 +159,9 @@ const Result = () => {
           </motion.div>
         )}
 
-        {/* 카드 미리보기 */}
+        {/* 카드 미리보기 - 심플하게 */}
         <motion.div 
-          className="cards-overview"
+          className={`cards-overview cards-count-${cards.length}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -178,15 +169,14 @@ const Result = () => {
           {cards.map((card, index) => (
             <motion.div 
               key={card.id} 
-              className="card-overview-item"
+              className="card-item"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 + index * 0.05 }}
+              transition={{ delay: 0.2 + index * 0.03 }}
             >
               <TarotCard card={card} isRevealed={true} size="small" />
-              <div className="card-overview-info">
+              <div className="card-info">
                 <span className="card-position">{card.position.name}</span>
-                <span className="card-name">{card.name.ko}</span>
                 {card.isReversed && (
                   <span className="reversed-badge">{t('reversed')}</span>
                 )}

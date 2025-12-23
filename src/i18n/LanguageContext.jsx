@@ -12,6 +12,8 @@ export const LanguageProvider = ({ children }) => {
 
   useEffect(() => {
     saveLanguage(language);
+    // HTML lang 속성 업데이트 (폰트 적용을 위해)
+    document.documentElement.lang = language;
   }, [language]);
 
   const t = (key) => {
@@ -38,4 +40,3 @@ export const useLanguage = () => {
   }
   return context;
 };
-
