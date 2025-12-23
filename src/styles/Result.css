@@ -7,7 +7,7 @@
 .result-content {
   min-height: calc(100vh - 60px);
   padding: calc(60px + var(--spacing-lg)) var(--spacing-md) var(--spacing-xl);
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   position: relative;
   z-index: 1;
@@ -48,10 +48,10 @@
 }
 
 .result-cards.cards-10 {
-  gap: var(--spacing-sm);
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  max-width: 500px;
+  gap: 12px;
+  max-width: 600px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -72,11 +72,16 @@
 .result-card-label {
   font-size: 0.75rem;
   color: var(--color-text-muted);
-  max-width: 80px;
+  max-width: 100px;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.result-cards.cards-10 .result-card-label {
+  font-size: 0.65rem;
+  max-width: 90px;
 }
 
 .card-tap-hint {
@@ -348,11 +353,18 @@
 }
 
 .share-cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.share-cards-row.cards-10 {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-  margin-bottom: 16px;
-  max-width: 300px;
+  gap: 5px;
+  max-width: 280px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -449,7 +461,7 @@
 }
 
 /* 반응형 */
-@media (max-width: 500px) {
+@media (max-width: 600px) {
   .result-content {
     padding: calc(60px + var(--spacing-md)) var(--spacing-sm) var(--spacing-lg);
   }
@@ -460,19 +472,22 @@
   
   .result-cards.cards-10 {
     grid-template-columns: repeat(5, 1fr);
-    max-width: 400px;
+    gap: 8px;
+    max-width: 100%;
   }
   
   .result-cards.cards-10 .result-card-label {
-    font-size: 0.65rem;
-    max-width: 60px;
+    font-size: 0.55rem;
+    max-width: 55px;
+  }
+  
+  .share-modal {
+    padding: var(--spacing-lg) var(--spacing-md);
+    max-width: 360px;
   }
   
   .share-card {
-    width: 300px;
-  }
-  
-  .share-card-img {
-    width: 55px;
+    width: 100%;
+    max-width: 300px;
   }
 }

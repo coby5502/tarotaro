@@ -8,7 +8,7 @@
 .reading-content {
   min-height: calc(100vh - 60px);
   min-height: calc(100dvh - 60px);
-  padding: calc(60px + var(--spacing-md)) var(--spacing-md) var(--spacing-md);
+  padding: calc(60px + var(--spacing-lg)) var(--spacing-md) var(--spacing-lg);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -75,37 +75,31 @@
   box-shadow: 0 0 20px rgba(201, 162, 39, 0.4);
 }
 
-.btn-glow:hover {
-  box-shadow: 0 0 30px rgba(201, 162, 39, 0.6);
-}
-
 /* 셔플 애니메이션 */
 .shuffle-phase {
   justify-content: center;
-  min-height: 400px;
+  min-height: 350px;
 }
 
 .shuffle-container {
   position: relative;
-  width: 100px;
-  height: 140px;
+  width: 120px;
+  height: 160px;
   perspective: 1000px;
 }
 
 .shuffle-card {
   position: absolute;
-  width: 70px;
-  height: 100px;
+  width: 80px;
+  height: 120px;
   left: 50%;
   top: 50%;
-  margin-left: -35px;
-  margin-top: -50px;
+  margin-left: -40px;
+  margin-top: -60px;
   background: linear-gradient(145deg, #252540, #1a1a30);
   border: 2px solid var(--color-accent-gold);
   border-radius: 8px;
-  box-shadow: 
-    0 4px 15px rgba(0, 0, 0, 0.4),
-    inset 0 0 20px rgba(201, 162, 39, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .shuffle-card::after {
@@ -116,7 +110,7 @@
   align-items: center;
   justify-content: center;
   color: var(--color-accent-gold);
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   opacity: 0.6;
 }
 
@@ -124,7 +118,6 @@
   color: var(--color-accent-purple-light);
   font-size: 1rem;
   margin-top: var(--spacing-xl);
-  letter-spacing: 0.1em;
 }
 
 /* 선택된 카드 슬롯 */
@@ -132,42 +125,43 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
-  padding: var(--spacing-sm) var(--spacing-md);
+  gap: 12px;
+  padding: var(--spacing-md) var(--spacing-lg);
   background: rgba(0, 0, 0, 0.3);
-  border-radius: 12px;
+  border-radius: 16px;
   border: 1px solid var(--color-border);
+  max-width: 600px;
 }
 
 /* 10장일 때 5x2 그리드 */
 .selected-slots.slots-10 {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
-  max-width: 320px;
+  gap: 10px;
+  max-width: 450px;
 }
 
 .slot {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
 }
 
 .slot-icon,
 .slot-num {
-  width: 36px;
-  height: 54px;
+  width: 44px;
+  height: 66px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 5px;
-  font-size: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
   transition: all 0.3s;
 }
 
 .slot-num {
-  border: 2px dashed rgba(255, 255, 255, 0.1);
+  border: 2px dashed rgba(255, 255, 255, 0.12);
   color: var(--color-text-muted);
 }
 
@@ -179,92 +173,86 @@
 }
 
 .slot-name {
-  font-size: 0.5rem;
+  font-size: 0.6rem;
   color: var(--color-text-muted);
-  max-width: 50px;
+  max-width: 70px;
   text-align: center;
-  line-height: 1.2;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
   overflow: hidden;
-  white-space: normal;
-  height: 1.4em;
+  text-overflow: ellipsis;
 }
 
-/* 10장일 때 더 작게 */
+/* 10장일 때 슬롯 */
 .selected-slots.slots-10 .slot-icon,
 .selected-slots.slots-10 .slot-num {
-  width: 32px;
-  height: 48px;
-  font-size: 0.7rem;
+  width: 40px;
+  height: 60px;
+  font-size: 0.8rem;
 }
 
 .selected-slots.slots-10 .slot-name {
-  font-size: 0.45rem;
-  max-width: 45px;
+  font-size: 0.55rem;
+  max-width: 60px;
 }
 
-/* 부채꼴 카드 덱 */
-.fan-deck-container {
-  width: 100%;
-  height: 320px;
-  position: relative;
+/* 카드 더미 스타일 */
+.deck-stack-container {
   display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  overflow: hidden;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
 }
 
-.fan-deck {
+.deck-stack {
   position: relative;
   width: 100px;
-  height: 280px;
+  height: 150px;
+  cursor: pointer;
 }
 
-.fan-card {
+.stack-card {
   position: absolute;
   bottom: 0;
-  left: 50%;
-  width: 50px;
-  height: 75px;
-  margin-left: -25px;
+  left: 0;
+  width: 100px;
+  height: 150px;
   background: linear-gradient(145deg, #252540, #1a1a30);
-  border: 1.5px solid var(--color-accent-gold);
-  border-radius: 5px;
+  border: 2px solid var(--color-accent-gold);
+  border-radius: 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 
-    0 2px 10px rgba(0, 0, 0, 0.3),
-    inset 0 0 15px rgba(201, 162, 39, 0.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
   transition: box-shadow 0.2s;
 }
 
-.fan-card:hover:not(.selected):not(:disabled) {
+.stack-card:hover:not(:disabled) {
   border-color: var(--color-accent-purple);
-  box-shadow: 
-    0 0 25px rgba(124, 92, 191, 0.5),
-    0 10px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 25px rgba(124, 92, 191, 0.5);
 }
 
-.fan-card .card-symbol {
+.stack-card .card-symbol {
   color: var(--color-accent-gold);
-  font-size: 0.9rem;
+  font-size: 1.5rem;
   opacity: 0.7;
 }
 
-.fan-card.selected {
-  pointer-events: none;
-}
-
-.fan-card:disabled:not(.selected) {
-  opacity: 0.3;
+.stack-card:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* 프리로딩 상태 표시 */
+.deck-hint {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.select-hint {
+  margin-top: var(--spacing-sm);
+}
+
+/* 프리로딩 상태 */
 .preload-status {
   display: flex;
   align-items: center;
@@ -276,7 +264,6 @@
   border-radius: 10px;
   color: var(--color-accent-purple-light);
   font-size: 0.85rem;
-  margin-bottom: var(--spacing-sm);
 }
 
 .preload-spinner {
@@ -294,14 +281,14 @@
 
 /* 카드 공개 */
 .revealing-phase {
-  max-width: 600px;
+  max-width: 700px;
 }
 
 .reveal-actions {
   min-height: 56px;
   display: flex;
   justify-content: center;
-  margin-top: var(--spacing-md);
+  margin-top: var(--spacing-lg);
 }
 
 .reveal-grid {
@@ -319,13 +306,13 @@
 
 .reveal-grid.grid-3 {
   grid-template-columns: repeat(3, 1fr);
-  max-width: 340px;
+  max-width: 380px;
   margin: 0 auto;
 }
 
 .reveal-grid.grid-10 {
   grid-template-columns: repeat(5, 1fr);
-  max-width: 450px;
+  max-width: 500px;
   margin: 0 auto;
 }
 
@@ -340,7 +327,7 @@
   font-size: 0.65rem;
   color: var(--color-accent-purple-light);
   text-align: center;
-  max-width: 80px;
+  max-width: 85px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -349,53 +336,41 @@
 /* 반응형 */
 @media (max-width: 600px) {
   .reading-content {
-    padding: calc(60px + var(--spacing-sm)) var(--spacing-sm) var(--spacing-sm);
-  }
-  
-  .fan-deck-container {
-    height: 280px;
-  }
-  
-  .fan-card {
-    width: 40px;
-    height: 60px;
-    margin-left: -20px;
+    padding: calc(60px + var(--spacing-md)) var(--spacing-sm) var(--spacing-md);
   }
   
   .selected-slots {
-    gap: 6px;
-    padding: var(--spacing-xs) var(--spacing-sm);
+    gap: 8px;
+    padding: var(--spacing-sm) var(--spacing-md);
   }
   
   .slot-icon,
   .slot-num {
-    width: 30px;
-    height: 45px;
-    font-size: 0.7rem;
+    width: 38px;
+    height: 57px;
   }
   
-  .slot-name {
-    font-size: 0.5rem;
-    max-width: 38px;
-  }
-  
-  .reveal-grid.grid-10 {
+  .selected-slots.slots-10 {
     max-width: 380px;
   }
   
-  .question-icon {
-    font-size: 3rem;
-  }
-}
-
-@media (max-width: 400px) {
-  .fan-deck-container {
-    height: 240px;
+  .selected-slots.slots-10 .slot-icon,
+  .selected-slots.slots-10 .slot-num {
+    width: 34px;
+    height: 51px;
   }
   
-  .fan-card {
-    width: 35px;
-    height: 52px;
-    margin-left: -17px;
+  .reveal-grid.grid-10 {
+    max-width: 420px;
+  }
+  
+  .stack-card {
+    width: 85px;
+    height: 127px;
+  }
+  
+  .deck-stack {
+    width: 85px;
+    height: 127px;
   }
 }
