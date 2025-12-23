@@ -159,16 +159,19 @@
 }
 
 .slot-num {
-  width: 32px;
-  height: 32px;
+  width: clamp(28px, 6vw, 32px);
+  height: clamp(28px, 6vw, 32px);
+  min-width: 28px;
+  min-height: 28px;
   border-radius: 50%;
   background: var(--color-accent-gold);
   color: var(--color-bg-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: clamp(0.85rem, 2vw, 1rem);
   font-weight: 600;
+  aspect-ratio: 1;
 }
 
 /* 선택된 카드는 TarotCard 컴포넌트 사용 - 플레이스홀더와 같은 크기 */
@@ -195,9 +198,12 @@
 }
 
 .selected-slots.slots-10 .slot-num {
-  width: 28px;
-  height: 28px;
-  font-size: 0.9rem;
+  width: clamp(24px, 5vw, 28px);
+  height: clamp(24px, 5vw, 28px);
+  min-width: 24px;
+  min-height: 24px;
+  font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+  aspect-ratio: 1;
 }
 
 /* 카드 부채꼴 배치 컨테이너 */
@@ -225,12 +231,17 @@
   width: 100%;
   height: 100%;
   overflow-x: auto;
-  overflow-y: visible;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
   /* 스크롤바 숨기기 */
   scrollbar-width: none;
   -ms-overflow-style: none;
+  cursor: grab;
+}
+
+.card-fan-scroll:active {
+  cursor: grabbing;
 }
 
 .card-fan-scroll::-webkit-scrollbar {
@@ -263,10 +274,16 @@
   will-change: transform;
   user-select: none;
   -webkit-user-select: none;
+  transition: transform 0.15s ease-out !important;
 }
 
 .fan-card-wrapper:active {
   cursor: grabbing !important;
+}
+
+/* 호버 해제 시 빠르게 원래 위치로 */
+.fan-card-wrapper:not(:hover) {
+  transition: transform 0.15s ease-out !important;
 }
 
 .fan-card-wrapper .tarot-card {

@@ -256,23 +256,24 @@ const Reading = () => {
               <div className="card-fan-container" ref={containerRef}>
                 <div className="card-fan-scroll">
                   <div className="card-fan-inner">
-                    {shuffledDeck.map((card, index) => {
-                      const isSelected = selectedCardIds.includes(card.id);
+                    {shuffledDeck
+                      .filter(card => !selectedCardIds.includes(card.id)) // 선택된 카드는 제외
+                      .map((card, index) => {
                       const isDisabled = selectedCards.length >= spread.cardCount;
                       
                       // 가로 위치 (스크롤을 위해, 겹치게 배치)
-                      const horizontalOffset = (index - shuffledDeck.length / 2) * 25; // 겹치게 (25px 간격)
+                      const horizontalOffset = (index - (shuffledDeck.length - selectedCardIds.length) / 2) * 25; // 겹치게 (25px 간격)
                       
                       return (
                         <motion.div
                           key={card.id}
-                          className={`fan-card-wrapper ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
-                          drag={!isSelected && !isDisabled ? "x" : false}
-                          dragConstraints={{ left: -100, right: 100 }}
+                          className={`fan-card-wrapper ${isDisabled ? 'disabled' : ''}`}
+                          drag={!isDisabled ? "y" : false}
+                          dragConstraints={{ top: -200, bottom: 0 }}
                           dragElastic={0.2}
                           onDragEnd={(e, info) => {
-                            // 드래그 끝났을 때 슬롯 위에 있으면 선택
-                            if (Math.abs(info.offset.x) < 50 && Math.abs(info.offset.y) < 100) {
+                            // 위로 드래그했으면 선택
+                            if (info.offset.y < -50) {
                               selectCard(card);
                             }
                           }}
@@ -281,34 +282,39 @@ const Reading = () => {
                             scale: 0.9,
                           }}
                           animate={{ 
-                            opacity: isSelected ? 0.3 : 1,
+                            opacity: 1,
                             x: 0,
                             y: 0,
                             rotate: 0,
                             scale: 1,
                           }}
-                          whileHover={!isSelected && !isDisabled ? { 
+                          whileHover={!isDisabled ? { 
                             y: -20,
                             scale: 1.1,
-                            zIndex: index + 100,
-                            transition: { duration: 0.15 }
+                            zIndex: index + 1000,
+                            transition: { duration: 0.15, ease: "easeOut" }
                           } : {}}
-                          whileTap={!isSelected && !isDisabled ? { scale: 0.95 } : {}}
+                          whileTap={!isDisabled ? { scale: 0.95 } : {}}
                           transition={{ 
                             delay: index * 0.01,
                             type: "spring",
                             stiffness: 200,
-                            damping: 20
+                            damping: 20,
+                            // 호버 해제 시 빠르게 원래 위치로
+                            layout: false
                           }}
                           style={{
                             position: 'absolute',
                             left: `calc(50% + ${horizontalOffset}px)`,
-                            bottom: '40px',
+                            bottom: '100px',
                             transformOrigin: 'center bottom',
-                            cursor: isDisabled ? 'not-allowed' : (isSelected ? 'default' : 'grab'),
+                            cursor: isDisabled ? 'not-allowed' : 'grab',
                             zIndex: index,
                           }}
-                          onClick={() => !isSelected && !isDisabled && selectCard(card)}
+                          onClick={() => !isDisabled && selectCard(card)}
+                          onHoverStart={() => {
+                            // 다른 카드들의 호버 상태를 초기화하기 위해 transition을 빠르게
+                          }}
                         >
                           <TarotCard 
                             card={card} 
