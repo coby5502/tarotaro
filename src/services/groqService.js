@@ -1,9 +1,9 @@
 // ============================================
-// Groq AI 타로 해석 서비스
+// OpenAI ChatGPT 타로 해석 서비스
 // ============================================
 
-const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
-const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
+const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
 const getLanguageName = (lang) => {
   const names = { ko: 'Korean', en: 'English', ja: 'Japanese' };
@@ -82,21 +82,21 @@ IMPORTANT: Respond ONLY in ${langName}. Do NOT mix other languages!`;
 };
 
 export const generateTarotReading = async (cards, spread, question, language) => {
-  if (!GROQ_API_KEY) {
+  if (!OPENAI_API_KEY) {
     throw new Error('API key not configured');
   }
 
   const prompt = buildPrompt(cards, spread, question, language);
 
   try {
-    const response = await fetch(GROQ_API_URL, {
+    const response = await fetch(OPENAI_API_URL, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${GROQ_API_KEY}`,
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'gpt-4o-mini',
         messages: [
           {
             role: 'system',
@@ -120,7 +120,7 @@ export const generateTarotReading = async (cards, spread, question, language) =>
     const data = await response.json();
     return data.choices[0]?.message?.content || '';
   } catch (error) {
-    console.error('Groq API Error:', error);
+    console.error('OpenAI API Error:', error);
     throw error;
   }
 };
