@@ -140,7 +140,7 @@
 .selected-slots.slots-10 {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
+  gap: 12px;
   max-width: 500px;
   width: 100%;
 }
@@ -395,17 +395,22 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .reveal-label {
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   color: var(--color-accent-purple-light);
   text-align: center;
-  max-width: 85px;
+  max-width: 100px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.reveal-grid.grid-10 .reveal-label {
+  font-size: 0.65rem;
+  max-width: 90px;
 }
 
 /* 반응형 */
@@ -428,12 +433,12 @@
   
   .selected-slots.slots-10 {
     max-width: 450px;
-    gap: 8px;
+    gap: 10px;
   }
   
   .reveal-grid.grid-10 {
     max-width: 500px;
-    gap: 10px;
+    gap: 12px;
   }
 }
 
@@ -461,7 +466,7 @@
   
   .selected-slots.slots-10 {
     max-width: 100%;
-    gap: 6px;
+    gap: 8px;
     padding: var(--spacing-sm);
   }
   
@@ -478,6 +483,11 @@
   .reveal-grid.grid-10 {
     max-width: 100%;
     gap: 8px;
+  }
+  
+  .reveal-grid.grid-10 .reveal-label {
+    font-size: 0.6rem;
+    max-width: 70px;
   }
   
   .phase-hint {
