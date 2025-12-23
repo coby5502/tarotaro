@@ -556,13 +556,14 @@
   }
   
   .selected-slots.slots-1 {
+    grid-template-columns: 1fr !important;
     max-width: 120px !important;
     width: 120px !important;
     gap: var(--spacing-md);
     margin-left: auto !important;
     margin-right: auto !important;
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0 !important;
+    justify-items: center !important;
   }
   
   .selected-slots.slots-10 {
