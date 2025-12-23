@@ -117,6 +117,7 @@ export const translations = {
     
     // Result
     revealAll: 'Reveal All',
+    flipCard: 'Flip Card',
     readingResult: 'Reading Result',
     yourQuestion: 'Your Question',
     aiInterpretation: 'Tarot Interpretation',
