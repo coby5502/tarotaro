@@ -82,20 +82,44 @@ const Result = () => {
   const handleSaveImage = async () => {
     if (!shareCardRef.current) return;
     setIsGeneratingImage(true);
-    await new Promise(resolve => setTimeout(resolve, 150));
+    
+    // 이미지 로딩 대기
+    const images = shareCardRef.current.querySelectorAll('img');
+    await Promise.all(
+      Array.from(images).map(img => {
+        if (img.complete) return Promise.resolve();
+        return new Promise((resolve, reject) => {
+          img.onload = resolve;
+          img.onerror = resolve; // 에러가 나도 계속 진행
+          setTimeout(resolve, 2000); // 최대 2초 대기
+        });
+      })
+    );
+    
+    // 추가 대기 (렌더링 완료 보장)
+    await new Promise(resolve => setTimeout(resolve, 300));
     
     try {
       const canvas = await html2canvas(shareCardRef.current, {
         backgroundColor: '#0f0f1a',
-        scale: 3, // 화질 향상을 위해 스케일 증가
+        scale: 3,
         logging: false,
         useCORS: true,
-        allowTaint: true,
-        imageTimeout: 5000,
+        allowTaint: false, // allowTaint를 false로 변경
+        imageTimeout: 10000,
         height: shareCardRef.current.scrollHeight,
         width: shareCardRef.current.scrollWidth,
         windowWidth: shareCardRef.current.scrollWidth,
         windowHeight: shareCardRef.current.scrollHeight,
+        onclone: (clonedDoc) => {
+          // 클론된 문서에서 이미지가 제대로 로드되었는지 확인
+          const clonedImages = clonedDoc.querySelectorAll('img');
+          clonedImages.forEach(img => {
+            if (!img.complete || img.naturalWidth === 0) {
+              img.style.display = 'none';
+            }
+          });
+        },
       });
       
       // JPEG로 변환, 품질 0.92로 화질 개선 (약 5MB 목표)
@@ -105,6 +129,7 @@ const Result = () => {
       link.click();
     } catch (err) {
       console.error('Image generation failed:', err);
+      alert('이미지 저장에 실패했습니다. 다시 시도해주세요.');
     }
     setIsGeneratingImage(false);
   };
@@ -302,7 +327,13 @@ const Result = () => {
                   <div className={`share-cards-row cards-${cards.length}`}>
                     {cards.map((card, i) => (
                       <div key={i} className={`share-card-img ${card.isReversed ? 'reversed' : ''}`}>
-                        <img src={card.image} alt="" crossOrigin="anonymous" />
+                        <img 
+                          src={card.image} 
+                          alt="" 
+                          crossOrigin="anonymous"
+                          loading="eager"
+                          decoding="sync"
+                        />
                       </div>
                     ))}
                   </div>

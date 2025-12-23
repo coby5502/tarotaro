@@ -341,12 +341,13 @@
   margin: 0 auto var(--spacing-md);
   background: linear-gradient(165deg, #1a1a2e 0%, #0f0f1a 100%);
   border-radius: 12px;
-  overflow: visible;
+  overflow: hidden; /* visible에서 hidden으로 변경하여 html2canvas가 제대로 캡처하도록 */
   border: 1px solid rgba(201, 162, 39, 0.4);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
   min-height: auto;
   display: flex;
   flex-direction: column;
+  position: relative; /* html2canvas를 위한 위치 지정 */
 }
 
 .share-header {
@@ -428,14 +429,22 @@
 
 .share-card-img {
   width: 40px;
+  aspect-ratio: 2 / 3; /* 카드 비율 유지 */
   border-radius: 4px;
   overflow: hidden;
   border: 1px solid rgba(201, 162, 39, 0.5);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
 }
 
 .share-cards-row.cards-10 .share-card-img {
   width: 100%;
+  aspect-ratio: 2 / 3; /* 카드 비율 유지 */
+}
+
+.share-cards-row.cards-1 .share-card-img,
+.share-cards-row.cards-3 .share-card-img {
+  aspect-ratio: 2 / 3; /* 카드 비율 유지 */
 }
 
 .share-card-img.reversed {
@@ -444,7 +453,9 @@
 
 .share-card-img img {
   width: 100%;
+  height: 100%;
   display: block;
+  object-fit: cover; /* 이미지가 영역을 꽉 채우도록 */
 }
 
 .share-card-names {
@@ -492,6 +503,7 @@
   color: #c9a227;
   letter-spacing: 0.03em;
   border-top: 1px solid rgba(201, 162, 39, 0.2);
+  flex-shrink: 0; /* footer가 줄어들지 않도록 */
 }
 
 .share-buttons {
