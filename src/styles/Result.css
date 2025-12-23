@@ -224,15 +224,20 @@
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: 20px;
-  padding: var(--spacing-xl);
+  padding: var(--spacing-2xl) var(--spacing-xl) var(--spacing-xl);
   position: relative;
   max-width: 320px;
   text-align: center;
 }
 
+.card-detail-modal .modal-close {
+  top: 16px;
+  right: 16px;
+}
+
 .card-detail-img {
   width: 180px;
-  margin: 0 auto var(--spacing-lg);
+  margin: var(--spacing-sm) auto var(--spacing-lg);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
@@ -273,12 +278,17 @@
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: 20px;
-  padding: var(--spacing-lg);
+  padding: var(--spacing-2xl) var(--spacing-lg) var(--spacing-lg);
   position: relative;
   max-width: 400px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
+}
+
+.share-modal .modal-close {
+  top: 16px;
+  right: 16px;
 }
 
 /* 공유용 카드 - 예쁜 디자인 */
