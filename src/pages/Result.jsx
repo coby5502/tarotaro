@@ -9,7 +9,7 @@ import html2canvas from 'html2canvas';
 import TarotCard from '../components/TarotCard';
 import Navbar from '../components/Navbar';
 import { useLanguage } from '../i18n/LanguageContext';
-import { generateTarotReading } from '../services/groqService';
+import { generateTarotReading } from '../services/aiService';
 import '../styles/Result.css';
 
 const Result = () => {

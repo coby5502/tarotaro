@@ -124,3 +124,4 @@ export const generateTarotReading = async (cards, spread, question, language) =>
     throw error;
   }
 };
+
