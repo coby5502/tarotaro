@@ -26,6 +26,7 @@ const Reading = () => {
   const [isLoadingAI, setIsLoadingAI] = useState(false);
   const [aiError, setAiError] = useState(null);
   const hasFetchedRef = useRef(false);
+  const containerRef = useRef(null);
 
   // 전체 덱 섞기
   const shuffleDeck = useMemo(() => {
@@ -242,43 +243,64 @@ const Reading = () => {
                 {t('selectCard')} <strong>{selectedCards.length}/{spread.cardCount}</strong>
               </p>
 
-              {/* 카드 그리드 */}
-              <div className="card-grid-container">
+              {/* 카드 원형 배치 */}
+              <div className="card-circle-container" ref={containerRef}>
                 <motion.div 
-                  className="card-grid"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
+                  className="card-circle"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
                 >
                   {shuffledDeck.map((card, index) => {
                     const isSelected = selectedCardIds.includes(card.id);
                     const isDisabled = selectedCards.length >= spread.cardCount;
                     
+                    // 원형 배치 계산 (전체 카드 중 반원 아래 부분 배치)
+                    const totalCards = shuffledDeck.length;
+                    const angleStep = (Math.PI * 1.4) / totalCards; // 252도 범위 (아래쪽 잘림)
+                    const angle = (index * angleStep) - (Math.PI * 0.7) + (angleStep * 0.5); // 아래쪽 중심
+                    const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 800;
+                    const radius = Math.min(viewportWidth * 0.35, 320); // 반지름 (화면 크기에 따라)
+                    const x = Math.sin(angle) * radius;
+                    const y = Math.cos(angle) * radius;
+                    
                     return (
                       <motion.button
                         key={card.id}
-                        className={`grid-card ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
+                        className={`circle-card ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
                         onClick={() => !isSelected && !isDisabled && selectCard(card)}
                         disabled={isSelected || isDisabled}
-                        initial={{ opacity: 0, scale: 0.8 }}
+                        initial={{ 
+                          opacity: 0, 
+                          scale: 0,
+                          x: 0,
+                          y: 0
+                        }}
                         animate={{ 
                           opacity: isSelected ? 0.3 : 1,
-                          scale: isSelected ? 0.95 : 1,
+                          scale: isSelected ? 0.85 : 1,
                         }}
                         whileHover={!isSelected && !isDisabled ? { 
-                          scale: 1.1,
+                          scale: 1.15,
                           zIndex: 10,
                           transition: { duration: 0.2 }
                         } : {}}
-                        whileTap={!isSelected && !isDisabled ? { scale: 0.95 } : {}}
+                        whileTap={!isSelected && !isDisabled ? { scale: 0.9 } : {}}
                         transition={{ 
-                          delay: index * 0.01,
+                          delay: index * 0.015,
                           type: "spring",
-                          stiffness: 300
+                          stiffness: 200,
+                          damping: 20
+                        }}
+                        style={{
+                          position: 'absolute',
+                          left: `calc(50% + ${x}px)`,
+                          top: `calc(50% + ${y}px)`,
+                          transform: 'translate(-50%, -50%)',
                         }}
                       >
                         {/* 카드 뒷면 표시 */}
-                        <div className="grid-card-back">
+                        <div className="circle-card-back">
                           <div className="card-back-design">
                             <span>✦</span>
                           </div>
