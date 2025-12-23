@@ -37,6 +37,12 @@ const Reading = () => {
     return question.trim() || t('defaultQuestion');
   };
 
+  const getSpreadName = () => {
+    if (spreadType === 'oneCard') return t('oneCard');
+    if (spreadType === 'threeCard') return t('threeCard');
+    return t('celticCross');
+  };
+
   useEffect(() => {
     if (!spread) navigate('/');
   }, [spread, navigate]);
@@ -218,30 +224,29 @@ const Reading = () => {
               exit={{ opacity: 0 }}
             >
               {/* 선택된 카드 슬롯 */}
+              <div className="spread-header">
+                <h2 className="spread-title">{getSpreadName()}</h2>
+              </div>
+              
               <div className={`selected-slots ${spread.cardCount === 10 ? 'slots-10' : ''}`}>
                 {spread.positions.map((pos, i) => {
                   const card = selectedCards[i];
                   return (
-                    <motion.div 
+                    <div 
                       key={i} 
                       className={`slot ${card ? 'filled' : ''}`}
-                      animate={card ? { scale: [1.2, 1] } : {}}
-                      transition={{ type: "spring", stiffness: 400 }}
                     >
                       {card ? (
-                        <span className="slot-icon">✓</span>
+                        <div className="slot-card">✓</div>
                       ) : (
-                        <span className="slot-num">{i + 1}</span>
+                        <div className="slot-empty">
+                          <span className="slot-num">{i + 1}</span>
+                        </div>
                       )}
-                      <span className="slot-name">{pos.name}</span>
-                    </motion.div>
+                    </div>
                   );
                 })}
               </div>
-
-              <p className="phase-hint select-hint">
-                {t('selectCard')} <strong>{selectedCards.length}/{spread.cardCount}</strong>
-              </p>
 
               {/* 카드 부채꼴 배치 */}
               <div className="card-fan-container" ref={containerRef}>
@@ -267,7 +272,7 @@ const Reading = () => {
                     const radius = baseRadius + (Math.abs(index - totalCards / 2) / totalCards) * radiusVariation;
                     
                     const x = Math.sin(angle) * radius;
-                    const y = Math.cos(angle) * radius * 0.7; // 아래로 더 펼쳐짐
+                    const y = -Math.cos(angle) * radius * 0.8; // 위로 펼쳐짐
                     const rotation = angle * (180 / Math.PI); // 각도를 도(degree)로 변환
                     
                     return (
@@ -305,25 +310,14 @@ const Reading = () => {
                         style={{
                           position: 'absolute',
                           left: '50%',
-                          top: '40%',
+                          bottom: '0',
                           transformOrigin: 'center bottom',
                         }}
                       >
-                        {/* 카드 뒷면 표시 */}
-                        <div className="fan-card-back">
-                          <div className="card-back-design">
-                            <span>✦</span>
-                          </div>
-                        </div>
+                        {/* 카드 뒷면 - 단순하게 */}
+                        <div className="fan-card-back"></div>
                         {isSelected && (
-                          <motion.div 
-                            className="card-selected-badge"
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{ type: "spring", stiffness: 400 }}
-                          >
-                            ✓
-                          </motion.div>
+                          <div className="card-selected-overlay"></div>
                         )}
                       </motion.button>
                     );
