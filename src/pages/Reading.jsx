@@ -20,6 +20,7 @@ const Reading = () => {
   const [selectedCardIds, setSelectedCardIds] = useState([]);
   const [selectedCards, setSelectedCards] = useState([]);
   const [revealedCount, setRevealedCount] = useState(0);
+  const [clickingCardId, setClickingCardId] = useState(null);
   
   // API 프리로딩 상태
   const [aiReading, setAiReading] = useState(null);
@@ -89,18 +90,24 @@ const Reading = () => {
     if (selectedCards.length >= spread.cardCount) return;
     if (selectedCardIds.includes(card.id)) return;
 
-    const drawnCard = {
-      ...card,
-      isReversed: Math.random() < 0.5,
-      position: spread.positions[selectedCards.length]
-    };
+    // 클릭 애니메이션 시작
+    setClickingCardId(card.id);
     
-    setSelectedCardIds(prev => [...prev, card.id]);
-    setSelectedCards(prev => [...prev, drawnCard]);
+    setTimeout(() => {
+      const drawnCard = {
+        ...card,
+        isReversed: Math.random() < 0.5,
+        position: spread.positions[selectedCards.length]
+      };
+      
+      setSelectedCardIds(prev => [...prev, card.id]);
+      setSelectedCards(prev => [...prev, drawnCard]);
+      setClickingCardId(null);
 
-    if (selectedCards.length + 1 === spread.cardCount) {
-      setTimeout(() => setPhase('revealing'), 400);
-    }
+      if (selectedCards.length + 1 === spread.cardCount) {
+        setTimeout(() => setPhase('revealing'), 400);
+      }
+    }, 300); // 애니메이션 시간
   };
 
   const revealNext = () => {
@@ -259,6 +266,7 @@ const Reading = () => {
                     {shuffledDeck.map((card, index) => {
                       const isSelected = selectedCardIds.includes(card.id);
                       const isDisabled = selectedCards.length >= spread.cardCount;
+                      const isClicking = clickingCardId === card.id;
                       
                       // 가로 위치 (스크롤을 위해, 겹치게 배치)
                       const horizontalOffset = (index - shuffledDeck.length / 2) * 35; // 겹치게 (35px 간격, 더 크게)
@@ -267,7 +275,7 @@ const Reading = () => {
                         <motion.div
                           key={card.id}
                           className={`fan-card-wrapper ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
-                          drag={!isSelected && !isDisabled ? "y" : false}
+                          drag={!isSelected && !isDisabled && !isClicking ? "y" : false}
                           dragConstraints={{ top: -200, bottom: 0 }}
                           dragElastic={0.2}
                           onDragEnd={(e, info) => {
@@ -283,22 +291,22 @@ const Reading = () => {
                           animate={{ 
                             opacity: isSelected ? 0 : 1,
                             x: 0,
-                            y: 0,
+                            y: isClicking ? -150 : 0,
                             rotate: 0,
-                            scale: 1,
+                            scale: isClicking ? 1.2 : 1,
                           }}
-                          whileHover={!isSelected && !isDisabled ? { 
+                          whileHover={!isSelected && !isDisabled && !isClicking ? { 
                             y: -20,
                             scale: 1.1,
                             zIndex: index + 1000,
                             transition: { duration: 0.15, ease: "easeOut" }
                           } : {}}
-                          whileTap={!isSelected && !isDisabled ? { scale: 0.95 } : {}}
+                          whileTap={!isSelected && !isDisabled && !isClicking ? { scale: 0.95 } : {}}
                           transition={{ 
                             delay: index * 0.01,
                             type: "spring",
-                            stiffness: 200,
-                            damping: 20,
+                            stiffness: isClicking ? 300 : 200,
+                            damping: isClicking ? 25 : 20,
                             layout: false
                           }}
                           style={{
@@ -306,11 +314,11 @@ const Reading = () => {
                             left: `calc(50% + ${horizontalOffset}px)`,
                             bottom: '100px',
                             transformOrigin: 'center bottom',
-                            cursor: isSelected || isDisabled ? 'default' : 'grab',
-                            zIndex: index,
-                            pointerEvents: isSelected ? 'none' : 'auto',
+                            cursor: isSelected || isDisabled || isClicking ? 'default' : 'grab',
+                            zIndex: isClicking ? 9999 : index,
+                            pointerEvents: isSelected || isClicking ? 'none' : 'auto',
                           }}
-                          onClick={() => !isSelected && !isDisabled && selectCard(card)}
+                          onClick={() => !isSelected && !isDisabled && !isClicking && selectCard(card)}
                         >
                           <TarotCard 
                             card={card} 
