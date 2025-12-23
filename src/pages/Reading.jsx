@@ -249,13 +249,13 @@ const Reading = () => {
               <div className={`reveal-grid grid-${spread.cardCount}`}>
                 {selectedCards.map((card, index) => (
                   <div key={card.id} className="reveal-item">
-                    <span className="reveal-label">{card.position.name}</span>
                     <TarotCard
                       card={card}
                       isRevealed={index < revealedCount}
                       onClick={() => index === revealedCount && revealNext()}
                       size="small"
                     />
+                    <span className="reveal-label">{card.position.name}</span>
                   </div>
                 ))}
               </div>
