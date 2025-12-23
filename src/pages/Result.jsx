@@ -431,22 +431,34 @@ const Result = () => {
                     display: 'flex',
                     flexWrap: 'wrap',
                     justifyContent: 'center',
-                    gap: '6px',
+                    gap: '4px',
                     marginBottom: '16px',
                   }}>
-                    {cards.map((card, i) => (
+                    {cards.slice(0, 4).map((card, i) => (
                       <span key={i} style={{
                         background: 'rgba(212, 175, 55, 0.15)',
                         color: '#d4af37',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '11px',
+                        padding: '3px 8px',
+                        borderRadius: '10px',
+                        fontSize: cards.length > 3 ? '10px' : '11px',
                         border: '1px solid rgba(212, 175, 55, 0.3)',
                       }}>
                         {card.name.ko || card.name.en}
                         {card.isReversed && ' ↺'}
                       </span>
                     ))}
+                    {cards.length > 4 && (
+                      <span style={{
+                        background: 'rgba(139, 92, 246, 0.15)',
+                        color: '#a78bfa',
+                        padding: '3px 8px',
+                        borderRadius: '10px',
+                        fontSize: '10px',
+                        border: '1px solid rgba(139, 92, 246, 0.3)',
+                      }}>
+                        +{cards.length - 4}
+                      </span>
+                    )}
                   </div>
                   
                   <p style={{
