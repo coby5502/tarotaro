@@ -224,10 +224,6 @@ const Reading = () => {
               exit={{ opacity: 0 }}
             >
               {/* 선택된 카드 슬롯 */}
-              <div className="spread-header">
-                <h2 className="spread-title">{getSpreadName()}</h2>
-              </div>
-              
               <div className={`selected-slots ${spread.cardCount === 10 ? 'slots-10' : ''}`}>
                 {spread.positions.map((pos, i) => {
                   const card = selectedCards[i];
@@ -248,81 +244,78 @@ const Reading = () => {
                 })}
               </div>
 
+              <p className="phase-hint select-hint">
+                {t('selectCard')} <strong>{selectedCards.length}/{spread.cardCount}</strong>
+              </p>
+
               {/* 카드 부채꼴 배치 */}
               <div className="card-fan-container" ref={containerRef}>
-                <motion.div 
-                  className="card-fan"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2, duration: 0.5 }}
-                >
+                <div className="card-fan">
                   {shuffledDeck.map((card, index) => {
                     const isSelected = selectedCardIds.includes(card.id);
                     const isDisabled = selectedCards.length >= spread.cardCount;
                     
                     // 부채꼴 배치 계산
                     const totalCards = shuffledDeck.length;
-                    const spreadAngle = Math.PI * 1.1; // 198도 범위 (부채꼴 각도)
-                    const startAngle = -spreadAngle / 2; // 시작 각도
+                    const spreadAngle = Math.PI * 0.9; // 162도 범위
+                    const startAngle = -spreadAngle / 2;
                     const angle = startAngle + (index / (totalCards - 1 || 1)) * spreadAngle;
                     
-                    // 반지름 계산 (중앙에서 멀어질수록 커짐)
-                    const baseRadius = 150;
-                    const radiusVariation = 80; // 반지름 변화량
-                    const radius = baseRadius + (Math.abs(index - totalCards / 2) / totalCards) * radiusVariation;
+                    const baseRadius = 120;
+                    const radius = baseRadius + (Math.abs(index - totalCards / 2) / totalCards) * 60;
                     
                     const x = Math.sin(angle) * radius;
-                    const y = -Math.cos(angle) * radius * 0.8; // 위로 펼쳐짐
-                    const rotation = angle * (180 / Math.PI); // 각도를 도(degree)로 변환
+                    const y = -Math.cos(angle) * radius * 0.6;
+                    const rotation = angle * (180 / Math.PI);
                     
                     return (
-                      <motion.button
+                      <motion.div
                         key={card.id}
-                        className={`fan-card ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
-                        onClick={() => !isSelected && !isDisabled && selectCard(card)}
-                        disabled={isSelected || isDisabled}
+                        className={`fan-card-wrapper ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
                         initial={{ 
-                          opacity: 0, 
-                          scale: 0,
-                          rotate: rotation + (Math.random() - 0.5) * 20,
-                          y: 100
+                          opacity: 0,
+                          y: 50,
                         }}
                         animate={{ 
                           opacity: isSelected ? 0.3 : 1,
-                          scale: isSelected ? 0.85 : 1,
-                          rotate: rotation,
                           x: x,
                           y: y,
+                          rotate: rotation,
                         }}
                         whileHover={!isSelected && !isDisabled ? { 
-                          scale: 1.15,
-                          y: y - 15,
+                          y: y - 10,
+                          scale: 1.1,
                           zIndex: 100,
-                          transition: { duration: 0.2 }
                         } : {}}
-                        whileTap={!isSelected && !isDisabled ? { scale: 0.9 } : {}}
                         transition={{ 
-                          delay: index * 0.02,
+                          delay: index * 0.01,
                           type: "spring",
-                          stiffness: 150,
-                          damping: 15
+                          stiffness: 200,
+                          damping: 20
                         }}
                         style={{
                           position: 'absolute',
                           left: '50%',
-                          bottom: '0',
+                          top: '30%',
                           transformOrigin: 'center bottom',
+                          cursor: isDisabled ? 'not-allowed' : 'pointer',
                         }}
+                        onClick={() => !isSelected && !isDisabled && selectCard(card)}
                       >
-                        {/* 카드 뒷면 - 단순하게 */}
-                        <div className="fan-card-back"></div>
+                        <TarotCard 
+                          card={card} 
+                          isRevealed={false} 
+                          size="small"
+                        />
                         {isSelected && (
-                          <div className="card-selected-overlay"></div>
+                          <div className="card-selected-overlay">
+                            <span>✓</span>
+                          </div>
                         )}
-                      </motion.button>
+                      </motion.div>
                     );
                   })}
-                </motion.div>
+                </div>
               </div>
             </motion.div>
           )}
