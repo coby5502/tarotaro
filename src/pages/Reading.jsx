@@ -31,7 +31,9 @@ const Reading = () => {
   const scrollRef = useRef(null);
   const [isDraggingScroll, setIsDraggingScroll] = useState(false);
   const scrollStartX = useRef(0);
+  const scrollStartY = useRef(0);
   const scrollLeft = useRef(0);
+  const dragStartRef = useRef(null);
 
   // 전체 덱 섞기
   const shuffleDeck = useMemo(() => {
