@@ -1,263 +1,126 @@
 // ============================================
-// Groq API Service
-// LLM 기반 타로 해석 서비스 (다국어 지원)
+// Groq AI 타로 해석 서비스
 // ============================================
 
+const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-const MODEL = 'llama-3.3-70b-versatile';
 
-// 환경변수에서 API 키 가져오기
-const getApiKey = () => {
-  return import.meta.env.VITE_GROQ_API_KEY || '';
+const getLanguageName = (lang) => {
+  const names = { ko: 'Korean', en: 'English', ja: 'Japanese' };
+  return names[lang] || 'English';
 };
 
-// 언어별 시스템 프롬프트
-const getSystemPrompt = (language) => {
-  const prompts = {
-    ko: `[LANGUAGE: KOREAN ONLY]
-당신은 20년 경력의 전문 타로 마스터입니다.
-
-## 절대 규칙
-1. 오직 한국어로만 응답하세요
-2. 영어, 일본어, 기타 언어를 절대 사용하지 마세요
-3. 카드 이름도 한국어로 번역해서 사용하세요 (예: The Fool → 바보, The Magician → 마법사)
-4. 모든 텍스트는 100% 한국어여야 합니다
-
-따뜻하고 신비로운 타로 해석을 제공하세요.`,
-
-    en: `[LANGUAGE: ENGLISH ONLY]
-You are a professional tarot master with 20 years of experience.
-
-## ABSOLUTE RULES
-1. Respond ONLY in English
-2. Do NOT use Korean, Japanese, or any other language
-3. Translate all card names to English (e.g., 바보 → The Fool)
-4. ALL text must be 100% in English
-
-Provide warm and mystical tarot interpretations.`,
-
-    ja: `[LANGUAGE: JAPANESE ONLY]
-あなたは20年の経験を持つプロのタロットマスターです。
-
-## 絶対ルール
-1. 日本語のみで応答してください
-2. 韓国語、英語、その他の言語は絶対に使用しないでください
-3. カード名も日本語に翻訳して使用してください（例: The Fool → 愚者）
-4. すべてのテキストは100%日本語でなければなりません
-
-温かく神秘的なタロット解釈を提供してください。`
+const getLanguageInstruction = (lang) => {
+  const instructions = {
+    ko: '반드시 한국어로만 답변하세요. 영어나 일본어를 섞지 마세요.',
+    en: 'You must respond only in English. Do not mix Korean or Japanese.',
+    ja: '必ず日本語のみで回答してください。韓国語や英語を混ぜないでください。'
   };
-  return prompts[language] || prompts['en'];
+  return instructions[lang] || instructions['en'];
 };
 
-// 언어별 출력 포맷
-const getOutputFormat = (language, hasQuestion) => {
-  const formats = {
-    ko: hasQuestion ? `## 🎯 질문에 대한 답변
-(질문에 대해 카드가 말하는 직접적인 답변과 통찰)
+const buildPrompt = (cards, spread, question, lang) => {
+  const langName = getLanguageName(lang);
+  const langInstruction = getLanguageInstruction(lang);
+  
+  const cardInfo = cards.map((card, i) => {
+    const name = card.name.en || card.name.ko;
+    const position = card.position?.meaning || card.position?.name || `Position ${i + 1}`;
+    const direction = card.isReversed ? 'Reversed' : 'Upright';
+    return `${i + 1}. ${name} (${direction}) - ${position}`;
+  }).join('\n');
 
-## 🔮 전체 운세 해석
-(카드들이 전하는 전체적인 흐름과 에너지)
-
-## 🃏 카드별 상세 메시지
-(각 카드가 해당 위치에서 전하는 메시지)
-
-## 💫 실천 조언
-(질문과 관련하여 실제로 행동할 수 있는 구체적인 조언)
-
-## ✨ 핵심 메시지
-(한두 문장으로 압축)` : `## 🔮 오늘의 운세
-(카드들이 전하는 전체적인 흐름과 에너지)
-
-## 🃏 카드별 상세 메시지
-(각 카드가 해당 위치에서 전하는 메시지)
-
-## 💫 실천 조언
-(오늘 하루를 위한 구체적인 조언)
-
-## ✨ 핵심 메시지
-(한두 문장으로 압축)`,
-
-    en: hasQuestion ? `## 🎯 Answer to Your Question
-(Direct answer and insights from the cards regarding your question)
-
-## 🔮 Overall Reading
-(The overall flow and energy conveyed by the cards)
-
-## 🃏 Detailed Message for Each Card
-(Message each card conveys in its position)
-
-## 💫 Practical Advice
-(Specific actionable advice related to your question)
-
-## ✨ Key Message
-(Summarized in one or two sentences)` : `## 🔮 Today's Fortune
-(The overall flow and energy conveyed by the cards)
-
-## 🃏 Detailed Message for Each Card
-(Message each card conveys in its position)
-
-## 💫 Practical Advice
-(Specific advice for your day)
-
-## ✨ Key Message
-(Summarized in one or two sentences)`,
-
-    ja: hasQuestion ? `## 🎯 質問への答え
-(質問に対するカードからの直接的な答えと洞察)
-
-## 🔮 総合運勢解釈
-(カードが伝える全体的な流れとエネルギー)
-
-## 🃏 各カードの詳細メッセージ
-(各カードがその位置で伝えるメッセージ)
-
-## 💫 実践的アドバイス
-(質問に関連した具体的な行動アドバイス)
-
-## ✨ 核心メッセージ
-(一、二文でまとめ)` : `## 🔮 今日の運勢
-(カードが伝える全体的な流れとエネルギー)
-
-## 🃏 各カードの詳細メッセージ
-(各カードがその位置で伝えるメッセージ)
-
-## 💫 実践的アドバイス
-(今日一日のための具体的なアドバイス)
-
-## ✨ 核心メッセージ
-(一、二文でまとめ)`
+  const sectionTitles = {
+    ko: {
+      answer: '## 🎯 질문에 대한 답',
+      cards: '## 🃏 카드 해석',
+      overall: '## ✨ 종합 메시지',
+      advice: '## 💫 조언'
+    },
+    en: {
+      answer: '## 🎯 Answer to Your Question',
+      cards: '## 🃏 Card Interpretation',
+      overall: '## ✨ Overall Message',
+      advice: '## 💫 Advice'
+    },
+    ja: {
+      answer: '## 🎯 質問への答え',
+      cards: '## 🃏 カード解釈',
+      overall: '## ✨ 総合メッセージ',
+      advice: '## 💫 アドバイス'
+    }
   };
-  return formats[language] || formats['en'];
-};
 
-// 타로 해석 프롬프트 생성 (언어 중립적 데이터 전달)
-const buildTarotPrompt = (cards, spread, question, language) => {
-  const hasQuestion = question && question.trim().length > 0;
-  
-  // 카드 정보를 간단하게 전달 (AI가 해당 언어로 번역)
-  const cardInfo = cards.map((card, index) => {
-    const direction = card.isReversed ? 'REVERSED' : 'UPRIGHT';
-    const keywords = card.isReversed ? card.keywords.reversed : card.keywords.upright;
-    
-    return `Card ${index + 1}: ${card.name.en} (${direction})
-Position: ${card.position.name}
-Position meaning: ${card.position.description}
-Keywords: ${keywords.join(', ')}`;
-  }).join('\n\n');
+  const titles = sectionTitles[lang] || sectionTitles['en'];
 
-  const outputFormat = getOutputFormat(language, hasQuestion);
-  
-  const questionEmphasis = {
-    ko: hasQuestion 
-      ? `\n\n⭐ 중요: 질문자의 질문 "${question}"에 대해 카드가 말하는 답을 반드시 첫 번째 섹션에서 직접적으로 답변하세요!` 
-      : '',
-    en: hasQuestion 
-      ? `\n\n⭐ IMPORTANT: You MUST directly answer the querent's question "${question}" in the first section!` 
-      : '',
-    ja: hasQuestion 
-      ? `\n\n⭐ 重要: 質問者の質問「${question}」に対して、最初のセクションで必ず直接答えてください！` 
-      : ''
-  };
-  
-  const langInstruction = {
-    ko: `[한국어로만 답변하세요. 영어 금지!]
+  return `[LANGUAGE: ${langName.toUpperCase()} ONLY]
+${langInstruction}
 
-질문: ${question || '없음 (오늘의 운세)'}
-스프레드: ${spread.name}
+You are a professional tarot reader. Interpret the following tarot reading.
 
-카드 정보:
-${cardInfo}
-
-위 정보를 바탕으로 타로 해석을 한국어로 작성하세요.
-카드 이름은 한국어로 번역하세요 (예: The Fool = 바보).${questionEmphasis.ko}
-
-출력 형식:
-${outputFormat}`,
-
-    en: `[Respond in English ONLY. No Korean!]
-
-Question: ${question || "None (Today's fortune)"}
 Spread: ${spread.name}
+${question ? `Question: ${question}` : 'General reading'}
 
-Card Information:
+Cards drawn:
 ${cardInfo}
 
-Based on the above, write a tarot interpretation in English.${questionEmphasis.en}
+Please provide a warm, insightful reading using these sections:
 
-Output format:
-${outputFormat}`,
+${question ? `${titles.answer}
+(Directly answer the question based on the cards)
 
-    ja: `[日本語のみで答えてください。韓国語・英語禁止！]
+` : ''}${titles.cards}
+(Brief interpretation of each card in its position)
 
-質問: ${question || 'なし（今日の運勢）'}
-スプレッド: ${spread.name}
+${titles.overall}
+(The main message from all cards combined - 2-3 sentences)
 
-カード情報:
-${cardInfo}
+${titles.advice}
+(Practical guidance - 1-2 sentences)
 
-上記の情報に基づいて、タロット解釈を日本語で書いてください。
-カード名は日本語に翻訳してください（例: The Fool = 愚者）。${questionEmphasis.ja}
-
-出力形式:
-${outputFormat}`
-  };
-
-  return langInstruction[language] || langInstruction['en'];
+IMPORTANT: Respond ONLY in ${langName}. Do NOT mix other languages!`;
 };
 
-// Groq API 호출
-export const generateTarotReading = async (cards, spread, question, language = 'ko') => {
-  const apiKey = getApiKey();
-  
-  if (!apiKey) {
+export const generateTarotReading = async (cards, spread, question, language) => {
+  if (!GROQ_API_KEY) {
     throw new Error('API key not configured');
   }
 
-  const prompt = buildTarotPrompt(cards, spread, question, language);
-  const systemPrompt = getSystemPrompt(language);
+  const prompt = buildPrompt(cards, spread, question, language);
 
   try {
     const response = await fetch(GROQ_API_URL, {
       method: 'POST',
       headers: {
+        'Authorization': `Bearer ${GROQ_API_KEY}`,
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: MODEL,
+        model: 'llama-3.3-70b-versatile',
         messages: [
           {
             role: 'system',
-            content: systemPrompt
+            content: `You are a mystical tarot reader. Always respond in ${getLanguageName(language)} only. ${getLanguageInstruction(language)}`
           },
           {
             role: 'user',
             content: prompt
           }
         ],
+        max_tokens: 2000,
         temperature: 0.7,
-        max_tokens: 3000
-      })
+      }),
     });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      if (response.status === 401) {
-        throw new Error('Invalid API key');
-      }
-      if (response.status === 429) {
-        throw new Error('Rate limit exceeded. Please try again later.');
-      }
-      throw new Error(errorData.error?.message || `API error: ${response.status}`);
+      const error = await response.json();
+      throw new Error(error.error?.message || 'API request failed');
     }
 
     const data = await response.json();
-    return data.choices[0]?.message?.content || 'Failed to generate interpretation.';
+    return data.choices[0]?.message?.content || '';
   } catch (error) {
-    if (error.name === 'TypeError' && error.message.includes('fetch')) {
-      throw new Error('Network error. Please check your connection.');
-    }
+    console.error('Groq API Error:', error);
     throw error;
   }
 };
