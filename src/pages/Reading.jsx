@@ -289,14 +289,11 @@ const Reading = () => {
                   className="card-fan-scroll"
                   ref={scrollRef}
                   onMouseDown={(e) => {
-                    // 카드가 아닌 배경 영역에서만 드래그 시작
-                    const target = e.target;
-                    if (!target.closest('.fan-card-wrapper')) {
-                      setIsDraggingScroll(true);
-                      dragStartRef.current = { x: e.pageX, y: e.pageY };
-                      scrollStartX.current = e.pageX - scrollRef.current.offsetLeft;
-                      scrollLeft.current = scrollRef.current.scrollLeft;
-                    }
+                    // 카드 위에서도 가로 드래그 감지를 위해 항상 드래그 시작 정보 저장
+                    setIsDraggingScroll(true);
+                    dragStartRef.current = { x: e.pageX, y: e.pageY };
+                    scrollStartX.current = e.pageX - scrollRef.current.offsetLeft;
+                    scrollLeft.current = scrollRef.current.scrollLeft;
                   }}
                   onMouseLeave={() => {
                     setIsDraggingScroll(false);
@@ -313,7 +310,7 @@ const Reading = () => {
                     const deltaY = Math.abs(e.pageY - dragStartRef.current.y);
                     
                     // 가로 드래그가 세로 드래그보다 크면 스크롤
-                    if (deltaX > deltaY && deltaX > 5) {
+                    if (deltaX > deltaY && deltaX > 10) {
                       e.preventDefault();
                       const x = e.pageX - scrollRef.current.offsetLeft;
                       const walk = (x - scrollStartX.current) * 2;
@@ -344,9 +341,26 @@ const Reading = () => {
                           drag={!isSelected && !isDisabled && !isClicking ? "y" : false}
                           dragConstraints={{ top: -200, bottom: 0 }}
                           dragElastic={0.2}
+                          onDragStart={(e) => {
+                            // 드래그 시작 시점 저장 (가로/세로 구분용)
+                            dragStartRef.current = { x: e.pageX, y: e.pageY };
+                          }}
+                          onDrag={(e, info) => {
+                            // 가로 드래그 감지 시 스크롤
+                            if (scrollRef.current && dragStartRef.current) {
+                              const deltaX = Math.abs(info.point.x - dragStartRef.current.x);
+                              const deltaY = Math.abs(info.point.y - dragStartRef.current.y);
+                              
+                              // 가로 드래그가 세로보다 크면 스크롤
+                              if (deltaX > deltaY && deltaX > 10) {
+                                const walk = (info.point.x - dragStartRef.current.x) * 1.5;
+                                scrollRef.current.scrollLeft = scrollLeft.current - walk;
+                              }
+                            }
+                          }}
                           onDragEnd={(e, info) => {
                             // 위로 드래그했으면 선택
-                            if (info.offset.y < -50) {
+                            if (info.offset.y < -50 && Math.abs(info.offset.x) < Math.abs(info.offset.y)) {
                               selectCard(card);
                             }
                           }}
