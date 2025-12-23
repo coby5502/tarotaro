@@ -146,18 +146,18 @@
 }
 
 .slot {
+  width: clamp(60px, 12vw, 90px);
+  aspect-ratio: 2 / 3;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-}
-
-.slot {
-  width: clamp(60px, 12vw, 90px);
-  aspect-ratio: 2 / 3;
+  justify-content: center;
+  position: relative;
 }
 
 .slot-empty {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   border: 2px dashed rgba(255, 255, 255, 0.2);
@@ -166,6 +166,7 @@
   align-items: center;
   justify-content: center;
   background: rgba(255, 255, 255, 0.03);
+  box-sizing: border-box;
 }
 
 .slot-num {
@@ -188,13 +189,21 @@
 
 /* 선택된 카드는 TarotCard 컴포넌트 사용 - 플레이스홀더와 정확히 같은 크기 */
 .slot-card {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .slot-card .tarot-card {
   width: 100% !important;
   height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 2 / 3 !important;
 }
 
 .slot-card .tarot-card::before {
@@ -202,6 +211,14 @@
 }
 
 .slot-card .tarot-card .card-inner {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+.slot-card .tarot-card .card-front,
+.slot-card .tarot-card .card-back {
   width: 100%;
   height: 100%;
 }

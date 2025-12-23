@@ -266,11 +266,13 @@ const Reading = () => {
                       className={`slot ${card ? 'filled' : ''}`}
                     >
                       {card ? (
-                        <TarotCard 
-                          card={card} 
-                          isRevealed={false} 
-                          size="small"
-                        />
+                        <div className="slot-card">
+                          <TarotCard 
+                            card={card} 
+                            isRevealed={false} 
+                            size="small"
+                          />
+                        </div>
                       ) : (
                         <div className="slot-empty">
                           <span className="slot-num">{i + 1}</span>
