@@ -301,8 +301,8 @@ const Result = () => {
                   {/* 카드 이름들 */}
                   <div className="share-card-names">
                     {cards.map((card, i) => (
-                      <span key={i} className="share-card-name">
-                        {card.name.ko || card.name.en}{card.isReversed ? ' ↺' : ''}
+                      <span key={i} className={`share-card-name ${card.isReversed ? 'reversed' : ''}`}>
+                        {card.name.ko || card.name.en}
                       </span>
                     ))}
                   </div>

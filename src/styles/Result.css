@@ -392,6 +392,12 @@
   border: 1px solid rgba(201, 162, 39, 0.3);
 }
 
+.share-card-name.reversed {
+  color: #e57373;
+  background: rgba(229, 115, 115, 0.15);
+  border-color: rgba(229, 115, 115, 0.3);
+}
+
 .share-message {
   color: #f0ede6;
   font-size: 14px;
