@@ -43,12 +43,13 @@
   justify-content: center;
   gap: var(--spacing-md);
   margin-bottom: var(--spacing-sm);
-  padding: var(--spacing-md);
+  padding: 0;
   background: rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   max-width: clamp(600px, 90vw, 900px);
   margin-left: auto;
   margin-right: auto;
+  width: 100%;
 }
 
 .result-cards.cards-1 {
