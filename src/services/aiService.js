@@ -1,9 +1,6 @@
 // ============================================
-// OpenAI ChatGPT 타로 해석 서비스
+// OpenAI ChatGPT 타로 해석 서비스 (Serverless Function 사용)
 // ============================================
-
-const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
-const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
 const getLanguageName = (lang) => {
   const names = { ko: 'Korean', en: 'English', ja: 'Japanese' };
@@ -82,46 +79,37 @@ IMPORTANT: Respond ONLY in ${langName}. Do NOT mix other languages!`;
 };
 
 export const generateTarotReading = async (cards, spread, question, language) => {
-  if (!OPENAI_API_KEY) {
-    throw new Error('API key not configured');
-  }
-
   const prompt = buildPrompt(cards, spread, question, language);
 
+  const messages = [
+    {
+      role: 'system',
+      content: `You are a mystical tarot reader. Always respond in ${getLanguageName(language)} only. ${getLanguageInstruction(language)}`
+    },
+    {
+      role: 'user',
+      content: prompt
+    }
+  ];
+
   try {
-    const response = await fetch(OPENAI_API_URL, {
+    const response = await fetch('/api/tarot', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${OPENAI_API_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [
-          {
-            role: 'system',
-            content: `You are a mystical tarot reader. Always respond in ${getLanguageName(language)} only. ${getLanguageInstruction(language)}`
-          },
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        max_tokens: 2000,
-        temperature: 0.7,
-      }),
+      body: JSON.stringify({ messages, language }),
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.error?.message || 'API request failed');
+      throw new Error(error.error || 'API request failed');
     }
 
     const data = await response.json();
     return data.choices[0]?.message?.content || '';
   } catch (error) {
-    console.error('OpenAI API Error:', error);
+    console.error('API Error:', error);
     throw error;
   }
 };
-
