@@ -565,9 +565,11 @@
   }
   
   .selected-slots.slots-10 {
-    max-width: 100%;
+    max-width: calc(100% - var(--spacing-md) * 2);
     gap: 8px;
     padding: var(--spacing-sm);
+    margin-left: auto;
+    margin-right: auto;
   }
   
   .reveal-grid {
@@ -593,8 +595,10 @@
   }
   
   .reveal-grid.grid-10 {
-    max-width: 100%;
+    max-width: calc(100% - var(--spacing-md) * 2);
     gap: 8px;
+    margin-left: auto;
+    margin-right: auto;
   }
   
   .reveal-grid.grid-10 .reveal-label {
