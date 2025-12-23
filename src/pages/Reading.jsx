@@ -256,19 +256,18 @@ const Reading = () => {
               <div className="card-fan-container" ref={containerRef}>
                 <div className="card-fan-scroll">
                   <div className="card-fan-inner">
-                    {shuffledDeck
-                      .filter(card => !selectedCardIds.includes(card.id)) // 선택된 카드는 제외
-                      .map((card, index) => {
+                    {shuffledDeck.map((card, index) => {
+                      const isSelected = selectedCardIds.includes(card.id);
                       const isDisabled = selectedCards.length >= spread.cardCount;
                       
                       // 가로 위치 (스크롤을 위해, 겹치게 배치)
-                      const horizontalOffset = (index - (shuffledDeck.length - selectedCardIds.length) / 2) * 25; // 겹치게 (25px 간격)
+                      const horizontalOffset = (index - shuffledDeck.length / 2) * 35; // 겹치게 (35px 간격, 더 크게)
                       
                       return (
                         <motion.div
                           key={card.id}
-                          className={`fan-card-wrapper ${isDisabled ? 'disabled' : ''}`}
-                          drag={!isDisabled ? "y" : false}
+                          className={`fan-card-wrapper ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
+                          drag={!isSelected && !isDisabled ? "y" : false}
                           dragConstraints={{ top: -200, bottom: 0 }}
                           dragElastic={0.2}
                           onDragEnd={(e, info) => {
@@ -282,25 +281,24 @@ const Reading = () => {
                             scale: 0.9,
                           }}
                           animate={{ 
-                            opacity: 1,
+                            opacity: isSelected ? 0 : 1,
                             x: 0,
                             y: 0,
                             rotate: 0,
                             scale: 1,
                           }}
-                          whileHover={!isDisabled ? { 
+                          whileHover={!isSelected && !isDisabled ? { 
                             y: -20,
                             scale: 1.1,
                             zIndex: index + 1000,
                             transition: { duration: 0.15, ease: "easeOut" }
                           } : {}}
-                          whileTap={!isDisabled ? { scale: 0.95 } : {}}
+                          whileTap={!isSelected && !isDisabled ? { scale: 0.95 } : {}}
                           transition={{ 
                             delay: index * 0.01,
                             type: "spring",
                             stiffness: 200,
                             damping: 20,
-                            // 호버 해제 시 빠르게 원래 위치로
                             layout: false
                           }}
                           style={{
@@ -308,18 +306,16 @@ const Reading = () => {
                             left: `calc(50% + ${horizontalOffset}px)`,
                             bottom: '100px',
                             transformOrigin: 'center bottom',
-                            cursor: isDisabled ? 'not-allowed' : 'grab',
+                            cursor: isSelected || isDisabled ? 'default' : 'grab',
                             zIndex: index,
+                            pointerEvents: isSelected ? 'none' : 'auto',
                           }}
-                          onClick={() => !isDisabled && selectCard(card)}
-                          onHoverStart={() => {
-                            // 다른 카드들의 호버 상태를 초기화하기 위해 transition을 빠르게
-                          }}
+                          onClick={() => !isSelected && !isDisabled && selectCard(card)}
                         >
                           <TarotCard 
                             card={card} 
                             isRevealed={false} 
-                            size="small"
+                            size="normal"
                           />
                         </motion.div>
                       );

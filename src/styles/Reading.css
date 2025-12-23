@@ -286,8 +286,13 @@
   transition: transform 0.15s ease-out !important;
 }
 
+.fan-card-wrapper.selected {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .fan-card-wrapper .tarot-card {
-  width: clamp(60px, 12vw, 90px) !important;
+  width: clamp(100px, 18vw, 140px) !important; /* normal 사이즈로 변경 */
 }
 
 .fan-card-wrapper.selected {
@@ -398,7 +403,7 @@
   }
   
   .fan-card-wrapper .tarot-card {
-    width: clamp(55px, 10vw, 75px) !important;
+    width: clamp(85px, 15vw, 110px) !important;
   }
   
   .selected-slots.slots-10 {
@@ -420,7 +425,7 @@
   }
   
   .fan-card-wrapper .tarot-card {
-    width: clamp(50px, 9vw, 65px) !important;
+    width: clamp(75px, 12vw, 95px) !important;
   }
   
   .selected-slots {
