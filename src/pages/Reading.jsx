@@ -228,7 +228,7 @@ const Reading = () => {
               exit={{ opacity: 0, scale: 0.9 }}
             >
               {/* 선택된 카드 슬롯 */}
-              <div className="selected-slots">
+              <div className={`selected-slots ${spread.cardCount === 10 ? 'slots-10' : ''}`}>
                 {spread.positions.map((pos, i) => {
                   const card = selectedCards[i];
                   const isJustSelected = selectedCards.length - 1 === i && lastSelectedIndex !== null;
