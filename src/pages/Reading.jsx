@@ -478,7 +478,7 @@ const Reading = () => {
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                   >
-                    {spread.cardCount === 1 ? t('flipCard') : t('revealAll')}
+                    {spread && spread.cardCount === 1 ? t('flipCard') : t('revealAll')}
                   </motion.button>
                 ) : (
                   <motion.button 
