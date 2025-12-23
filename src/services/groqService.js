@@ -51,49 +51,79 @@ Provide warm and mystical tarot interpretations.`,
 };
 
 // 언어별 출력 포맷
-const getOutputFormat = (language) => {
+const getOutputFormat = (language, hasQuestion) => {
   const formats = {
-    ko: `## 🔮 전체 운세 해석
+    ko: hasQuestion ? `## 🎯 질문에 대한 답변
+(질문에 대해 카드가 말하는 직접적인 답변과 통찰)
+
+## 🔮 전체 운세 해석
 (카드들이 전하는 전체적인 흐름과 에너지)
 
 ## 🃏 카드별 상세 메시지
 (각 카드가 해당 위치에서 전하는 메시지)
 
-## 🌟 숨겨진 연결고리
-(카드들 사이의 패턴과 깊은 통찰)
+## 💫 실천 조언
+(질문과 관련하여 실제로 행동할 수 있는 구체적인 조언)
+
+## ✨ 핵심 메시지
+(한두 문장으로 압축)` : `## 🔮 오늘의 운세
+(카드들이 전하는 전체적인 흐름과 에너지)
+
+## 🃏 카드별 상세 메시지
+(각 카드가 해당 위치에서 전하는 메시지)
 
 ## 💫 실천 조언
-(구체적이고 따뜻한 조언)
+(오늘 하루를 위한 구체적인 조언)
 
 ## ✨ 핵심 메시지
 (한두 문장으로 압축)`,
 
-    en: `## 🔮 Overall Reading
+    en: hasQuestion ? `## 🎯 Answer to Your Question
+(Direct answer and insights from the cards regarding your question)
+
+## 🔮 Overall Reading
 (The overall flow and energy conveyed by the cards)
 
 ## 🃏 Detailed Message for Each Card
 (Message each card conveys in its position)
 
-## 🌟 Hidden Connections
-(Patterns and deeper insights between cards)
+## 💫 Practical Advice
+(Specific actionable advice related to your question)
+
+## ✨ Key Message
+(Summarized in one or two sentences)` : `## 🔮 Today's Fortune
+(The overall flow and energy conveyed by the cards)
+
+## 🃏 Detailed Message for Each Card
+(Message each card conveys in its position)
 
 ## 💫 Practical Advice
-(Specific and warm advice)
+(Specific advice for your day)
 
 ## ✨ Key Message
 (Summarized in one or two sentences)`,
 
-    ja: `## 🔮 総合運勢解釈
+    ja: hasQuestion ? `## 🎯 質問への答え
+(質問に対するカードからの直接的な答えと洞察)
+
+## 🔮 総合運勢解釈
 (カードが伝える全体的な流れとエネルギー)
 
 ## 🃏 各カードの詳細メッセージ
 (各カードがその位置で伝えるメッセージ)
 
-## 🌟 隠された繋がり
-(カード間のパターンと深い洞察)
+## 💫 実践的アドバイス
+(質問に関連した具体的な行動アドバイス)
+
+## ✨ 核心メッセージ
+(一、二文でまとめ)` : `## 🔮 今日の運勢
+(カードが伝える全体的な流れとエネルギー)
+
+## 🃏 各カードの詳細メッセージ
+(各カードがその位置で伝えるメッセージ)
 
 ## 💫 実践的アドバイス
-(具体的で温かいアドバイス)
+(今日一日のための具体的なアドバイス)
 
 ## ✨ 核心メッセージ
 (一、二文でまとめ)`
@@ -103,6 +133,8 @@ const getOutputFormat = (language) => {
 
 // 타로 해석 프롬프트 생성 (언어 중립적 데이터 전달)
 const buildTarotPrompt = (cards, spread, question, language) => {
+  const hasQuestion = question && question.trim().length > 0;
+  
   // 카드 정보를 간단하게 전달 (AI가 해당 언어로 번역)
   const cardInfo = cards.map((card, index) => {
     const direction = card.isReversed ? 'REVERSED' : 'UPRIGHT';
@@ -114,46 +146,58 @@ Position meaning: ${card.position.description}
 Keywords: ${keywords.join(', ')}`;
   }).join('\n\n');
 
-  const outputFormat = getOutputFormat(language);
+  const outputFormat = getOutputFormat(language, hasQuestion);
+  
+  const questionEmphasis = {
+    ko: hasQuestion 
+      ? `\n\n⭐ 중요: 질문자의 질문 "${question}"에 대해 카드가 말하는 답을 반드시 첫 번째 섹션에서 직접적으로 답변하세요!` 
+      : '',
+    en: hasQuestion 
+      ? `\n\n⭐ IMPORTANT: You MUST directly answer the querent's question "${question}" in the first section!` 
+      : '',
+    ja: hasQuestion 
+      ? `\n\n⭐ 重要: 質問者の質問「${question}」に対して、最初のセクションで必ず直接答えてください！` 
+      : ''
+  };
   
   const langInstruction = {
     ko: `[한국어로만 답변하세요. 영어 금지!]
 
-질문: ${question || '오늘의 운세'}
+질문: ${question || '없음 (오늘의 운세)'}
 스프레드: ${spread.name}
 
 카드 정보:
 ${cardInfo}
 
 위 정보를 바탕으로 타로 해석을 한국어로 작성하세요.
-카드 이름은 한국어로 번역하세요 (예: The Fool = 바보).
+카드 이름은 한국어로 번역하세요 (예: The Fool = 바보).${questionEmphasis.ko}
 
 출력 형식:
 ${outputFormat}`,
 
     en: `[Respond in English ONLY. No Korean!]
 
-Question: ${question || "Today's fortune"}
+Question: ${question || "None (Today's fortune)"}
 Spread: ${spread.name}
 
 Card Information:
 ${cardInfo}
 
-Based on the above, write a tarot interpretation in English.
+Based on the above, write a tarot interpretation in English.${questionEmphasis.en}
 
 Output format:
 ${outputFormat}`,
 
     ja: `[日本語のみで答えてください。韓国語・英語禁止！]
 
-質問: ${question || '今日の運勢'}
+質問: ${question || 'なし（今日の運勢）'}
 スプレッド: ${spread.name}
 
 カード情報:
 ${cardInfo}
 
 上記の情報に基づいて、タロット解釈を日本語で書いてください。
-カード名は日本語に翻訳してください（例: The Fool = 愚者）。
+カード名は日本語に翻訳してください（例: The Fool = 愚者）。${questionEmphasis.ja}
 
 出力形式:
 ${outputFormat}`
