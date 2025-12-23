@@ -63,6 +63,13 @@ export const translations = {
     cups: '컵',
     swords: '소드',
     pentacles: '펜타클',
+    
+    // 공유
+    shareResult: '결과 공유하기',
+    saveImage: '이미지 저장',
+    copyText: '텍스트 복사',
+    copied: '복사되었습니다!',
+    generatingImage: '이미지 생성 중',
   },
   
   en: {
@@ -124,6 +131,13 @@ export const translations = {
     cups: 'Cups',
     swords: 'Swords',
     pentacles: 'Pentacles',
+    
+    // Share
+    shareResult: 'Share Result',
+    saveImage: 'Save Image',
+    copyText: 'Copy Text',
+    copied: 'Copied!',
+    generatingImage: 'Generating image',
   },
   
   ja: {
@@ -185,6 +199,13 @@ export const translations = {
     cups: 'カップ',
     swords: 'ソード',
     pentacles: 'ペンタクル',
+    
+    // シェア
+    shareResult: '結果をシェア',
+    saveImage: '画像を保存',
+    copyText: 'テキストをコピー',
+    copied: 'コピーしました！',
+    generatingImage: '画像生成中',
   }
 };
 

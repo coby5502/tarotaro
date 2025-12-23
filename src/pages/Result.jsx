@@ -3,9 +3,10 @@
 // 타로 리딩 결과 페이지 (AI 해석 통합)
 // ============================================
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import html2canvas from 'html2canvas';
 import TarotCard from '../components/TarotCard';
 import LanguageSelector from '../components/LanguageSelector';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -17,10 +18,13 @@ const Result = () => {
   const navigate = useNavigate();
   const { t, language } = useLanguage();
   const { cards, spread, question } = location.state || {};
+  const shareCardRef = useRef(null);
   
   const [aiReading, setAiReading] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
 
   useEffect(() => {
     if (cards && spread) {
@@ -41,6 +45,66 @@ const Result = () => {
     }
 
     setIsLoading(false);
+  };
+
+  // 핵심 메시지 추출
+  const extractKeyMessage = () => {
+    if (!aiReading) return '';
+    
+    // ✨ 핵심 메시지 또는 Key Message 섹션 찾기
+    const patterns = [
+      /## ✨.*?\n([\s\S]*?)(?=\n##|$)/,
+      /## 🎯.*?\n([\s\S]*?)(?=\n##|$)/,
+    ];
+    
+    for (const pattern of patterns) {
+      const match = aiReading.match(pattern);
+      if (match) {
+        return match[1].trim().replace(/\*\*/g, '').substring(0, 200);
+      }
+    }
+    
+    // 못 찾으면 첫 문단 반환
+    const firstParagraph = aiReading.split('\n').find(line => 
+      line.trim() && !line.startsWith('#') && !line.startsWith('-')
+    );
+    return firstParagraph?.replace(/\*\*/g, '').substring(0, 200) || '';
+  };
+
+  // 이미지 생성 및 저장
+  const handleShare = async () => {
+    setShowShareModal(true);
+    setIsGeneratingImage(true);
+    
+    // 모달이 렌더링될 때까지 대기
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    if (shareCardRef.current) {
+      try {
+        const canvas = await html2canvas(shareCardRef.current, {
+          backgroundColor: '#0a0a1a',
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+        });
+        
+        const link = document.createElement('a');
+        link.download = `tarotaro-${Date.now()}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      } catch (err) {
+        console.error('Image generation failed:', err);
+      }
+    }
+    
+    setIsGeneratingImage(false);
+  };
+
+  // 클립보드에 복사
+  const handleCopyText = () => {
+    const text = `🔮 TaroTaro ${t('readingResult')}\n\n${question ? `Q: ${question}\n\n` : ''}${extractKeyMessage()}\n\ntarotaro.vercel.app`;
+    navigator.clipboard.writeText(text);
+    alert(t('copied') || 'Copied!');
   };
 
   if (!cards || !spread) {
@@ -219,6 +283,25 @@ const Result = () => {
           )}
         </motion.section>
 
+        {/* 공유 버튼 */}
+        {aiReading && !isLoading && (
+          <motion.div 
+            className="share-section"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            <motion.button 
+              className="share-button"
+              onClick={handleShare}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              📤 {t('shareResult')}
+            </motion.button>
+          </motion.div>
+        )}
+
         {/* 푸터 */}
         <motion.footer 
           className="result-footer"
@@ -248,6 +331,83 @@ const Result = () => {
           </div>
         </motion.footer>
       </main>
+
+      {/* 공유 모달 */}
+      <AnimatePresence>
+        {showShareModal && (
+          <motion.div 
+            className="share-modal-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowShareModal(false)}
+          >
+            <motion.div 
+              className="share-modal"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={e => e.stopPropagation()}
+            >
+              <button className="close-modal" onClick={() => setShowShareModal(false)}>×</button>
+              
+              {/* 공유용 카드 */}
+              <div className="share-card" ref={shareCardRef}>
+                <div className="share-card-header">
+                  <span className="share-logo">🔮</span>
+                  <span className="share-title">TaroTaro</span>
+                </div>
+                
+                <div className="share-card-body">
+                  {question && (
+                    <p className="share-question">"{question}"</p>
+                  )}
+                  
+                  <div className="share-cards">
+                    {cards.slice(0, 3).map((card, i) => (
+                      <div key={i} className="share-card-item">
+                        <img src={card.image} alt={card.name.en} />
+                      </div>
+                    ))}
+                    {cards.length > 3 && (
+                      <span className="share-more">+{cards.length - 3}</span>
+                    )}
+                  </div>
+                  
+                  <p className="share-message">{extractKeyMessage()}</p>
+                </div>
+                
+                <div className="share-card-footer">
+                  <span>tarotaro.vercel.app</span>
+                </div>
+              </div>
+
+              <div className="share-actions">
+                {isGeneratingImage ? (
+                  <p className="generating-text">{t('generatingImage')}...</p>
+                ) : (
+                  <>
+                    <motion.button 
+                      className="share-action-btn"
+                      onClick={handleShare}
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      📥 {t('saveImage')}
+                    </motion.button>
+                    <motion.button 
+                      className="share-action-btn secondary"
+                      onClick={handleCopyText}
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      📋 {t('copyText')}
+                    </motion.button>
+                  </>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
