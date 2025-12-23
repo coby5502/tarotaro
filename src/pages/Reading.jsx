@@ -27,10 +27,9 @@ const Reading = () => {
   const [aiError, setAiError] = useState(null);
   const hasFetchedRef = useRef(false);
 
-  // 22장 메이저 아르카나만 사용 (선택 간소화)
+  // 전체 덱 섞기
   const shuffleDeck = useMemo(() => {
-    const majorArcana = fullDeck.filter(card => card.id <= 21);
-    return [...majorArcana].sort(() => Math.random() - 0.5);
+    return [...fullDeck].sort(() => Math.random() - 0.5);
   }, []);
 
   const getFinalQuestion = () => {
@@ -76,10 +75,10 @@ const Reading = () => {
     setTimeout(() => {
       setShuffledDeck(shuffleDeck);
       setPhase('selecting');
-    }, 1800);
+    }, 1500);
   };
 
-  const selectCard = (card, index) => {
+  const selectCard = (card) => {
     if (selectedCards.length >= spread.cardCount) return;
     if (selectedCardIds.includes(card.id)) return;
 
@@ -93,7 +92,7 @@ const Reading = () => {
     setSelectedCards(prev => [...prev, drawnCard]);
 
     if (selectedCards.length + 1 === spread.cardCount) {
-      setTimeout(() => setPhase('revealing'), 500);
+      setTimeout(() => setPhase('revealing'), 400);
     }
   };
 
@@ -208,7 +207,7 @@ const Reading = () => {
             </motion.div>
           )}
 
-          {/* 카드 선택 - 카드 더미 클릭 */}
+          {/* 카드 선택 - 그리드 레이아웃 */}
           {phase === 'selecting' && (
             <motion.div 
               className="phase selecting-phase"
@@ -229,7 +228,7 @@ const Reading = () => {
                       transition={{ type: "spring", stiffness: 400 }}
                     >
                       {card ? (
-                        <span className="slot-icon">✦</span>
+                        <span className="slot-icon">✓</span>
                       ) : (
                         <span className="slot-num">{i + 1}</span>
                       )}
@@ -243,50 +242,61 @@ const Reading = () => {
                 {t('selectCard')} <strong>{selectedCards.length}/{spread.cardCount}</strong>
               </p>
 
-              {/* 카드 더미 - 클릭해서 뽑기 */}
-              <div className="deck-stack-container">
+              {/* 카드 그리드 */}
+              <div className="card-grid-container">
                 <motion.div 
-                  className="deck-stack"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  className="card-grid"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
                 >
                   {shuffledDeck.map((card, index) => {
                     const isSelected = selectedCardIds.includes(card.id);
-                    if (isSelected) return null;
-                    
-                    const offset = (shuffledDeck.length - selectedCards.length - index) * 0.5;
+                    const isDisabled = selectedCards.length >= spread.cardCount;
                     
                     return (
                       <motion.button
                         key={card.id}
-                        className="stack-card"
-                        onClick={() => selectCard(card, index)}
-                        disabled={selectedCards.length >= spread.cardCount}
-                        initial={{ y: 0 }}
+                        className={`grid-card ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
+                        onClick={() => !isSelected && !isDisabled && selectCard(card)}
+                        disabled={isSelected || isDisabled}
+                        initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ 
-                          y: -offset,
-                          x: offset * 0.3,
+                          opacity: isSelected ? 0.3 : 1,
+                          scale: isSelected ? 0.95 : 1,
                         }}
-                        whileHover={{ 
-                          y: -offset - 10,
-                          transition: { duration: 0.15 }
-                        }}
-                        exit={{ 
-                          y: -100,
-                          opacity: 0,
-                          scale: 0.8,
-                          transition: { duration: 0.3 }
-                        }}
-                        style={{ 
-                          zIndex: index,
+                        whileHover={!isSelected && !isDisabled ? { 
+                          scale: 1.1,
+                          zIndex: 10,
+                          transition: { duration: 0.2 }
+                        } : {}}
+                        whileTap={!isSelected && !isDisabled ? { scale: 0.95 } : {}}
+                        transition={{ 
+                          delay: index * 0.01,
+                          type: "spring",
+                          stiffness: 300
                         }}
                       >
-                        <span className="card-symbol">✦</span>
+                        <img 
+                          src={card.image} 
+                          alt={card.name.ko || card.name.en}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        {isSelected && (
+                          <motion.div 
+                            className="card-selected-badge"
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ type: "spring", stiffness: 400 }}
+                          >
+                            ✓
+                          </motion.div>
+                        )}
                       </motion.button>
                     );
                   })}
                 </motion.div>
-                <p className="deck-hint">{t('tapToDraw')}</p>
               </div>
             </motion.div>
           )}
