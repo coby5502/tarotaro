@@ -136,6 +136,7 @@
   max-width: 600px;
   margin: 0 auto var(--spacing-sm);
   width: 100%;
+  justify-items: center;
 }
 
 .selected-slots.slots-1 {

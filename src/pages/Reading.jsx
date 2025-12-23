@@ -309,19 +309,19 @@ const Reading = () => {
                     const deltaX = Math.abs(e.pageX - dragStartRef.current.x);
                     const deltaY = Math.abs(e.pageY - dragStartRef.current.y);
                     
-                    // 가로 드래그가 세로 드래그보다 크면 스크롤
-                    if (deltaX > deltaY && deltaX > 10) {
+                    // 가로 드래그가 세로 드래그보다 크면 스크롤 (감도 개선)
+                    if (deltaX > deltaY && deltaX > 15) {
                       e.preventDefault();
                       const x = e.pageX - scrollRef.current.offsetLeft;
-                      const walk = (x - scrollStartX.current) * 2;
+                      const walk = (x - scrollStartX.current) * 1.5;
                       scrollRef.current.scrollLeft = scrollLeft.current - walk;
                     }
                   }}
                   onWheel={(e) => {
-                    // 마우스 휠로 가로 스크롤 (Shift 키 없이도)
+                    // 마우스 휠로 가로 스크롤 (감도 개선)
                     if (scrollRef.current && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
                       e.preventDefault();
-                      scrollRef.current.scrollLeft += e.deltaY;
+                      scrollRef.current.scrollLeft += e.deltaY * 0.8;
                     }
                   }}
                 >
@@ -340,7 +340,7 @@ const Reading = () => {
                           className={`fan-card-wrapper ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}`}
                           drag={!isSelected && !isDisabled && !isClicking ? "y" : false}
                           dragConstraints={{ top: -200, bottom: 0 }}
-                          dragElastic={0.2}
+                          dragElastic={{ top: 0.1, bottom: 0.5 }}
                           onDragStart={(e) => {
                             // 드래그 시작 시점 저장 (가로/세로 구분용)
                             dragStartRef.current = { x: e.pageX, y: e.pageY };
@@ -351,16 +351,16 @@ const Reading = () => {
                               const deltaX = Math.abs(info.point.x - dragStartRef.current.x);
                               const deltaY = Math.abs(info.point.y - dragStartRef.current.y);
                               
-                              // 가로 드래그가 세로보다 크면 스크롤
-                              if (deltaX > deltaY && deltaX > 10) {
-                                const walk = (info.point.x - dragStartRef.current.x) * 1.5;
+                              // 가로 드래그가 세로보다 크면 스크롤 (감도 개선)
+                              if (deltaX > deltaY && deltaX > 15) {
+                                const walk = (info.point.x - dragStartRef.current.x) * 1.2;
                                 scrollRef.current.scrollLeft = scrollLeft.current - walk;
                               }
                             }
                           }}
                           onDragEnd={(e, info) => {
-                            // 위로 드래그했으면 선택
-                            if (info.offset.y < -50 && Math.abs(info.offset.x) < Math.abs(info.offset.y)) {
+                            // 위로 충분히 드래그했으면 선택 (임계값 높임)
+                            if (info.offset.y < -80 && Math.abs(info.offset.x) < Math.abs(info.offset.y) * 0.8) {
                               selectCard(card);
                             }
                           }}
