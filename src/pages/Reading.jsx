@@ -260,30 +260,8 @@ const Reading = () => {
                       const isSelected = selectedCardIds.includes(card.id);
                       const isDisabled = selectedCards.length >= spread.cardCount;
                       
-                      // 화면 너비에 따른 반응형 계산
-                      const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 800;
-                      const totalCards = shuffledDeck.length;
-                      
-                      // 화면 너비에 따라 부채꼴 각도 조정
-                      const spreadAngle = viewportWidth > 768 
-                        ? Math.PI * 1.1  // 데스크탑: 198도
-                        : Math.PI * 0.9; // 모바일: 162도
-                      
-                      const startAngle = -spreadAngle / 2;
-                      const angle = startAngle + (index / (totalCards - 1 || 1)) * spreadAngle;
-                      
-                      // 화면 너비에 따라 반지름 조정
-                      const baseRadius = viewportWidth > 768 ? 150 : 120;
-                      const radiusVariation = viewportWidth > 768 ? 80 : 60;
-                      const radius = baseRadius + (Math.abs(index - totalCards / 2) / totalCards) * radiusVariation;
-                      
-                      // 부채꼴 위치 계산
-                      const x = Math.sin(angle) * radius;
-                      const y = -Math.cos(angle) * radius * 0.7; // 위쪽으로 올라가도록
-                      const rotation = angle * (180 / Math.PI);
-                      
-                      // 가로 위치 (스크롤을 위해)
-                      const horizontalOffset = (index - totalCards / 2) * 55;
+                      // 가로 위치 (스크롤을 위해, 겹치게 배치)
+                      const horizontalOffset = (index - shuffledDeck.length / 2) * 25; // 겹치게 (25px 간격)
                       
                       return (
                         <motion.div
@@ -304,19 +282,20 @@ const Reading = () => {
                           }}
                           animate={{ 
                             opacity: isSelected ? 0.3 : 1,
-                            x: x,
-                            y: y,
-                            rotate: rotation,
+                            x: 0,
+                            y: 0,
+                            rotate: 0,
                             scale: 1,
                           }}
                           whileHover={!isSelected && !isDisabled ? { 
-                            y: y - 10,
+                            y: -20,
                             scale: 1.1,
-                            zIndex: 100,
+                            zIndex: index + 100,
+                            transition: { duration: 0.15 }
                           } : {}}
                           whileTap={!isSelected && !isDisabled ? { scale: 0.95 } : {}}
                           transition={{ 
-                            delay: index * 0.008,
+                            delay: index * 0.01,
                             type: "spring",
                             stiffness: 200,
                             damping: 20
@@ -324,9 +303,10 @@ const Reading = () => {
                           style={{
                             position: 'absolute',
                             left: `calc(50% + ${horizontalOffset}px)`,
-                            top: '50%',
+                            bottom: '40px',
                             transformOrigin: 'center bottom',
                             cursor: isDisabled ? 'not-allowed' : (isSelected ? 'default' : 'grab'),
+                            zIndex: index,
                           }}
                           onClick={() => !isSelected && !isDisabled && selectCard(card)}
                         >
