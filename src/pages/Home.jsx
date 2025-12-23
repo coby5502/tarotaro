@@ -10,25 +10,21 @@ const Home = () => {
   const spreadList = [
     { 
       key: 'oneCard', 
-      icon: '🎴', 
       name: t('oneCard'),
       description: t('oneCardDesc'),
       cardCount: 1
     },
     { 
       key: 'threeCard', 
-      icon: '🃏', 
       name: t('threeCard'),
       description: t('threeCardDesc'),
       cardCount: 3
     },
     { 
       key: 'celticCross', 
-      icon: '✝️', 
       name: t('celticCross'),
       description: t('celticCrossDesc'),
-      cardCount: 10,
-      featured: true
+      cardCount: 10
     },
   ];
 
@@ -68,30 +64,26 @@ const Home = () => {
         >
           <h2 className="section-title">{t('selectSpread')}</h2>
           
-          <div className="spread-grid">
+          <div className="spread-list">
             {spreadList.map((spread, index) => (
               <Link 
                 key={spread.key}
                 to={`/reading/${spread.key}`} 
-                className={`spread-card ${spread.featured ? 'featured' : ''}`}
+                className="spread-card"
               >
                 <motion.div 
                   className="spread-card-content"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 + index * 0.1 }}
-                  whileHover={{ y: -5 }}
+                  whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <span className="spread-icon">{spread.icon}</span>
-                  <div>
+                  <div className="spread-header">
                     <h3 className="spread-name">{spread.name}</h3>
                     <span className="spread-count">{spread.cardCount}{t('cards')}</span>
-                    <p className="spread-desc">{spread.description}</p>
-                    {spread.featured && (
-                      <span className="featured-badge">{t('deepAnalysis')}</span>
-                    )}
                   </div>
+                  <p className="spread-desc">{spread.description}</p>
                 </motion.div>
               </Link>
             ))}

@@ -60,7 +60,7 @@
 /* 스프레드 섹션 */
 .spread-section {
   width: 100%;
-  max-width: 700px;
+  max-width: 500px;
 }
 
 .section-title {
@@ -73,11 +73,11 @@
   letter-spacing: 0.1em;
 }
 
-.spread-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+/* 스프레드 리스트 */
+.spread-list {
+  display: flex;
+  flex-direction: column;
   gap: var(--spacing-md);
-  padding: 0 var(--spacing-sm);
 }
 
 /* 스프레드 카드 */
@@ -92,22 +92,19 @@
   border: 1px solid var(--color-border);
   border-radius: 14px;
   padding: var(--spacing-lg);
-  text-align: center;
   transition: all 0.3s ease;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-xs);
 }
 
 .spread-card-content:hover {
   border-color: var(--color-accent-gold);
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.15);
 }
 
-.spread-icon {
-  font-size: 2rem;
+.spread-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-sm);
 }
 
 .spread-name {
@@ -126,35 +123,9 @@
 }
 
 .spread-desc {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--color-text-secondary);
   line-height: 1.5;
-  margin-top: var(--spacing-xs);
-}
-
-/* Featured 카드 */
-.spread-card.featured .spread-card-content {
-  border-color: rgba(139, 92, 246, 0.35);
-}
-
-.spread-card.featured .spread-card-content:hover {
-  border-color: var(--color-accent-purple-light);
-  box-shadow: 0 0 25px rgba(139, 92, 246, 0.2);
-}
-
-.spread-card.featured .spread-name {
-  color: var(--color-accent-purple-light);
-}
-
-.featured-badge {
-  display: inline-block;
-  margin-top: var(--spacing-xs);
-  padding: 3px 12px;
-  background: var(--gradient-purple);
-  color: white;
-  font-size: 0.7rem;
-  font-weight: 600;
-  border-radius: 15px;
 }
 
 /* 푸터 */
@@ -179,28 +150,8 @@
     padding-top: 12vh;
   }
   
-  .spread-grid {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-sm);
-  }
-  
   .spread-card-content {
     padding: var(--spacing-md);
-    flex-direction: row;
-    text-align: left;
-    gap: var(--spacing-md);
-  }
-  
-  .spread-icon {
-    font-size: 1.8rem;
-    flex-shrink: 0;
-  }
-  
-  .spread-card-content > div {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
   }
   
   .spread-name {
@@ -208,6 +159,6 @@
   }
   
   .spread-desc {
-    display: none;
+    font-size: 0.8rem;
   }
 }

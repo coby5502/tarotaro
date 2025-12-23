@@ -159,7 +159,7 @@ const Result = () => {
           </motion.div>
         )}
 
-        {/* 카드 미리보기 - 심플하게 */}
+        {/* 카드 미리보기 */}
         <motion.div 
           className={`cards-overview cards-count-${cards.length}`}
           initial={{ opacity: 0 }}
@@ -175,12 +175,7 @@ const Result = () => {
               transition={{ delay: 0.2 + index * 0.03 }}
             >
               <TarotCard card={card} isRevealed={true} size="small" />
-              <div className="card-info">
-                <span className="card-position">{card.position.name}</span>
-                {card.isReversed && (
-                  <span className="reversed-badge">{t('reversed')}</span>
-                )}
-              </div>
+              <span className="card-position">{card.position.name}</span>
             </motion.div>
           ))}
         </motion.div>

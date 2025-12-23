@@ -64,20 +64,6 @@
   object-fit: cover;
 }
 
-.reversed-badge {
-  position: absolute;
-  bottom: 6px;
-  left: 50%;
-  transform: translateX(-50%) rotate(180deg);
-  background: rgba(239, 68, 68, 0.85);
-  color: white;
-  padding: 2px 8px;
-  border-radius: 8px;
-  font-size: 0.5rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-}
-
 /* 뒷면 */
 .card-back {
   background: linear-gradient(145deg, #1a1a4a 0%, #0a0a2a 100%);
@@ -105,13 +91,6 @@
     0 8px 25px rgba(0, 0, 0, 0.4),
     0 0 0 2px var(--color-accent-purple),
     0 0 15px rgba(139, 92, 246, 0.2);
-}
-
-/* 작은 사이즈 조정 */
-.tarot-card.small .reversed-badge {
-  font-size: 0.4rem;
-  padding: 1px 5px;
-  bottom: 3px;
 }
 
 .tarot-card.small .card-back-design {

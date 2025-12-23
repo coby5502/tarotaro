@@ -31,7 +31,6 @@ const TarotCard = ({ card, isRevealed, onClick, size = 'normal' }) => {
         {/* 앞면 (카드 이미지) */}
         <div className="card-front">
           <img src={card?.image} alt={card?.name?.ko || ''} />
-          {card?.isReversed && <span className="reversed-badge">REVERSED</span>}
         </div>
         
         {/* 뒷면 */}

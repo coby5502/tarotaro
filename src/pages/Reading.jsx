@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { spreads, fullDeck } from '../data/tarotCards';
@@ -16,8 +16,14 @@ const Reading = () => {
   const [phase, setPhase] = useState('question');
   const [question, setQuestion] = useState('');
   const [shuffledDeck, setShuffledDeck] = useState([]);
+  const [selectedCardIds, setSelectedCardIds] = useState([]);
   const [selectedCards, setSelectedCards] = useState([]);
   const [revealedCount, setRevealedCount] = useState(0);
+
+  // 카드 섞기 (한 번만)
+  const shuffleDeck = useMemo(() => {
+    return [...fullDeck].sort(() => Math.random() - 0.5);
+  }, []);
 
   const getSpreadName = () => {
     if (spreadType === 'oneCard') return t('oneCard');
@@ -32,15 +38,14 @@ const Reading = () => {
   const startShuffle = () => {
     setPhase('shuffling');
     setTimeout(() => {
-      const shuffled = [...fullDeck].sort(() => Math.random() - 0.5);
-      setShuffledDeck(shuffled);
+      setShuffledDeck(shuffleDeck);
       setPhase('selecting');
-    }, 2000);
+    }, 1500);
   };
 
-  const selectCard = (card, index) => {
+  const selectCard = (card) => {
     if (selectedCards.length >= spread.cardCount) return;
-    if (selectedCards.find(c => c.id === card.id)) return;
+    if (selectedCardIds.includes(card.id)) return;
 
     const drawnCard = {
       ...card,
@@ -48,12 +53,11 @@ const Reading = () => {
       position: spread.positions[selectedCards.length]
     };
     
-    const newSelected = [...selectedCards, drawnCard];
-    setSelectedCards(newSelected);
-    setShuffledDeck(prev => prev.filter((_, i) => i !== index));
+    setSelectedCardIds(prev => [...prev, card.id]);
+    setSelectedCards(prev => [...prev, drawnCard]);
 
-    if (newSelected.length === spread.cardCount) {
-      setTimeout(() => setPhase('revealing'), 600);
+    if (selectedCards.length + 1 === spread.cardCount) {
+      setTimeout(() => setPhase('revealing'), 500);
     }
   };
 
@@ -148,13 +152,13 @@ const Reading = () => {
                     className="shuffle-card"
                     style={{ zIndex: 5 - i }}
                     animate={{
-                      x: [0, -60, 60, -30, 30, 0],
-                      rotateZ: [0, -8, 8, -4, 4, 0],
+                      x: [0, -50, 50, -25, 25, 0],
+                      rotateZ: [0, -5, 5, -3, 3, 0],
                     }}
                     transition={{
-                      duration: 1.5,
+                      duration: 1,
                       repeat: 1,
-                      delay: i * 0.05,
+                      delay: i * 0.03,
                     }}
                   />
                 ))}
@@ -173,56 +177,54 @@ const Reading = () => {
               exit={{ opacity: 0 }}
             >
               {/* 진행 상황 */}
-              <div className="progress-area">
+              <div className="select-header">
                 <p className="phase-desc">
-                  {t('selectCard')} ({selectedCards.length}/{spread.cardCount})
+                  {t('selectCard')} <strong>({selectedCards.length}/{spread.cardCount})</strong>
                 </p>
-                <div className="progress-bar">
-                  <motion.div 
-                    className="progress-fill"
-                    animate={{ width: `${(selectedCards.length / spread.cardCount) * 100}%` }}
-                  />
-                </div>
               </div>
 
-              {/* 선택된 카드 - 뒤집은 채로 */}
+              {/* 선택된 카드 표시 */}
               {selectedCards.length > 0 && (
-                <div className="selected-cards-row">
+                <div className="selected-slots">
                   {selectedCards.map((card, i) => (
-                    <motion.div 
-                      key={card.id}
-                      className="selected-card-slot"
-                      initial={{ scale: 0, rotateY: 180 }}
-                      animate={{ scale: 1, rotateY: 0 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                    >
-                      <div className="card-back-mini">
-                        <span>✦</span>
-                      </div>
+                    <div key={card.id} className="selected-slot">
+                      <div className="slot-card-back">✦</div>
                       <span className="slot-label">{card.position.name}</span>
-                    </motion.div>
+                    </div>
+                  ))}
+                  {/* 빈 슬롯 */}
+                  {Array.from({ length: spread.cardCount - selectedCards.length }).map((_, i) => (
+                    <div key={`empty-${i}`} className="selected-slot empty">
+                      <div className="slot-empty">{selectedCards.length + i + 1}</div>
+                      <span className="slot-label">{spread.positions[selectedCards.length + i]?.name}</span>
+                    </div>
                   ))}
                 </div>
               )}
 
-              {/* 카드 덱 */}
-              <div className="deck-area">
-                <div className="card-deck">
-                  {shuffledDeck.slice(0, 15).map((card, index) => (
+              {/* 전체 카드 펼침 */}
+              <div className="card-spread">
+                {shuffledDeck.map((card, index) => {
+                  const isSelected = selectedCardIds.includes(card.id);
+                  return (
                     <motion.button
                       key={card.id}
-                      className="deck-card"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.02 }}
-                      whileHover={{ y: -12, scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => selectCard(card, index)}
+                      className={`spread-card-btn ${isSelected ? 'selected' : ''}`}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ 
+                        opacity: isSelected ? 0.3 : 1, 
+                        scale: isSelected ? 0.9 : 1 
+                      }}
+                      whileHover={!isSelected ? { scale: 1.1, zIndex: 10 } : {}}
+                      whileTap={!isSelected ? { scale: 0.95 } : {}}
+                      onClick={() => !isSelected && selectCard(card)}
+                      disabled={isSelected || selectedCards.length >= spread.cardCount}
+                      transition={{ delay: index * 0.005 }}
                     >
-                      <span className="deck-card-symbol">✦</span>
+                      <span className="card-back-icon">✦</span>
                     </motion.button>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
             </motion.section>
           )}
@@ -245,7 +247,7 @@ const Reading = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    {t('revealAll') || '모두 공개'} ✨
+                    {t('revealAll')} ✨
                   </motion.button>
                 )}
               </div>
