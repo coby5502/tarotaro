@@ -129,14 +129,19 @@
 
 /* 선택된 카드 슬롯 */
 .selected-slots {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   justify-content: center;
   gap: var(--spacing-md);
   padding: var(--spacing-md);
   max-width: 600px;
   margin: 0 auto var(--spacing-sm);
   width: 100%;
+}
+
+.selected-slots.slots-1 {
+  grid-template-columns: 1fr;
+  max-width: 120px;
 }
 
 /* 10장일 때 5x2 그리드 */
