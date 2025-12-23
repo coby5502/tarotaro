@@ -183,24 +183,22 @@ const Reading = () => {
                 </p>
               </div>
 
-              {/* 선택된 카드 표시 */}
-              {selectedCards.length > 0 && (
-                <div className="selected-slots">
-                  {selectedCards.map((card, i) => (
-                    <div key={card.id} className="selected-slot">
-                      <div className="slot-card-back">✦</div>
-                      <span className="slot-label">{card.position.name}</span>
+              {/* 선택 슬롯 미리보기 (항상 표시) */}
+              <div className="selected-slots">
+                {spread.positions.map((position, i) => {
+                  const selectedCard = selectedCards[i];
+                  return (
+                    <div key={i} className={`selected-slot ${selectedCard ? 'filled' : 'empty'}`}>
+                      {selectedCard ? (
+                        <div className="slot-card-back">✦</div>
+                      ) : (
+                        <div className="slot-empty">{i + 1}</div>
+                      )}
+                      <span className="slot-label">{position.name}</span>
                     </div>
-                  ))}
-                  {/* 빈 슬롯 */}
-                  {Array.from({ length: spread.cardCount - selectedCards.length }).map((_, i) => (
-                    <div key={`empty-${i}`} className="selected-slot empty">
-                      <div className="slot-empty">{selectedCards.length + i + 1}</div>
-                      <span className="slot-label">{spread.positions[selectedCards.length + i]?.name}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
+                  );
+                })}
+              </div>
 
               {/* 전체 카드 펼침 */}
               <div className="card-spread">
