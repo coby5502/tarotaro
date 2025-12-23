@@ -64,8 +64,7 @@ const Result = () => {
       const match = aiReading.match(pattern);
       if (match) {
         const text = match[1].trim().replace(/\*\*/g, '').replace(/\n+/g, ' ');
-        // 공유 이미지용 150자 제한
-        return text.length > 150 ? text.substring(0, 147) + '...' : text;
+        return text;
       }
     }
     
@@ -74,7 +73,7 @@ const Result = () => {
     if (firstSection) {
       const content = firstSection.split('\n').slice(1).join(' ').trim();
       const text = content.replace(/\*\*/g, '');
-      return text.length > 150 ? text.substring(0, 147) + '...' : text;
+      return text;
     }
     
     return '';
