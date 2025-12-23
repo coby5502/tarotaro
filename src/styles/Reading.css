@@ -145,13 +145,13 @@
 }
 
 .selected-slots.slots-1 {
-  grid-template-columns: 1fr;
-  max-width: 120px;
+  grid-template-columns: 1fr !important;
+  max-width: 120px !important;
   width: 120px !important;
   margin-left: auto !important;
   margin-right: auto !important;
-  padding-left: 0;
-  padding-right: 0;
+  padding: 0 !important;
+  justify-items: center !important;
 }
 
 /* 10장일 때 5x2 그리드 */
@@ -497,13 +497,14 @@
   }
   
   .selected-slots.slots-1 {
+    grid-template-columns: 1fr !important;
     gap: var(--spacing-md);
     width: 120px !important;
     max-width: 120px !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0 !important;
+    justify-items: center !important;
   }
   
   .selected-slots.slots-10 {

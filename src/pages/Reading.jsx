@@ -263,7 +263,7 @@ const Reading = () => {
               </p>
 
               {/* 선택된 카드 슬롯 */}
-              <div className={`selected-slots ${spread.cardCount === 10 ? 'slots-10' : ''}`}>
+              <div className={`selected-slots ${spread.cardCount === 10 ? 'slots-10' : ''} ${spread.cardCount === 1 ? 'slots-1' : ''}`}>
                 {spread.positions.map((pos, i) => {
                   const card = selectedCards[i];
                   return (
@@ -478,7 +478,7 @@ const Reading = () => {
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                   >
-                    {t('flipCard')}
+                    {spread.cardCount === 1 ? t('flipCard') : t('revealAll')}
                   </motion.button>
                 ) : (
                   <motion.button 
