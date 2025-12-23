@@ -88,11 +88,15 @@ const Result = () => {
     try {
       const canvas = await html2canvas(shareCardRef.current, {
         backgroundColor: '#0f0f1a',
-        scale: 1.5, // 낮은 스케일로 파일 크기 감소
+        scale: 1.5,
         logging: false,
         useCORS: true,
         allowTaint: true,
         imageTimeout: 5000,
+        height: shareCardRef.current.scrollHeight,
+        width: shareCardRef.current.scrollWidth,
+        windowWidth: shareCardRef.current.scrollWidth,
+        windowHeight: shareCardRef.current.scrollHeight,
       });
       
       // JPEG로 변환, 품질 0.8로 파일 크기 대폭 감소
