@@ -8,6 +8,19 @@
   box-sizing: border-box;
 }
 
+/* 모든 스크롤바 숨기기 */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
 :root {
   /* 컬러 팔레트 */
   --color-bg-primary: #0c0c14;
