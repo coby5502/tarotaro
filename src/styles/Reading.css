@@ -497,10 +497,27 @@
     padding: var(--spacing-md);
   }
   
+  .selected-slots.slots-1 {
+    max-width: 120px;
+    gap: var(--spacing-md);
+  }
+  
   .selected-slots.slots-10 {
     max-width: 100%;
     gap: 8px;
     padding: var(--spacing-sm);
+  }
+  
+  .reveal-grid {
+    gap: var(--spacing-md);
+  }
+  
+  .reveal-grid.grid-1 {
+    gap: var(--spacing-md);
+  }
+  
+  .reveal-grid.grid-3 {
+    gap: var(--spacing-md);
   }
   
   .slot {

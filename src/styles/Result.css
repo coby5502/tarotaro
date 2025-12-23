@@ -486,6 +486,18 @@
     padding: var(--spacing-md);
   }
   
+  .result-cards {
+    gap: var(--spacing-md);
+  }
+  
+  .result-cards.cards-1 {
+    gap: var(--spacing-md);
+  }
+  
+  .result-cards.cards-3 {
+    gap: var(--spacing-md);
+  }
+  
   .result-cards.cards-10 {
     grid-template-columns: repeat(5, 1fr);
     gap: 8px;
