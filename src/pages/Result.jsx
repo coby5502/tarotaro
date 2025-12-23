@@ -49,11 +49,11 @@ const Result = () => {
     setIsLoading(false);
   };
 
-  // 공유용 메시지 추출 - 전체 메시지 (생략 없음)
-  const extractFullMessage = () => {
+  // 공유용 메시지 추출 - 요약본 (이미지 크기 최적화)
+  const extractShareMessage = () => {
     if (!aiReading) return '';
     
-    // 종합 해석 섹션 찾기
+    // 종합 해석 또는 조언 섹션 찾기
     const patterns = [
       /## ✨.*?\n([\s\S]*?)(?=\n##|$)/,
       /## 🎯.*?\n([\s\S]*?)(?=\n##|$)/,
@@ -63,15 +63,18 @@ const Result = () => {
     for (const pattern of patterns) {
       const match = aiReading.match(pattern);
       if (match) {
-        return match[1].trim().replace(/\*\*/g, '').replace(/\n+/g, '\n');
+        const text = match[1].trim().replace(/\*\*/g, '').replace(/\n+/g, ' ');
+        // 공유 이미지용 150자 제한
+        return text.length > 150 ? text.substring(0, 147) + '...' : text;
       }
     }
     
     // 첫 번째 섹션이라도 반환
     const firstSection = aiReading.split('##')[1];
     if (firstSection) {
-      const content = firstSection.split('\n').slice(1).join('\n').trim();
-      return content.replace(/\*\*/g, '').substring(0, 300);
+      const content = firstSection.split('\n').slice(1).join(' ').trim();
+      const text = content.replace(/\*\*/g, '');
+      return text.length > 150 ? text.substring(0, 147) + '...' : text;
     }
     
     return '';
@@ -85,14 +88,17 @@ const Result = () => {
     try {
       const canvas = await html2canvas(shareCardRef.current, {
         backgroundColor: '#0f0f1a',
-        scale: 2,
+        scale: 1.5, // 낮은 스케일로 파일 크기 감소
         logging: false,
         useCORS: true,
         allowTaint: true,
+        imageTimeout: 5000,
       });
+      
+      // JPEG로 변환, 품질 0.8로 파일 크기 대폭 감소
       const link = document.createElement('a');
-      link.download = `tarotaro-${Date.now()}.png`;
-      link.href = canvas.toDataURL('image/png');
+      link.download = `tarotaro-${Date.now()}.jpg`;
+      link.href = canvas.toDataURL('image/jpeg', 0.8);
       link.click();
     } catch (err) {
       console.error('Image generation failed:', err);
@@ -102,7 +108,7 @@ const Result = () => {
 
   const handleCopyText = () => {
     const cardNames = cards.map(c => `${c.name.ko || c.name.en}${c.isReversed ? '(역방향)' : ''}`).join(', ');
-    const text = `🔮 TaroTaro - ${getSpreadName()}\n\n${question ? `Q: ${question}\n\n` : ''}🃏 ${cardNames}\n\n${extractFullMessage()}\n\n👉 www.tarotaro.co.kr`;
+    const text = `🔮 TaroTaro - ${getSpreadName()}\n\n${question ? `Q: ${question}\n\n` : ''}🃏 ${cardNames}\n\n${extractShareMessage()}\n\n👉 www.tarotaro.co.kr`;
     navigator.clipboard.writeText(text);
     alert(t('copied') || 'Copied!');
   };
@@ -307,9 +313,9 @@ const Result = () => {
                     ))}
                   </div>
                   
-                  {/* 전체 메시지 - 생략 없음 */}
+                  {/* 요약 메시지 */}
                   <div className="share-message">
-                    {extractFullMessage()}
+                    {extractShareMessage()}
                   </div>
                 </div>
                 <div className="share-footer">✨ www.tarotaro.co.kr ✨</div>

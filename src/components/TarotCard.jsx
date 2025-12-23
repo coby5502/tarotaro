@@ -30,7 +30,12 @@ const TarotCard = ({ card, isRevealed, onClick, size = 'normal' }) => {
       <div className="card-inner">
         {/* 앞면 (카드 이미지) */}
         <div className="card-front">
-          <img src={card?.image} alt={card?.name?.ko || ''} />
+          <img 
+            src={card?.image} 
+            alt={card?.name?.ko || ''} 
+            loading="lazy"
+            decoding="async"
+          />
         </div>
         
         {/* 뒷면 */}

@@ -296,15 +296,15 @@
   right: 16px;
 }
 
-/* 공유용 카드 - 예쁜 디자인 */
+/* 공유용 카드 - 컴팩트 디자인 */
 .share-card {
-  width: 340px;
-  margin: 0 auto var(--spacing-lg);
+  width: 300px;
+  margin: 0 auto var(--spacing-md);
   background: linear-gradient(165deg, #1a1a2e 0%, #0f0f1a 100%);
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
-  border: 2px solid rgba(201, 162, 39, 0.4);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(201, 162, 39, 0.4);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
 }
 
 .share-header {
@@ -330,7 +330,7 @@
 }
 
 .share-body {
-  padding: 24px 20px;
+  padding: 16px;
 }
 
 .share-spread {
@@ -344,27 +344,27 @@
 .share-question {
   font-style: italic;
   color: #b8b5ae;
-  font-size: 14px;
-  margin-bottom: 20px;
-  line-height: 1.5;
-  padding: 12px;
+  font-size: 12px;
+  margin-bottom: 14px;
+  line-height: 1.4;
+  padding: 8px 10px;
   background: rgba(124, 92, 191, 0.1);
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .share-cards-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 6px;
-  margin-bottom: 16px;
+  gap: 4px;
+  margin-bottom: 12px;
 }
 
 .share-cards-row.cards-10 {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 5px;
-  max-width: 280px;
+  gap: 3px;
+  max-width: 220px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -381,11 +381,15 @@
 }
 
 .share-card-img {
-  width: 100%;
-  border-radius: 6px;
+  width: 40px;
+  border-radius: 4px;
   overflow: hidden;
-  border: 2px solid rgba(201, 162, 39, 0.5);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(201, 162, 39, 0.5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.share-cards-row.cards-10 .share-card-img {
+  width: 100%;
 }
 
 .share-card-img.reversed {
@@ -401,16 +405,16 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 6px;
-  margin-bottom: 20px;
+  gap: 4px;
+  margin-bottom: 12px;
 }
 
 .share-card-name {
-  font-size: 11px;
+  font-size: 9px;
   color: #c9a227;
   background: rgba(201, 162, 39, 0.1);
-  padding: 4px 10px;
-  border-radius: 12px;
+  padding: 2px 6px;
+  border-radius: 8px;
   border: 1px solid rgba(201, 162, 39, 0.3);
 }
 
@@ -422,22 +426,24 @@
 
 .share-message {
   color: #f0ede6;
-  font-size: 14px;
-  line-height: 1.8;
+  font-size: 11px;
+  line-height: 1.6;
   text-align: left;
-  padding: 16px;
+  padding: 10px;
   background: rgba(255, 255, 255, 0.03);
-  border-radius: 12px;
+  border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  max-height: 200px;
+  overflow: hidden;
 }
 
 .share-footer {
   background: linear-gradient(135deg, rgba(201, 162, 39, 0.15), rgba(124, 92, 191, 0.15));
-  padding: 14px;
+  padding: 8px;
   text-align: center;
-  font-size: 12px;
+  font-size: 10px;
   color: #c9a227;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.03em;
   border-top: 1px solid rgba(201, 162, 39, 0.2);
 }
 
@@ -482,12 +488,16 @@
   }
   
   .share-modal {
-    padding: var(--spacing-lg) var(--spacing-md);
-    max-width: 360px;
+    padding: var(--spacing-md) var(--spacing-sm);
+    max-width: 340px;
   }
   
   .share-card {
     width: 100%;
-    max-width: 300px;
+    max-width: 280px;
+  }
+  
+  .share-cards-row.cards-10 {
+    max-width: 180px;
   }
 }
