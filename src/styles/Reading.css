@@ -46,11 +46,14 @@
   max-width: 500px;
   justify-content: center;
   min-height: calc(100vh - 180px);
+  padding-top: var(--spacing-2xl);
+  padding-bottom: var(--spacing-2xl);
+  gap: var(--spacing-xl);
 }
 
 .question-icon {
   font-size: 4rem;
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
   filter: drop-shadow(0 0 30px rgba(201, 162, 39, 0.5));
 }
 
@@ -59,12 +62,13 @@
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--color-border);
   border-radius: 12px;
-  padding: var(--spacing-md);
+  padding: var(--spacing-lg);
   font-size: 1rem;
   color: var(--color-text-primary);
   font-family: var(--font-body);
   resize: none;
   line-height: 1.6;
+  margin-bottom: var(--spacing-md);
 }
 
 .question-input:focus {
