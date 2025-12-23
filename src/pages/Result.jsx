@@ -16,21 +16,23 @@ const Result = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { t, language } = useLanguage();
-  const { cards, spread, question } = location.state || {};
+  const { cards, spread, question, preloadedReading, preloadedError } = location.state || {};
   const shareCardRef = useRef(null);
   
-  const [aiReading, setAiReading] = useState('');
+  // preloadedReading이 있으면 바로 사용
+  const [aiReading, setAiReading] = useState(preloadedReading || '');
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(preloadedError || '');
   const [showShareModal, setShowShareModal] = useState(false);
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
 
   useEffect(() => {
-    if (cards && spread) {
+    // preloadedReading이 없을 때만 API 호출
+    if (cards && spread && !preloadedReading && !preloadedError) {
       fetchAiReading();
     }
-  }, [cards, spread, language]);
+  }, [cards, spread]);
 
   const fetchAiReading = async () => {
     setIsLoading(true);

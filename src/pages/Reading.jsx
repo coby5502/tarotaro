@@ -1,8 +1,9 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { spreads, fullDeck } from '../data/tarotCards';
 import { useLanguage } from '../i18n/LanguageContext';
+import { generateTarotReading } from '../services/aiService';
 import TarotCard from '../components/TarotCard';
 import Navbar from '../components/Navbar';
 import '../styles/Reading.css';
@@ -10,7 +11,7 @@ import '../styles/Reading.css';
 const Reading = () => {
   const { spreadType } = useParams();
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const spread = spreads[spreadType];
   
   const [phase, setPhase] = useState('question');
@@ -19,6 +20,12 @@ const Reading = () => {
   const [selectedCardIds, setSelectedCardIds] = useState([]);
   const [selectedCards, setSelectedCards] = useState([]);
   const [revealedCount, setRevealedCount] = useState(0);
+  
+  // API 프리로딩 상태
+  const [aiReading, setAiReading] = useState(null);
+  const [isLoadingAI, setIsLoadingAI] = useState(false);
+  const [aiError, setAiError] = useState(null);
+  const hasFetchedRef = useRef(false);
 
   const shuffleDeck = useMemo(() => {
     return [...fullDeck].sort(() => Math.random() - 0.5);
@@ -30,9 +37,43 @@ const Reading = () => {
     return t('celticCross');
   };
 
+  const getFinalQuestion = () => {
+    return question.trim() || t('defaultQuestion');
+  };
+
   useEffect(() => {
     if (!spread) navigate('/');
   }, [spread, navigate]);
+
+  // 모든 카드 공개되면 API 호출 시작
+  useEffect(() => {
+    if (revealedCount === selectedCards.length && 
+        selectedCards.length > 0 && 
+        !hasFetchedRef.current &&
+        !aiReading) {
+      hasFetchedRef.current = true;
+      fetchAiReading();
+    }
+  }, [revealedCount, selectedCards.length]);
+
+  const fetchAiReading = async () => {
+    setIsLoadingAI(true);
+    setAiError(null);
+    
+    try {
+      const reading = await generateTarotReading(
+        selectedCards, 
+        spread, 
+        getFinalQuestion(), 
+        language
+      );
+      setAiReading(reading);
+    } catch (err) {
+      setAiError(err.message);
+    }
+    
+    setIsLoadingAI(false);
+  };
 
   const startShuffle = () => {
     setPhase('shuffling');
@@ -71,14 +112,21 @@ const Reading = () => {
   };
 
   const goToResult = () => {
-    // 질문이 비어있으면 placeholder 텍스트를 기본 질문으로 사용
-    const finalQuestion = question.trim() || t('defaultQuestion');
+    // 결과가 있으면 바로 이동
     navigate('/result', { 
-      state: { cards: selectedCards, spread, question: finalQuestion } 
+      state: { 
+        cards: selectedCards, 
+        spread, 
+        question: getFinalQuestion(),
+        preloadedReading: aiReading,
+        preloadedError: aiError
+      } 
     });
   };
 
   if (!spread) return null;
+
+  const allRevealed = revealedCount === selectedCards.length && selectedCards.length > 0;
 
   return (
     <div className="reading">
@@ -214,18 +262,26 @@ const Reading = () => {
               
               {/* 버튼 - 항상 카드 아래에 고정 */}
               <div className="reveal-actions">
-                {revealedCount < selectedCards.length ? (
+                {!allRevealed ? (
                   <button className="btn btn-primary" onClick={revealAll}>
                     {t('revealAll')}
                   </button>
                 ) : (
                   <motion.button 
-                    className="btn btn-primary"
+                    className={`btn btn-primary ${isLoadingAI ? 'loading' : ''}`}
                     onClick={goToResult}
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
+                    disabled={isLoadingAI}
                   >
-                    {t('seeResult')}
+                    {isLoadingAI ? (
+                      <>
+                        <span className="btn-spinner"></span>
+                        {t('aiAnalyzing')}
+                      </>
+                    ) : (
+                      t('seeResult')
+                    )}
                   </motion.button>
                 )}
               </div>
