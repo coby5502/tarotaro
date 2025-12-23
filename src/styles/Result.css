@@ -260,7 +260,7 @@
   border-radius: 20px;
   padding: var(--spacing-2xl) var(--spacing-xl) var(--spacing-xl);
   position: relative;
-  max-width: 320px;
+  max-width: clamp(320px, 40vw, 450px);
   text-align: center;
 }
 
@@ -270,11 +270,12 @@
 }
 
 .card-detail-img {
-  width: 180px;
+  width: clamp(220px, 28vw, 320px);
   margin: var(--spacing-sm) auto var(--spacing-lg);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  aspect-ratio: 2 / 3;
 }
 
 .card-detail-img.reversed {
