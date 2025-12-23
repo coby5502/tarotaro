@@ -102,7 +102,7 @@ const Result = () => {
 
   // 클립보드에 복사
   const handleCopyText = () => {
-    const text = `🔮 TaroTaro ${t('readingResult')}\n\n${question ? `Q: ${question}\n\n` : ''}${extractKeyMessage()}\n\ntarotaro.vercel.app`;
+    const text = `🔮 TaroTaro ${t('readingResult')}\n\n${question ? `Q: ${question}\n\n` : ''}${extractKeyMessage()}\n\nwww.tarotaro.co.kr`;
     navigator.clipboard.writeText(text);
     alert(t('copied') || 'Copied!');
   };
@@ -378,7 +378,7 @@ const Result = () => {
                 </div>
                 
                 <div className="share-card-footer">
-                  <span>tarotaro.vercel.app</span>
+                  <span>www.tarotaro.co.kr</span>
                 </div>
               </div>
 
