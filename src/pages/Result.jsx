@@ -288,7 +288,7 @@ const Result = () => {
                   {question && <p className="share-question">"{question}"</p>}
                   
                   {/* 카드 이미지들 - 모든 카드 표시 */}
-                  <div className="share-cards-row">
+                  <div className={`share-cards-row cards-${cards.length}`}>
                     {cards.map((card, i) => (
                       <div key={i} className={`share-card-img ${card.isReversed ? 'reversed' : ''}`}>
                         <img src={card.image} alt="" crossOrigin="anonymous" />
