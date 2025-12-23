@@ -197,6 +197,13 @@ const Result = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
+          {isLoading && (
+            <div className="loading">
+              <div className="loading-spinner"></div>
+              <p>{t('aiAnalyzing')}</p>
+            </div>
+          )}
+
           {error && (
             <div className="error">
               <p>❌ {error}</p>
@@ -204,13 +211,13 @@ const Result = () => {
             </div>
           )}
 
-          {aiReading && (
+          {aiReading && !isLoading && (
             <div className="reading-text">{parseMarkdown(aiReading)}</div>
           )}
         </motion.div>
 
         {/* 버튼들 */}
-        {aiReading && (
+        {aiReading && !isLoading && (
           <motion.div 
             className="result-buttons"
             initial={{ opacity: 0 }}

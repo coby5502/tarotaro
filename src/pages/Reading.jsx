@@ -320,6 +320,13 @@ const Reading = () => {
                       scrollRef.current.scrollLeft = scrollLeft.current - walk;
                     }
                   }}
+                  onWheel={(e) => {
+                    // 마우스 휠로 가로 스크롤 (Shift 키 없이도)
+                    if (scrollRef.current && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                      e.preventDefault();
+                      scrollRef.current.scrollLeft += e.deltaY;
+                    }
+                  }}
                 >
                   <div className="card-fan-inner">
                     {shuffledDeck.map((card, index) => {
@@ -418,18 +425,6 @@ const Reading = () => {
                   </motion.div>
                 ))}
               </div>
-              
-              {/* 로딩 표시 */}
-              {allRevealed && isLoadingAI && (
-                <motion.div 
-                  className="preload-status"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                >
-                  <span className="preload-spinner"></span>
-                  <span>{t('aiAnalyzing')}</span>
-                </motion.div>
-              )}
               
               {/* 버튼 */}
               <div className="reveal-actions">
