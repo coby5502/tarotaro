@@ -85,6 +85,7 @@
 .shuffle-phase {
   justify-content: center;
   min-height: 350px;
+  padding-top: 80px;
 }
 
 .shuffle-container {
