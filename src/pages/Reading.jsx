@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
+import { useMotionValue, useTransform } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { spreads, fullDeck } from '../data/tarotCards';
@@ -366,21 +367,19 @@ const Reading = () => {
                                 // 가로 스크롤 적용
                                 const walk = (info.point.x - dragStartRef.current.x) * 1.2;
                                 scrollRef.current.scrollLeft = scrollLeft.current - walk;
-                                // y 드래그 취소를 위해 카드 위치를 원래대로
-                                if (info.offset.y !== 0) {
-                                  // framer-motion의 제약을 통해 y 위치를 0으로 제한
-                                  // 이는 onDragEnd에서 처리하기 어려우므로, 
-                                  // 대신 animate를 통해 위치를 리셋
+                                // 가로 드래그 중에는 y 위치를 0으로 강제 (DOM 직접 조작)
+                                if (e.target) {
+                                  const transform = window.getComputedStyle(e.target).transform;
+                                  if (transform && transform !== 'none') {
+                                    // y 값을 0으로 설정 (translateY(0px)만 유지)
+                                    const matrix = new DOMMatrix(transform);
+                                    e.target.style.transform = `translateY(0px)`;
+                                  }
                                 }
                               } else if (deltaY > deltaX && deltaY > 10) {
                                 cardDragDirectionRef.current.set(card.id, 'vertical');
                               }
                             }
-                          }}
-                          animate={{
-                            ...(cardDragDirectionRef.current.get(card.id) === 'horizontal' 
-                              ? { y: 0 } 
-                              : {})
                           }}
                           onDragEnd={(e, info) => {
                             const dragDirection = cardDragDirectionRef.current.get(card.id);
@@ -389,6 +388,11 @@ const Reading = () => {
                             // 세로 드래그일 때만 카드 선택 (가로 드래그 중에는 선택 안 함)
                             if (dragDirection !== 'horizontal' && info.offset.y < -80 && Math.abs(info.offset.x) < Math.abs(info.offset.y) * 0.8) {
                               selectCard(card);
+                            }
+                            
+                            // 드래그 끝난 후 transform 리셋 (framer-motion이 다시 제어하도록)
+                            if (e.target) {
+                              e.target.style.transform = '';
                             }
                           }}
                           initial={{ 
