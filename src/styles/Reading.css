@@ -187,7 +187,10 @@
 
 /* 카드 공개 */
 .reveal-actions {
-  margin-bottom: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+  min-height: 56px;
+  display: flex;
+  justify-content: center;
 }
 
 .reveal-grid {

@@ -196,13 +196,7 @@ const Reading = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <div className="reveal-actions">
-                {revealedCount < selectedCards.length && (
-                  <button className="btn btn-secondary" onClick={revealAll}>
-                    {t('revealAll')}
-                  </button>
-                )}
-              </div>
+              <p className="phase-hint">{t('tapToReveal')}</p>
               
               <div className={`reveal-grid grid-${spread.cardCount}`}>
                 {selectedCards.map((card, index) => (
@@ -218,16 +212,23 @@ const Reading = () => {
                 ))}
               </div>
               
-              {revealedCount === selectedCards.length && (
-                <motion.button 
-                  className="btn btn-primary"
-                  onClick={goToResult}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
-                  {t('seeResult')}
-                </motion.button>
-              )}
+              {/* 버튼 - 항상 카드 아래에 고정 */}
+              <div className="reveal-actions">
+                {revealedCount < selectedCards.length ? (
+                  <button className="btn btn-primary" onClick={revealAll}>
+                    {t('revealAll')}
+                  </button>
+                ) : (
+                  <motion.button 
+                    className="btn btn-primary"
+                    onClick={goToResult}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                  >
+                    {t('seeResult')}
+                  </motion.button>
+                )}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

@@ -31,6 +31,7 @@ export const translations = {
     startReading: '카드 섞기',
     shuffling: '카드를 섞는 중...',
     selectCard: '카드를 선택하세요',
+    tapToReveal: '카드를 터치하여 공개하세요',
     selectedCards: '선택한 카드',
     seeResult: '결과 보기',
     
@@ -105,6 +106,7 @@ export const translations = {
     startReading: 'Shuffle Cards',
     shuffling: 'Shuffling cards...',
     selectCard: 'Select a card',
+    tapToReveal: 'Tap cards to reveal',
     selectedCards: 'Selected Cards',
     seeResult: 'See Result',
     
@@ -179,6 +181,7 @@ export const translations = {
     startReading: 'カードをシャッフル',
     shuffling: 'カードをシャッフル中...',
     selectCard: 'カードを選んでください',
+    tapToReveal: 'カードをタップして公開',
     selectedCards: '選んだカード',
     seeResult: '結果を見る',
     
