@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useLanguage } from '../i18n/LanguageContext';
 
 const LanguageSelector = () => {
-  const { language, setLanguage, t } = useLanguage();
+  const { language, changeLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
 
   const languages = [
@@ -29,7 +29,7 @@ const LanguageSelector = () => {
               key={lang.code}
               className={`language-option ${language === lang.code ? 'active' : ''}`}
               onClick={() => {
-                setLanguage(lang.code);
+                changeLanguage(lang.code);
                 setIsOpen(false);
               }}
             >
