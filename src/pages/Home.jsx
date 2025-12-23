@@ -1,19 +1,46 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { spreads } from '../data/tarotCards';
+import { useLanguage } from '../i18n/LanguageContext';
+import LanguageSelector from '../components/LanguageSelector';
 import '../styles/Home.css';
 
 const Home = () => {
+  const { t } = useLanguage();
+
   const spreadList = [
-    { key: 'oneCard', icon: '🎴', ...spreads.oneCard },
-    { key: 'threeCard', icon: '🃏', ...spreads.threeCard },
-    { key: 'celticCross', icon: '✝️', ...spreads.celticCross, featured: true },
+    { 
+      key: 'oneCard', 
+      icon: '🎴', 
+      name: t('oneCard'),
+      description: t('oneCardDesc'),
+      cardCount: 1
+    },
+    { 
+      key: 'threeCard', 
+      icon: '🃏', 
+      name: t('threeCard'),
+      description: t('threeCardDesc'),
+      cardCount: 3
+    },
+    { 
+      key: 'celticCross', 
+      icon: '✝️', 
+      name: t('celticCross'),
+      description: t('celticCrossDesc'),
+      cardCount: 10,
+      featured: true
+    },
   ];
 
   return (
     <div className="home">
       <div className="stars"></div>
       <div className="twinkling"></div>
+      
+      {/* 언어 선택기 */}
+      <div className="language-wrapper">
+        <LanguageSelector />
+      </div>
       
       <main className="home-main">
         <motion.header 
@@ -31,8 +58,8 @@ const Home = () => {
             🔮
           </motion.div>
           
-          <h1 className="title">TARO</h1>
-          <p className="subtitle">당신의 내면을 비추는 거울</p>
+          <h1 className="title">{t('appName')}</h1>
+          <p className="subtitle">{t('subtitle')}</p>
         </motion.header>
         
         <motion.section 
@@ -41,7 +68,7 @@ const Home = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
         >
-          <h2 className="section-title">스프레드 선택</h2>
+          <h2 className="section-title">{t('selectSpread')}</h2>
           
           <div className="spread-grid">
             {spreadList.map((spread, index) => (
@@ -60,10 +87,10 @@ const Home = () => {
                 >
                   <span className="spread-icon">{spread.icon}</span>
                   <h3 className="spread-name">{spread.name}</h3>
-                  <span className="spread-count">{spread.cardCount}장</span>
+                  <span className="spread-count">{spread.cardCount}{t('cards')}</span>
                   <p className="spread-desc">{spread.description}</p>
                   {spread.featured && (
-                    <span className="featured-badge">심층 분석</span>
+                    <span className="featured-badge">{t('deepAnalysis')}</span>
                   )}
                 </motion.div>
               </Link>
@@ -73,7 +100,7 @@ const Home = () => {
       </main>
       
       <footer className="home-footer">
-        <p>✨ 타로는 미래를 예언하지 않습니다. 현재의 에너지를 반영합니다. ✨</p>
+        <p>✨ {t('footerMessage')} ✨</p>
       </footer>
     </div>
   );

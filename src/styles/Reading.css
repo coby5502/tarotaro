@@ -5,13 +5,26 @@
   position: relative;
 }
 
+.reading-top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  z-index: 100;
+  background: linear-gradient(to bottom, rgba(15, 10, 30, 0.95), transparent);
+}
+
 .reading-main {
   min-height: 100vh;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 60px var(--spacing-md) var(--spacing-xl);
+  padding: calc(50px + var(--spacing-md)) var(--spacing-md) var(--spacing-xl);
   position: relative;
   z-index: 1;
 }

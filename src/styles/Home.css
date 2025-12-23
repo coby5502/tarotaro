@@ -7,6 +7,14 @@
   position: relative;
 }
 
+/* 언어 선택기 위치 */
+.language-wrapper {
+  position: fixed;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  z-index: 100;
+}
+
 .home-main {
   flex: 1;
   display: flex;

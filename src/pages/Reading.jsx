@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { spreads, fullDeck } from '../data/tarotCards';
+import { useLanguage } from '../i18n/LanguageContext';
 import TarotCard from '../components/TarotCard';
+import LanguageSelector from '../components/LanguageSelector';
 import '../styles/Reading.css';
 
 const Reading = () => {
   const { spreadType } = useParams();
   const navigate = useNavigate();
+  const { t, language } = useLanguage();
   const spread = spreads[spreadType];
   
   const [phase, setPhase] = useState('question');
@@ -15,6 +18,13 @@ const Reading = () => {
   const [shuffledDeck, setShuffledDeck] = useState([]);
   const [selectedCards, setSelectedCards] = useState([]);
   const [revealedCount, setRevealedCount] = useState(0);
+
+  // 스프레드 이름 다국어
+  const getSpreadName = () => {
+    if (spreadType === 'oneCard') return t('oneCard');
+    if (spreadType === 'threeCard') return t('threeCard');
+    return t('celticCross');
+  };
 
   useEffect(() => {
     if (!spread) navigate('/');
@@ -56,7 +66,7 @@ const Reading = () => {
 
   const goToResult = () => {
     navigate('/result', { 
-      state: { cards: selectedCards, spread, question } 
+      state: { cards: selectedCards, spread, question, language } 
     });
   };
 
@@ -67,13 +77,16 @@ const Reading = () => {
       <div className="stars"></div>
       <div className="twinkling"></div>
       
-      <motion.button 
-        className="back-button"
-        onClick={() => navigate('/')}
-        whileHover={{ scale: 1.05 }}
-      >
-        ← 처음으로
-      </motion.button>
+      <div className="reading-top-bar">
+        <motion.button 
+          className="back-button"
+          onClick={() => navigate('/')}
+          whileHover={{ scale: 1.05 }}
+        >
+          ← {t('backToHome')}
+        </motion.button>
+        <LanguageSelector />
+      </div>
 
       <main className="reading-main">
         <motion.h1 
@@ -81,7 +94,7 @@ const Reading = () => {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          {spread.name}
+          {getSpreadName()}
         </motion.h1>
 
         <AnimatePresence mode="wait">
@@ -95,14 +108,14 @@ const Reading = () => {
               exit={{ opacity: 0, y: -20 }}
             >
               <p className="phase-desc">
-                마음속의 질문이나 고민을 떠올려보세요
+                {t('enterQuestion')}
               </p>
               
               <textarea
                 className="question-input"
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
-                placeholder="질문을 입력하세요 (선택사항)"
+                placeholder={t('questionPlaceholder')}
                 rows={3}
               />
               
@@ -112,7 +125,7 @@ const Reading = () => {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
               >
-                카드 섞기 🔮
+                {t('startReading')} 🔮
               </motion.button>
             </motion.section>
           )}
@@ -144,7 +157,7 @@ const Reading = () => {
                   />
                 ))}
               </div>
-              <p className="shuffle-text">카드를 섞는 중...</p>
+              <p className="shuffle-text">{t('shuffling')}</p>
             </motion.section>
           )}
 
@@ -160,7 +173,7 @@ const Reading = () => {
               {/* 진행 상황 */}
               <div className="progress-area">
                 <p className="phase-desc">
-                  <strong>{spread.cardCount}장</strong>의 카드를 선택하세요
+                  {t('selectCard')} ({spread.cardCount}{t('cards')})
                 </p>
                 <div className="progress-bar-wrapper">
                   <div className="progress-bar">
@@ -228,7 +241,7 @@ const Reading = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <p className="phase-desc">카드를 클릭하여 공개하세요</p>
+              <p className="phase-desc">{t('selectCard')}</p>
               
               {spreadType === 'celticCross' ? (
                 <CelticCrossLayout 
@@ -260,7 +273,7 @@ const Reading = () => {
                   animate={{ opacity: 1, y: 0 }}
                   whileHover={{ scale: 1.03 }}
                 >
-                  해석 보기 ✨
+                  {t('seeResult')} ✨
                 </motion.button>
               )}
             </motion.section>
@@ -287,52 +300,47 @@ const CelticCrossLayout = ({ cards, revealedCount, onReveal }) => {
       <div className="celtic-cross">
         {/* 상단 */}
         <div className="celtic-pos celtic-top">
-          <span className="celtic-label">의식적 목표</span>
+          <span className="celtic-label">{cards[2]?.position?.name}</span>
           {renderCard(2)}
         </div>
         
         {/* 중앙 행 */}
         <div className="celtic-row">
           <div className="celtic-pos">
-            <span className="celtic-label">과거</span>
+            <span className="celtic-label">{cards[4]?.position?.name}</span>
             {renderCard(4)}
           </div>
           
           <div className="celtic-center">
             <div className="celtic-main-card">
-              <span className="celtic-label">현재</span>
+              <span className="celtic-label">{cards[0]?.position?.name}</span>
               {renderCard(0)}
             </div>
             <div className="celtic-cross-card">
-              <span className="celtic-label">도전</span>
+              <span className="celtic-label">{cards[1]?.position?.name}</span>
               <div className="rotated">{renderCard(1)}</div>
             </div>
           </div>
           
           <div className="celtic-pos">
-            <span className="celtic-label">미래</span>
+            <span className="celtic-label">{cards[5]?.position?.name}</span>
             {renderCard(5)}
           </div>
         </div>
         
         {/* 하단 */}
         <div className="celtic-pos celtic-bottom">
-          <span className="celtic-label">무의식</span>
+          <span className="celtic-label">{cards[3]?.position?.name}</span>
           {renderCard(3)}
         </div>
       </div>
       
       {/* 스태프 */}
       <div className="celtic-staff">
-        {[
-          { idx: 9, label: '결과' },
-          { idx: 8, label: '희망/두려움' },
-          { idx: 7, label: '환경' },
-          { idx: 6, label: '태도' },
-        ].map(({ idx, label }) => (
+        {[9, 8, 7, 6].map((idx) => (
           <div key={idx} className="staff-pos">
             {renderCard(idx)}
-            <span className="staff-label">{label}</span>
+            <span className="staff-label">{cards[idx]?.position?.name}</span>
           </div>
         ))}
       </div>
