@@ -6,7 +6,7 @@
 export const translations = {
   ko: {
     // 공통
-    appName: 'TARO',
+    appName: '타로타로',
     subtitle: '당신의 내면을 비추는 거울',
     loading: '로딩 중...',
     
@@ -67,7 +67,7 @@ export const translations = {
   
   en: {
     // Common
-    appName: 'TARO',
+    appName: 'TaroTaro',
     subtitle: 'A mirror reflecting your inner self',
     loading: 'Loading...',
     
@@ -128,7 +128,7 @@ export const translations = {
   
   ja: {
     // 共通
-    appName: 'TARO',
+    appName: 'タロタロ',
     subtitle: 'あなたの内面を映す鏡',
     loading: '読み込み中...',
     

@@ -39,11 +39,10 @@
 }
 
 .title {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 10vw, 3rem);
+  font-family: var(--font-body);
+  font-size: clamp(1.8rem, 10vw, 2.8rem);
   font-weight: 700;
-  letter-spacing: 0.35em;
-  margin-left: 0.35em;
+  letter-spacing: 0.1em;
   background: var(--gradient-gold);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
