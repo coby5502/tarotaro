@@ -100,19 +100,44 @@ const Result = () => {
     await new Promise(resolve => setTimeout(resolve, 300));
     
     try {
-      const canvas = await html2canvas(shareCardRef.current, {
+      const element = shareCardRef.current;
+      
+      const canvas = await html2canvas(element, {
         backgroundColor: '#0f0f1a',
         scale: 3,
         logging: false,
         useCORS: true,
-        allowTaint: false, // allowTaint를 false로 변경
+        allowTaint: false,
         imageTimeout: 10000,
-        height: shareCardRef.current.scrollHeight,
-        width: shareCardRef.current.scrollWidth,
-        windowWidth: shareCardRef.current.scrollWidth,
-        windowHeight: shareCardRef.current.scrollHeight,
         onclone: (clonedDoc) => {
-          // 클론된 문서에서 이미지가 제대로 로드되었는지 확인
+          // 클론된 문서에서 스타일 정리하여 실제 보이는 것처럼 만들기
+          const clonedCard = clonedDoc.querySelector('.share-card');
+          if (clonedCard) {
+            // 모달이나 overlay의 영향을 받지 않도록 스타일 정리
+            clonedCard.style.transform = 'none';
+            clonedCard.style.position = 'relative';
+            clonedCard.style.margin = '0 auto';
+            clonedCard.style.left = 'auto';
+            clonedCard.style.top = 'auto';
+            clonedCard.style.right = 'auto';
+            clonedCard.style.bottom = 'auto';
+            
+            // 부모 요소들도 정리
+            const modalOverlay = clonedDoc.querySelector('.modal-overlay');
+            if (modalOverlay) {
+              modalOverlay.style.position = 'relative';
+              modalOverlay.style.transform = 'none';
+            }
+            
+            const shareModal = clonedDoc.querySelector('.share-modal');
+            if (shareModal) {
+              shareModal.style.position = 'relative';
+              shareModal.style.transform = 'none';
+              shareModal.style.margin = '0';
+            }
+          }
+          
+          // 이미지가 제대로 로드되었는지 확인
           const clonedImages = clonedDoc.querySelectorAll('img');
           clonedImages.forEach(img => {
             if (!img.complete || img.naturalWidth === 0) {
