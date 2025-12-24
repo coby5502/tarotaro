@@ -55,6 +55,9 @@
 .result-cards.cards-1 {
   grid-template-columns: 1fr;
   max-width: clamp(120px, 25vw, 200px);
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .result-cards.cards-10 {
@@ -321,6 +324,9 @@
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .share-modal::-webkit-scrollbar {
@@ -347,7 +353,7 @@
   min-height: auto;
   display: flex;
   flex-direction: column;
-  position: relative; /* html2canvas를 위한 위치 지정 */
+  position: static; /* html2canvas 캡처 시 위치 문제 해결 */
 }
 
 .share-header {
@@ -377,6 +383,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
   min-height: auto;
 }
 
@@ -386,6 +393,8 @@
   margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  text-align: center;
+  width: 100%;
 }
 
 .share-question {
@@ -397,14 +406,18 @@
   padding: 8px 10px;
   background: rgba(124, 92, 191, 0.1);
   border-radius: 8px;
+  text-align: center;
+  width: 100%;
 }
 
 .share-cards-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
   gap: 4px;
   margin-bottom: 12px;
+  width: 100%;
 }
 
 .share-cards-row.cards-10 {
@@ -412,19 +425,31 @@
   grid-template-columns: repeat(5, 1fr);
   gap: 3px;
   max-width: 220px;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
+  justify-items: center;
 }
 
 /* 3장 이하일 때 */
 .share-cards-row.cards-1 {
+  display: grid;
   grid-template-columns: 1fr;
   max-width: 60px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  justify-items: center;
 }
 
 .share-cards-row.cards-3 {
+  display: grid;
   grid-template-columns: repeat(3, 1fr);
   max-width: 200px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  justify-items: center;
 }
 
 .share-card-img {
@@ -442,8 +467,14 @@
   aspect-ratio: 2 / 3; /* 카드 비율 유지 */
 }
 
-.share-cards-row.cards-1 .share-card-img,
+.share-cards-row.cards-1 .share-card-img {
+  width: 100%;
+  max-width: 60px;
+  aspect-ratio: 2 / 3; /* 카드 비율 유지 */
+}
+
 .share-cards-row.cards-3 .share-card-img {
+  width: 100%;
   aspect-ratio: 2 / 3; /* 카드 비율 유지 */
 }
 
