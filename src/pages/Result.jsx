@@ -100,52 +100,44 @@ const Result = () => {
     await new Promise(resolve => setTimeout(resolve, 300));
     
     try {
-      const element = shareCardRef.current;
+      const originalElement = shareCardRef.current;
       
-      const canvas = await html2canvas(element, {
+      // 요소를 body에 임시로 복제 (모달의 영향을 받지 않도록)
+      const clonedElement = originalElement.cloneNode(true);
+      clonedElement.style.position = 'fixed';
+      clonedElement.style.left = '-9999px';
+      clonedElement.style.top = '0';
+      clonedElement.style.zIndex = '-1';
+      clonedElement.style.transform = 'none';
+      clonedElement.style.margin = '0 auto';
+      document.body.appendChild(clonedElement);
+      
+      // 복제된 요소의 이미지도 로드 대기
+      const clonedImages = clonedElement.querySelectorAll('img');
+      await Promise.all(
+        Array.from(clonedImages).map(img => {
+          if (img.complete) return Promise.resolve();
+          return new Promise((resolve) => {
+            img.onload = resolve;
+            img.onerror = resolve;
+            setTimeout(resolve, 2000);
+          });
+        })
+      );
+      
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      const canvas = await html2canvas(clonedElement, {
         backgroundColor: '#0f0f1a',
         scale: 3,
         logging: false,
         useCORS: true,
         allowTaint: false,
         imageTimeout: 10000,
-        onclone: (clonedDoc) => {
-          // 클론된 문서에서 스타일 정리하여 실제 보이는 것처럼 만들기
-          const clonedCard = clonedDoc.querySelector('.share-card');
-          if (clonedCard) {
-            // 모달이나 overlay의 영향을 받지 않도록 스타일 정리
-            clonedCard.style.transform = 'none';
-            clonedCard.style.position = 'relative';
-            clonedCard.style.margin = '0 auto';
-            clonedCard.style.left = 'auto';
-            clonedCard.style.top = 'auto';
-            clonedCard.style.right = 'auto';
-            clonedCard.style.bottom = 'auto';
-            
-            // 부모 요소들도 정리
-            const modalOverlay = clonedDoc.querySelector('.modal-overlay');
-            if (modalOverlay) {
-              modalOverlay.style.position = 'relative';
-              modalOverlay.style.transform = 'none';
-            }
-            
-            const shareModal = clonedDoc.querySelector('.share-modal');
-            if (shareModal) {
-              shareModal.style.position = 'relative';
-              shareModal.style.transform = 'none';
-              shareModal.style.margin = '0';
-            }
-          }
-          
-          // 이미지가 제대로 로드되었는지 확인
-          const clonedImages = clonedDoc.querySelectorAll('img');
-          clonedImages.forEach(img => {
-            if (!img.complete || img.naturalWidth === 0) {
-              img.style.display = 'none';
-            }
-          });
-        },
       });
+      
+      // 복제된 요소 제거
+      document.body.removeChild(clonedElement);
       
       // JPEG로 변환, 품질 0.92로 화질 개선 (약 5MB 목표)
       const link = document.createElement('a');
