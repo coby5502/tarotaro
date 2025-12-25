@@ -357,7 +357,7 @@ export const majorArcana = [
   },
   {
     id: "major-10",
-    name: { ko: "운명의 수레바퀴", en: "Wheel of Fortune" },
+    name: { ko: "운명의 수레바퀴", en: "Wheel of Fortune", ja: "運命の輪" },
     number: "X",
     image: "/cards/major/10-wheel-of-fortune.jpg",
     type: "major",
@@ -372,7 +372,7 @@ export const majorArcana = [
   },
   {
     id: "major-11",
-    name: { ko: "정의", en: "Justice" },
+    name: { ko: "정의", en: "Justice", ja: "正義" },
     number: "XI",
     image: "/cards/major/11-justice.jpg",
     type: "major",
@@ -387,7 +387,7 @@ export const majorArcana = [
   },
   {
     id: "major-12",
-    name: { ko: "매달린 사람", en: "The Hanged Man" },
+    name: { ko: "매달린 사람", en: "The Hanged Man", ja: "吊るされた男" },
     number: "XII",
     image: "/cards/major/12-hanged-man.jpg",
     type: "major",
@@ -402,7 +402,7 @@ export const majorArcana = [
   },
   {
     id: "major-13",
-    name: { ko: "죽음", en: "Death" },
+    name: { ko: "죽음", en: "Death", ja: "死神" },
     number: "XIII",
     image: "/cards/major/13-death.jpg",
     type: "major",
@@ -417,7 +417,7 @@ export const majorArcana = [
   },
   {
     id: "major-14",
-    name: { ko: "절제", en: "Temperance" },
+    name: { ko: "절제", en: "Temperance", ja: "節制" },
     number: "XIV",
     image: "/cards/major/14-temperance.jpg",
     type: "major",
@@ -432,7 +432,7 @@ export const majorArcana = [
   },
   {
     id: "major-15",
-    name: { ko: "악마", en: "The Devil" },
+    name: { ko: "악마", en: "The Devil", ja: "悪魔" },
     number: "XV",
     image: "/cards/major/15-devil.jpg",
     type: "major",
@@ -447,7 +447,7 @@ export const majorArcana = [
   },
   {
     id: "major-16",
-    name: { ko: "탑", en: "The Tower" },
+    name: { ko: "탑", en: "The Tower", ja: "塔" },
     number: "XVI",
     image: "/cards/major/16-tower.jpg",
     type: "major",
@@ -462,7 +462,7 @@ export const majorArcana = [
   },
   {
     id: "major-17",
-    name: { ko: "별", en: "The Star" },
+    name: { ko: "별", en: "The Star", ja: "星" },
     number: "XVII",
     image: "/cards/major/17-star.jpg",
     type: "major",
@@ -477,7 +477,7 @@ export const majorArcana = [
   },
   {
     id: "major-18",
-    name: { ko: "달", en: "The Moon" },
+    name: { ko: "달", en: "The Moon", ja: "月" },
     number: "XVIII",
     image: "/cards/major/18-moon.jpg",
     type: "major",
@@ -492,7 +492,7 @@ export const majorArcana = [
   },
   {
     id: "major-19",
-    name: { ko: "태양", en: "The Sun" },
+    name: { ko: "태양", en: "The Sun", ja: "太陽" },
     number: "XIX",
     image: "/cards/major/19-sun.jpg",
     type: "major",
@@ -507,7 +507,7 @@ export const majorArcana = [
   },
   {
     id: "major-20",
-    name: { ko: "심판", en: "Judgement" },
+    name: { ko: "심판", en: "Judgement", ja: "審判" },
     number: "XX",
     image: "/cards/major/20-judgement.jpg",
     type: "major",
@@ -522,7 +522,7 @@ export const majorArcana = [
   },
   {
     id: "major-21",
-    name: { ko: "세계", en: "The World" },
+    name: { ko: "세계", en: "The World", ja: "世界" },
     number: "XXI",
     image: "/cards/major/21-world.jpg",
     type: "major",
