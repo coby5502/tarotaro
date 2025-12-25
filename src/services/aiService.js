@@ -19,12 +19,40 @@ const getLanguageInstruction = (lang) => {
 const buildPrompt = (cards, spread, question, lang) => {
   const langName = getLanguageName(lang);
   const langInstruction = getLanguageInstruction(lang);
-  
+
   const cardInfo = cards.map((card, i) => {
-    const name = card.name.en || card.name.ko;
-    const position = card.position?.meaning || card.position?.name || `Position ${i + 1}`;
+    // 이름 처리
+    const name = card.name[lang] || card.name.en || card.name.ko || card.name;
+
+    // 위치 의미 처리
+    let position = `Position ${i + 1}`;
+    if (card.position) {
+      if (typeof card.position.description === 'object') {
+        position = card.position.description[lang] || card.position.description.en || card.position.description.ko;
+      } else if (typeof card.position.description === 'string') {
+        position = card.position.description;
+      } else if (typeof card.position.name === 'object') {
+        position = card.position.name[lang] || card.position.name.en || card.position.name.ko;
+      } else if (typeof card.position.name === 'string') {
+        position = card.position.name;
+      } else if (card.position.meaning) {
+        position = card.position.meaning;
+      }
+    }
+
     const direction = card.isReversed ? 'REVERSED' : 'Upright';
-    const keywords = Array.isArray(card.keywords) ? card.keywords.join(', ') : (card.keywords || '');
+
+    // 키워드 처리
+    let keywords = '';
+    if (card.keywords) {
+      // 다국어 구조인지 확인
+      const keywordsObj = card.keywords[lang] || card.keywords.en || card.keywords.ko || card.keywords;
+      const list = card.isReversed ? keywordsObj.reversed : keywordsObj.upright;
+      if (Array.isArray(list)) {
+        keywords = list.join(', ');
+      }
+    }
+
     return `${i + 1}. **${name}** (${direction}) - Position: ${position}${keywords ? ` | Keywords: ${keywords}` : ''}`;
   }).join('\n');
 

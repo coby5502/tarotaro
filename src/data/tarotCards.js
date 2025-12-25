@@ -7,152 +7,352 @@
 export const majorArcana = [
   {
     id: "major-00",
-    name: { ko: "바보", en: "The Fool" },
+    name: { ko: "바보", en: "The Fool", ja: "愚者" },
     number: "0",
     image: "/cards/major/00-fool.jpg",
     type: "major",
     keywords: {
-      upright: ["새로운 시작", "순수함", "모험", "자유", "가능성"],
-      reversed: ["무모함", "부주의", "위험", "어리석음", "방황"]
+      ko: {
+        upright: ["새로운 시작", "순수함", "모험", "자유", "가능성"],
+        reversed: ["무모함", "부주의", "위험", "어리석음", "방황"]
+      },
+      en: {
+        upright: ["New Beginnings", "Innocence", "Adventure", "Freedom", "Potential"],
+        reversed: ["Recklessness", "Carelessness", "Risk", "Foolishness", "Wandering"]
+      },
+      ja: {
+        upright: ["始まり", "純粋", "冒険", "自由", "可能性"],
+        reversed: ["無謀", "不注意", "リスク", "愚かさ", "放浪"]
+      }
     },
     meaning: {
-      upright: "새로운 시작과 무한한 가능성을 의미합니다. 두려움 없이 새로운 여정을 시작할 때입니다. 순수한 마음으로 세상을 바라보며, 미지의 세계로 발을 내딛을 용기가 필요합니다.",
-      reversed: "무모한 결정이나 준비 없이 뛰어드는 것을 경고합니다. 조금 더 신중해질 필요가 있습니다. 현실을 직시하고 계획을 세워야 할 때입니다."
+      ko: {
+        upright: "새로운 시작과 무한한 가능성을 의미합니다. 두려움 없이 새로운 여정을 시작할 때입니다. 순수한 마음으로 세상을 바라보며, 미지의 세계로 발을 내딛을 용기가 필요합니다.",
+        reversed: "무모한 결정이나 준비 없이 뛰어드는 것을 경고합니다. 조금 더 신중해질 필요가 있습니다. 현실을 직시하고 계획을 세워야 할 때입니다."
+      },
+      en: {
+        upright: "Represents new beginnings and infinite possibilities. It is time to start a new journey without fear. You need the courage to step into the unknown with a pure heart.",
+        reversed: "Warns against reckless decisions or jumping in without preparation. You need to be more cautious. Face reality and make a plan."
+      },
+      ja: {
+        upright: "新しい始まりと無限の可能性を意味します。恐れずに新しい旅を始める時です。純粋な心で世界を見つめ、未知の世界へ踏み出す勇気が必要です。",
+        reversed: "無謀な決断や準備なしに飛び込むことを警告しています。もう少し慎重になる必要があります。現実を直視し、計画を立てる時です。"
+      }
     }
   },
   {
     id: "major-01",
-    name: { ko: "마법사", en: "The Magician" },
+    name: { ko: "마법사", en: "The Magician", ja: "魔術師" },
     number: "I",
     image: "/cards/major/01-magician.jpg",
     type: "major",
     keywords: {
-      upright: ["창조력", "의지력", "기술", "집중", "행동"],
-      reversed: ["속임수", "미숙함", "재능 낭비", "조작", "혼란"]
+      ko: {
+        upright: ["창조력", "의지력", "기술", "집중", "행동"],
+        reversed: ["속임수", "미숙함", "재능 낭비", "조작", "혼란"]
+      },
+      en: {
+        upright: ["Creativity", "Willpower", "Skill", "Focus", "Action"],
+        reversed: ["Trickery", "Inexperience", "Wasted Talent", "Manipulation", "Confusion"]
+      },
+      ja: {
+        upright: ["創造力", "意志力", "技術", "集中", "行動"],
+        reversed: ["策略", "未熟", "才能の無駄遣い", "操作", "混乱"]
+      }
     },
     meaning: {
-      upright: "당신에게는 원하는 것을 현실로 만들 수 있는 모든 도구와 능력이 있습니다. 의지력과 집중력으로 목표를 이룰 수 있는 시기입니다. 행동으로 옮길 때입니다.",
-      reversed: "재능을 제대로 활용하지 못하고 있거나, 누군가의 속임수에 주의해야 합니다. 자신의 능력을 과신하거나 과소평가하고 있을 수 있습니다."
+      ko: {
+        upright: "당신에게는 원하는 것을 현실로 만들 수 있는 모든 도구와 능력이 있습니다. 의지력과 집중력으로 목표를 이룰 수 있는 시기입니다. 행동으로 옮길 때입니다.",
+        reversed: "재능을 제대로 활용하지 못하고 있거나, 누군가의 속임수에 주의해야 합니다. 자신의 능력을 과신하거나 과소평가하고 있을 수 있습니다."
+      },
+      en: {
+        upright: "You have all the tools and abilities to make what you want a reality. It's time to achieve your goals with willpower and focus. Take action.",
+        reversed: "You may not be utilizing your talents properly, or need to be wary of deception. You might be overestimating or underestimating your abilities."
+      },
+      ja: {
+        upright: "望むものを現実にするための道具と能力がすべて揃っています。意志力と集中力で目標を達成できる時期です。行動に移す時です。",
+        reversed: "才能を十分に活かせていないか、誰かの策略に注意が必要です。自分の能力を過信しているか、過小評価している可能性があります。"
+      }
     }
   },
   {
     id: "major-02",
-    name: { ko: "여사제", en: "The High Priestess" },
+    name: { ko: "여사제", en: "The High Priestess", ja: "女教皇" },
     number: "II",
     image: "/cards/major/02-high-priestess.jpg",
     type: "major",
     keywords: {
-      upright: ["직관", "신비", "내면의 지혜", "잠재의식", "침묵"],
-      reversed: ["비밀", "단절", "표면적 판단", "직관 무시", "혼란"]
+      ko: {
+        upright: ["직관", "신비", "내면의 지혜", "잠재의식", "침묵"],
+        reversed: ["비밀", "단절", "표면적 판단", "직관 무시", "혼란"]
+      },
+      en: {
+        upright: ["Intuition", "Mystery", "Inner Wisdom", "Subconscious", "Silence"],
+        reversed: ["Secrets", "Disconnection", "Superficiality", "Ignoring Intuition", "Confusion"]
+      },
+      ja: {
+        upright: ["直感", "神秘", "内なる知恵", "潜在意識", "沈黙"],
+        reversed: ["秘密", "断絶", "表面的", "直感の無視", "混乱"]
+      }
     },
     meaning: {
-      upright: "내면의 목소리에 귀 기울일 때입니다. 직관과 잠재의식이 중요한 답을 가지고 있습니다. 조용히 자신을 돌아보고 숨겨진 진실을 발견하세요.",
-      reversed: "직관을 무시하고 있거나 내면의 목소리를 듣지 않고 있습니다. 숨겨진 정보가 있을 수 있으니 표면만 보지 마세요."
+      ko: {
+        upright: "내면의 목소리에 귀 기울일 때입니다. 직관과 잠재의식이 중요한 답을 가지고 있습니다. 조용히 자신을 돌아보고 숨겨진 진실을 발견하세요.",
+        reversed: "직관을 무시하고 있거나 내면의 목소리를 듣지 않고 있습니다. 숨겨진 정보가 있을 수 있으니 표면만 보지 마세요."
+      },
+      en: {
+        upright: "It is time to listen to your inner voice. Your intuition and subconscious hold important answers. Reflect quietly and discover the hidden truth.",
+        reversed: "You are ignoring your intuition or not listening to your inner voice. There may be hidden information, so don't just look at the surface."
+      },
+      ja: {
+        upright: "内なる声に耳を傾ける時です。直感と潜在意識が重要な答えを持っています。静かに自分を振り返り、隠された真実を発見してください。",
+        reversed: "直感を無視しているか、内なる声を聞いていません。隠された情報があるかもしれないので、表面だけを見ないでください。"
+      }
     }
   },
   {
     id: "major-03",
-    name: { ko: "여황제", en: "The Empress" },
+    name: { ko: "여황제", en: "The Empress", ja: "女帝" },
     number: "III",
     image: "/cards/major/03-empress.jpg",
     type: "major",
     keywords: {
-      upright: ["풍요", "모성", "자연", "창조", "아름다움"],
-      reversed: ["의존", "공허함", "창조력 부족", "과잉보호", "방치"]
+      ko: {
+        upright: ["풍요", "모성", "자연", "창조", "아름다움"],
+        reversed: ["의존", "공허함", "창조력 부족", "과잉보호", "방치"]
+      },
+      en: {
+        upright: ["Abundance", "Motherhood", "Nature", "Creation", "Beauty"],
+        reversed: ["Dependence", "Emptiness", "Creative Block", "Overprotection", "Neglect"]
+      },
+      ja: {
+        upright: ["豊かさ", "母性", "自然", "創造", "美"],
+        reversed: ["依存", "空虚", "創造力不足", "過保護", "放置"]
+      }
     },
     meaning: {
-      upright: "풍요와 창조의 에너지가 넘치는 시기입니다. 새로운 것을 탄생시키고 성장시킬 수 있습니다. 자연과 아름다움을 즐기며 삶의 기쁨을 만끽하세요.",
-      reversed: "창조적 에너지가 막혀있거나 타인에게 지나치게 의존하고 있을 수 있습니다. 자기 자신을 돌보는 것도 잊지 마세요."
+      ko: {
+        upright: "풍요와 창조의 에너지가 넘치는 시기입니다. 새로운 것을 탄생시키고 성장시킬 수 있습니다. 자연과 아름다움을 즐기며 삶의 기쁨을 만끽하세요.",
+        reversed: "창조적 에너지가 막혀있거나 타인에게 지나치게 의존하고 있을 수 있습니다. 자기 자신을 돌보는 것도 잊지 마세요."
+      },
+      en: {
+        upright: "A time filled with abundance and creative energy. You can birth and grow new things. Enjoy nature and beauty, and embrace the joy of life.",
+        reversed: "Creative energy may be blocked, or you might be overly dependent on others. Don't forget to take care of yourself."
+      },
+      ja: {
+        upright: "豊かさと創造のエネルギーが満ち溢れる時期です。新しいものを生み出し、育てることができます。自然と美を楽しみ、人生の喜びを味わってください。",
+        reversed: "創造的なエネルギーが滞っていたり、他人に過度に依存している可能性があります。自分自身を大切にすることも忘れないでください。"
+      }
     }
   },
   {
     id: "major-04",
-    name: { ko: "황제", en: "The Emperor" },
+    name: { ko: "황제", en: "The Emperor", ja: "皇帝" },
     number: "IV",
     image: "/cards/major/04-emperor.jpg",
     type: "major",
     keywords: {
-      upright: ["권위", "안정", "리더십", "구조", "아버지"],
-      reversed: ["독재", "경직", "통제 상실", "미성숙", "횡포"]
+      ko: {
+        upright: ["권위", "안정", "리더십", "구조", "아버지"],
+        reversed: ["독재", "경직", "통제 상실", "미성숙", "횡포"]
+      },
+      en: {
+        upright: ["Authority", "Stability", "Leadership", "Structure", "Father Figure"],
+        reversed: ["Tyranny", "Rigidity", "Loss of Control", "Immaturity", "Domination"]
+      },
+      ja: {
+        upright: ["権威", "安定", "リーダーシップ", "構造", "父性"],
+        reversed: ["独裁", "硬直", "制御不能", "未熟", "横暴"]
+      }
     },
     meaning: {
-      upright: "강력한 리더십과 안정적인 기반을 의미합니다. 체계적이고 논리적인 접근이 필요한 때입니다. 책임감을 가지고 상황을 이끌어 나가세요.",
-      reversed: "지나친 통제나 권위주의적 태도를 경계해야 합니다. 유연성이 필요하거나 권위에 도전받을 수 있습니다."
+      ko: {
+        upright: "강력한 리더십과 안정적인 기반을 의미합니다. 체계적이고 논리적인 접근이 필요한 때입니다. 책임감을 가지고 상황을 이끌어 나가세요.",
+        reversed: "지나친 통제나 권위주의적 태도를 경계해야 합니다. 유연성이 필요하거나 권위에 도전받을 수 있습니다."
+      },
+      en: {
+        upright: "Represents strong leadership and a stable foundation. A systematic and logical approach is needed. Lead the situation with responsibility.",
+        reversed: "Beware of excessive control or authoritarian attitudes. Flexibility is needed, or your authority may be challenged."
+      },
+      ja: {
+        upright: "強力なリーダーシップと安定した基盤を意味します。体系的で論理的なアプローチが必要です。責任感を持って状況をリードしてください。",
+        reversed: "過度な支配や権威主義的な態度に注意が必要です。柔軟性が必要であったり、権威に挑戦される可能性があります。"
+      }
     }
   },
   {
     id: "major-05",
-    name: { ko: "교황", en: "The Hierophant" },
+    name: { ko: "교황", en: "The Hierophant", ja: "法王" },
     number: "V",
     image: "/cards/major/05-hierophant.jpg",
     type: "major",
     keywords: {
-      upright: ["전통", "가르침", "신념", "의식", "멘토"],
-      reversed: ["반항", "비전통", "새로운 방법", "독단", "제한"]
+      ko: {
+        upright: ["전통", "가르침", "신념", "의식", "멘토"],
+        reversed: ["반항", "비전통", "새로운 방법", "독단", "제한"]
+      },
+      en: {
+        upright: ["Tradition", "Teaching", "Belief", "Ritual", "Mentor"],
+        reversed: ["Rebellion", "Non-traditional", "New Methods", "Dogma", "Restriction"]
+      },
+      ja: {
+        upright: ["伝統", "教え", "信念", "儀式", "メンター"],
+        reversed: ["反抗", "非伝統的", "新しい方法", "独断", "制限"]
+      }
     },
     meaning: {
-      upright: "전통적인 가치와 가르침을 따를 때입니다. 멘토나 조언자의 도움을 받거나, 기존의 체계 안에서 배움을 얻을 수 있습니다.",
-      reversed: "기존의 규칙이나 전통에 의문을 제기하고 있습니다. 자신만의 길을 찾거나 새로운 방식을 시도할 때일 수 있습니다."
+      ko: {
+        upright: "전통적인 가치와 가르침을 따를 때입니다. 멘토나 조언자의 도움을 받거나, 기존의 체계 안에서 배움을 얻을 수 있습니다.",
+        reversed: "기존의 규칙이나 전통에 의문을 제기하고 있습니다. 자신만의 길을 찾거나 새로운 방식을 시도할 때일 수 있습니다."
+      },
+      en: {
+        upright: "It is time to follow traditional values and teachings. You may receive help from a mentor or find learning within established systems.",
+        reversed: "You are questioning existing rules or traditions. It might be time to find your own path or try new ways."
+      },
+      ja: {
+        upright: "伝統的な価値観や教えに従う時です。メンターや助言者の助けを得たり、既存の体系の中で学びを得ることができます。",
+        reversed: "既存のルールや伝統に疑問を投げかけています。自分だけの道を見つけたり、新しい方法を試す時かもしれません。"
+      }
     }
   },
   {
     id: "major-06",
-    name: { ko: "연인", en: "The Lovers" },
+    name: { ko: "연인", en: "The Lovers", ja: "恋人" },
     number: "VI",
     image: "/cards/major/06-lovers.jpg",
     type: "major",
     keywords: {
-      upright: ["사랑", "조화", "선택", "가치관", "파트너십"],
-      reversed: ["불화", "불균형", "잘못된 선택", "유혹", "갈등"]
+      ko: {
+        upright: ["사랑", "조화", "선택", "가치관", "파트너십"],
+        reversed: ["불화", "불균형", "잘못된 선택", "유혹", "갈등"]
+      },
+      en: {
+        upright: ["Love", "Harmony", "Choice", "Values", "Partnership"],
+        reversed: ["Discord", "Imbalance", "Wrong Choice", "Temptation", "Conflict"]
+      },
+      ja: {
+        upright: ["愛", "調和", "選択", "価値観", "パートナーシップ"],
+        reversed: ["不和", "不均衡", "誤った選択", "誘惑", "葛藤"]
+      }
     },
     meaning: {
-      upright: "사랑과 조화로운 관계를 나타냅니다. 중요한 선택의 기로에 서 있으며, 마음의 소리에 따라 결정해야 합니다. 진정한 가치관에 기반한 선택을 하세요.",
-      reversed: "관계의 불화나 가치관의 충돌이 있을 수 있습니다. 유혹에 흔들리거나 잘못된 선택을 할 위험이 있으니 신중해야 합니다."
+      ko: {
+        upright: "사랑과 조화로운 관계를 나타냅니다. 중요한 선택의 기로에 서 있으며, 마음의 소리에 따라 결정해야 합니다. 진정한 가치관에 기반한 선택을 하세요.",
+        reversed: "관계의 불화나 가치관의 충돌이 있을 수 있습니다. 유혹에 흔들리거나 잘못된 선택을 할 위험이 있으니 신중해야 합니다."
+      },
+      en: {
+        upright: "Represents love and harmonious relationships. You are at a crossroads of an important choice; decide by listening to your heart. Choose based on your true values.",
+        reversed: "There may be discord in relationships or conflicts of values. Be careful as there is a risk of swaying to temptation or making the wrong choice."
+      },
+      ja: {
+        upright: "愛と調和のとれた関係を表します。重要な選択の岐路に立っており、心の声に従って決定する必要があります。真の価値観に基づいた選択をしてください。",
+        reversed: "関係の不和や価値観の衝突があるかもしれません。誘惑に揺れたり、誤った選択をする危険があるため、慎重になる必要があります。"
+      }
     }
   },
   {
     id: "major-07",
-    name: { ko: "전차", en: "The Chariot" },
+    name: { ko: "전차", en: "The Chariot", ja: "戦車" },
     number: "VII",
     image: "/cards/major/07-chariot.jpg",
     type: "major",
     keywords: {
-      upright: ["승리", "의지력", "전진", "결단력", "자기통제"],
-      reversed: ["방향 상실", "공격성", "좌절", "통제 불능", "지연"]
+      ko: {
+        upright: ["승리", "의지력", "전진", "결단력", "자기통제"],
+        reversed: ["방향 상실", "공격성", "좌절", "통제 불능", "지연"]
+      },
+      en: {
+        upright: ["Victory", "Willpower", "Forward Movement", "Determination", "Self-Control"],
+        reversed: ["Loss of Direction", "Aggression", "Frustration", "Lack of Control", "Delay"]
+      },
+      ja: {
+        upright: ["勝利", "意志力", "前進", "決断力", "自己制御"],
+        reversed: ["方向性の喪失", "攻撃性", "挫折", "制御不能", "遅延"]
+      }
     },
     meaning: {
-      upright: "강한 의지와 결단력으로 장애물을 극복하고 승리할 수 있습니다. 목표를 향해 전진하세요. 자기 통제력이 성공의 열쇠입니다.",
-      reversed: "방향을 잃었거나 통제력을 상실한 상태입니다. 너무 공격적이거나 반대로 의지가 꺾여 있을 수 있습니다. 균형을 찾으세요."
+      ko: {
+        upright: "강한 의지와 결단력으로 장애물을 극복하고 승리할 수 있습니다. 목표를 향해 전진하세요. 자기 통제력이 성공의 열쇠입니다.",
+        reversed: "방향을 잃었거나 통제력을 상실한 상태입니다. 너무 공격적이거나 반대로 의지가 꺾여 있을 수 있습니다. 균형을 찾으세요."
+      },
+      en: {
+        upright: "You can overcome obstacles and triumph with strong will and determination. Move forward towards your goal. Self-control is the key to success.",
+        reversed: "You may have lost direction or control. You might be too aggressive or, conversely, have lost your will. Find balance."
+      },
+      ja: {
+        upright: "強い意志と決断力で障害を克服し、勝利することができます。目標に向かって前進してください。自己制御が成功の鍵です。",
+        reversed: "方向を見失ったり、制御力を失った状態です。攻撃的になりすぎたり、逆に意志が挫けている可能性があります。バランスを見つけてください。"
+      }
     }
   },
   {
     id: "major-08",
-    name: { ko: "힘", en: "Strength" },
+    name: { ko: "힘", en: "Strength", ja: "力" },
     number: "VIII",
     image: "/cards/major/08-strength.jpg",
     type: "major",
     keywords: {
-      upright: ["용기", "인내", "내면의 힘", "연민", "자신감"],
-      reversed: ["자기 의심", "나약함", "불안", "통제 부족", "분노"]
+      ko: {
+        upright: ["용기", "인내", "내면의 힘", "연민", "자신감"],
+        reversed: ["자기 의심", "나약함", "불안", "통제 부족", "분노"]
+      },
+      en: {
+        upright: ["Courage", "Patience", "Inner Strength", "Compassion", "Confidence"],
+        reversed: ["Self-Doubt", "Weakness", "Anxiety", "Lack of Control", "Anger"]
+      },
+      ja: {
+        upright: ["勇気", "忍耐", "内なる力", "慈悲", "自信"],
+        reversed: ["自己不信", "弱さ", "不安", "制御不足", "怒り"]
+      }
     },
     meaning: {
-      upright: "부드러운 힘과 인내로 어려움을 극복할 수 있습니다. 폭력이 아닌 연민과 이해로 상황을 다루세요. 내면의 용기를 믿으세요.",
-      reversed: "자신감이 부족하거나 내면의 두려움에 시달리고 있습니다. 분노나 공포를 다스리는 법을 배워야 할 때입니다."
+      ko: {
+        upright: "부드러운 힘과 인내로 어려움을 극복할 수 있습니다. 폭력이 아닌 연민과 이해로 상황을 다루세요. 내면의 용기를 믿으세요.",
+        reversed: "자신감이 부족하거나 내면의 두려움에 시달리고 있습니다. 분노나 공포를 다스리는 법을 배워야 할 때입니다."
+      },
+      en: {
+        upright: "You can overcome difficulties with gentle strength and patience. Handle situations with compassion and understanding, not force. Trust your inner courage.",
+        reversed: "You may lack confidence or be plagued by inner fears. It is time to learn how to manage anger or fear."
+      },
+      ja: {
+        upright: "穏やかな力と忍耐で困難を克服できます。暴力ではなく、慈悲と理解を持って状況に対処してください。内なる勇気を信じてください。",
+        reversed: "自信が不足していたり、内なる恐れに苦しんでいます。怒りや恐怖をコントロールする方法を学ぶ時です。"
+      }
     }
   },
   {
     id: "major-09",
-    name: { ko: "은둔자", en: "The Hermit" },
+    name: { ko: "은둔자", en: "The Hermit", ja: "隠者" },
     number: "IX",
     image: "/cards/major/09-hermit.jpg",
     type: "major",
     keywords: {
-      upright: ["성찰", "고독", "내면 탐구", "지혜", "안내"],
-      reversed: ["고립", "외로움", "은둔", "거부", "길을 잃음"]
+      ko: {
+        upright: ["성찰", "고독", "내면 탐구", "지혜", "안내"],
+        reversed: ["고립", "외로움", "은둔", "거부", "길을 잃음"]
+      },
+      en: {
+        upright: ["Reflection", "Solitude", "Inner Exploration", "Wisdom", "Guidance"],
+        reversed: ["Isolation", "Loneliness", "Withdrawal", "Rejection", "Lost"]
+      },
+      ja: {
+        upright: ["内省", "孤独", "内なる探求", "知恵", "導き"],
+        reversed: ["孤立", "寂しさ", "隠遁", "拒絶", "迷い"]
+      }
     },
     meaning: {
-      upright: "혼자만의 시간을 갖고 내면을 탐구할 때입니다. 깊은 성찰을 통해 지혜를 얻을 수 있습니다. 답은 외부가 아닌 내면에 있습니다.",
-      reversed: "지나친 고립이나 세상과의 단절을 경계해야 합니다. 외로움에 빠져있거나 도움을 거부하고 있을 수 있습니다."
+      ko: {
+        upright: "혼자만의 시간을 갖고 내면을 탐구할 때입니다. 깊은 성찰을 통해 지혜를 얻을 수 있습니다. 답은 외부가 아닌 내면에 있습니다.",
+        reversed: "지나친 고립이나 세상과의 단절을 경계해야 합니다. 외로움에 빠져있거나 도움을 거부하고 있을 수 있습니다."
+      },
+      en: {
+        upright: "It is time to take time alone and explore your inner self. You can gain wisdom through deep reflection. The answer lies within, not outside.",
+        reversed: "Beware of excessive isolation or cutting yourself off from the world. You may be drowning in loneliness or refusing help."
+      },
+      ja: {
+        upright: "一人の時間を持ち、内面を探求する時です。深い内省を通じて知恵を得ることができます。答えは外部ではなく、内側にあります。",
+        reversed: "過度な孤立や世間との断絶を警戒する必要があります。寂しさに陥っていたり、助けを拒否している可能性があります。"
+      }
     }
   },
   {
@@ -1270,40 +1470,176 @@ export const fullDeck = [...majorArcana, ...wands, ...cups, ...swords, ...pentac
 export const spreads = {
   oneCard: {
     id: "one-card",
-    name: "원카드",
-    description: "간단한 질문에 대한 답이나 오늘의 메시지를 받아보세요.",
+    name: {
+      ko: "원카드",
+      en: "One Card",
+      ja: "ワンカード"
+    },
+    description: {
+      ko: "간단한 질문에 대한 답이나 오늘의 메시지를 받아보세요.",
+      en: "Get an answer to a simple question or a message for the day.",
+      ja: "簡単な質問への答えや今日のメッセージを受け取りましょう。"
+    },
     cardCount: 1,
     positions: [
-      { index: 0, name: "메시지", description: "현재 당신에게 필요한 메시지입니다." }
+      {
+        index: 0,
+        name: { ko: "메시지", en: "Message", ja: "メッセージ" },
+        description: {
+          ko: "현재 당신에게 필요한 메시지입니다.",
+          en: "The message you need right now.",
+          ja: "現在あなたに必要なメッセージです。"
+        }
+      }
     ]
   },
   threeCard: {
     id: "three-card",
-    name: "쓰리카드",
-    description: "과거, 현재, 미래의 흐름을 통해 상황을 파악하세요.",
+    name: {
+      ko: "쓰리카드",
+      en: "Three Card",
+      ja: "スリーカード"
+    },
+    description: {
+      ko: "과거, 현재, 미래의 흐름을 통해 상황을 파악하세요.",
+      en: "Understand the situation through the flow of past, present, and future.",
+      ja: "過去、現在、未来の流れを通して状況を把握しましょう。"
+    },
     cardCount: 3,
     positions: [
-      { index: 0, name: "과거", description: "이 상황에 영향을 준 과거의 사건이나 에너지입니다." },
-      { index: 1, name: "현재", description: "현재 당면한 상황과 에너지입니다." },
-      { index: 2, name: "미래", description: "현재 경로를 유지할 경우 예상되는 결과입니다." }
+      {
+        index: 0,
+        name: { ko: "과거", en: "Past", ja: "過去" },
+        description: {
+          ko: "이 상황에 영향을 준 과거의 사건이나 에너지입니다.",
+          en: "Past events or energies that influenced this situation.",
+          ja: "この状況に影響を与えた過去の出来事やエネルギーです。"
+        }
+      },
+      {
+        index: 1,
+        name: { ko: "현재", en: "Present", ja: "現在" },
+        description: {
+          ko: "현재 당면한 상황과 에너지입니다.",
+          en: "The current situation and energy you are facing.",
+          ja: "現在直面している状況とエネルギーです。"
+        }
+      },
+      {
+        index: 2,
+        name: { ko: "미래", en: "Future", ja: "未来" },
+        description: {
+          ko: "현재 경로를 유지할 경우 예상되는 결과입니다.",
+          en: "The likely outcome if the current path is maintained.",
+          ja: "現在の進路を維持した場合に予想される結果です。"
+        }
+      }
     ]
   },
   celticCross: {
     id: "celtic-cross",
-    name: "켈틱크로스",
-    description: "10장의 카드로 상황을 깊이 있게 분석하는 전통적인 스프레드입니다.",
+    name: {
+      ko: "켈틱크로스",
+      en: "Celtic Cross",
+      ja: "ケルト十字"
+    },
+    description: {
+      ko: "10장의 카드로 상황을 깊이 있게 분석하는 전통적인 스프레드입니다.",
+      en: "A traditional spread that analyzes a situation in depth with 10 cards.",
+      ja: "10枚のカードで状況を深く分析する伝統的なスプレッドです。"
+    },
     cardCount: 10,
     positions: [
-      { index: 0, name: "현재 상황", description: "질문의 핵심이자 현재 당신이 처한 상황입니다." },
-      { index: 1, name: "도전/장애물", description: "현재 상황에서 마주하고 있는 도전이나 장애물입니다." },
-      { index: 2, name: "의식적 목표", description: "당신이 의식적으로 추구하는 목표나 최선의 결과입니다." },
-      { index: 3, name: "무의식적 기반", description: "상황의 근본 원인이나 무의식적 영향력입니다." },
-      { index: 4, name: "최근 과거", description: "이 상황에 영향을 준 최근의 사건이나 에너지입니다." },
-      { index: 5, name: "가까운 미래", description: "곧 다가올 가능성 있는 상황이나 영향입니다." },
-      { index: 6, name: "자신의 태도", description: "이 상황에 대한 당신의 태도와 접근 방식입니다." },
-      { index: 7, name: "외부 환경", description: "주변 환경이나 타인이 미치는 영향입니다." },
-      { index: 8, name: "희망과 두려움", description: "이 상황에 대한 당신의 희망 또는 두려움입니다." },
-      { index: 9, name: "최종 결과", description: "현재 경로를 유지할 경우 예상되는 최종 결과입니다." }
+      {
+        index: 0,
+        name: { ko: "현재 상황", en: "Current Situation", ja: "現在の状況" },
+        description: {
+          ko: "질문의 핵심이자 현재 당신이 처한 상황입니다.",
+          en: "The core of the question and your current situation.",
+          ja: "質問の核心であり、現在あなたが置かれている状況です。"
+        }
+      },
+      {
+        index: 1,
+        name: { ko: "도전/장애물", en: "Challenge/Obstacle", ja: "課題・障害" },
+        description: {
+          ko: "현재 상황에서 마주하고 있는 도전이나 장애물입니다.",
+          en: "The challenge or obstacle you are facing in the current situation.",
+          ja: "現在の状況で直面している課題や障害です。"
+        }
+      },
+      {
+        index: 2,
+        name: { ko: "의식적 목표", en: "Conscious Goal", ja: "顕在意識" },
+        description: {
+          ko: "당신이 의식적으로 추구하는 목표나 최선의 결과입니다.",
+          en: "The goal or best outcome you are consciously pursuing.",
+          ja: "あなたが意識的に追求している目標や最良の結果です。"
+        }
+      },
+      {
+        index: 3,
+        name: { ko: "무의식적 기반", en: "Subconscious Basis", ja: "潜在意識" },
+        description: {
+          ko: "상황의 근본 원인이나 무의식적 영향력입니다.",
+          en: "The root cause or subconscious influence of the situation.",
+          ja: "状況の根本的な原因や潜在意識の影響力です。"
+        }
+      },
+      {
+        index: 4,
+        name: { ko: "최근 과거", en: "Recent Past", ja: "近い過去" },
+        description: {
+          ko: "이 상황에 영향을 준 최근의 사건이나 에너지입니다.",
+          en: "Recent events or energies that influenced this situation.",
+          ja: "この状況に影響を与えた最近の出来事やエネルギーです。"
+        }
+      },
+      {
+        index: 5,
+        name: { ko: "가까운 미래", en: "Near Future", ja: "近い未来" },
+        description: {
+          ko: "곧 다가올 가능성 있는 상황이나 영향입니다.",
+          en: "Possible situations or influences coming soon.",
+          ja: "まもなく訪れる可能性のある状況や影響です。"
+        }
+      },
+      {
+        index: 6,
+        name: { ko: "자신의 태도", en: "Your Attitude", ja: "本人の態度" },
+        description: {
+          ko: "이 상황에 대한 당신의 태도와 접근 방식입니다.",
+          en: "Your attitude and approach to this situation.",
+          ja: "この状況に対するあなたの態度とアプローチです。"
+        }
+      },
+      {
+        index: 7,
+        name: { ko: "외부 환경", en: "External Environment", ja: "周囲の環境" },
+        description: {
+          ko: "주변 환경이나 타인이 미치는 영향입니다.",
+          en: "The influence of the surrounding environment or others.",
+          ja: "周囲の環境や他者が及ぼす影響です。"
+        }
+      },
+      {
+        index: 8,
+        name: { ko: "희망과 두려움", en: "Hopes and Fears", ja: "願望と恐れ" },
+        description: {
+          ko: "이 상황에 대한 당신의 희망 또는 두려움입니다.",
+          en: "Your hopes or fears regarding this situation.",
+          ja: "この状況に対するあなたの願望または恐れです。"
+        }
+      },
+      {
+        index: 9,
+        name: { ko: "최종 결과", en: "Final Outcome", ja: "最終結果" },
+        description: {
+          ko: "현재 경로를 유지할 경우 예상되는 최종 결과입니다.",
+          en: "The expected final outcome if the current path is maintained.",
+          ja: "現在の進路を維持した場合に予想される最終結果です。"
+        }
+      }
     ]
   }
 };
@@ -1312,7 +1648,7 @@ export const spreads = {
 export const drawCards = (count, deck = fullDeck, allowReversed = true) => {
   const shuffled = [...deck].sort(() => Math.random() - 0.5);
   const drawn = shuffled.slice(0, count);
-  
+
   return drawn.map(card => ({
     ...card,
     isReversed: allowReversed ? Math.random() < 0.5 : false
