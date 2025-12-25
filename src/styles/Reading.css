@@ -602,6 +602,11 @@
     width: clamp(60px, 12vw, 90px); /* small 사이즈로 통일 */
     aspect-ratio: 2 / 3;
   }
+
+  /* 10장 선택 시 슬롯 크기 더 작게 조정 */
+  .selected-slots.slots-10 .slot {
+    width: clamp(50px, 17vw, 90px);
+  }
   
   .slot-empty {
     width: 100%;
@@ -613,6 +618,15 @@
     gap: 8px;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  /* 모바일에서 카드 크기 강제 조정 (오버플로우 방지) */
+  .reveal-grid.grid-3 .reveal-item .tarot-card {
+    width: clamp(80px, 28vw, 150px) !important;
+  }
+
+  .reveal-grid.grid-10 .reveal-item .tarot-card {
+    width: clamp(50px, 17vw, 100px) !important;
   }
   
   .reveal-grid.grid-10 .reveal-label {
