@@ -18,7 +18,7 @@ const Result = () => {
   const { t, language } = useLanguage();
   const { cards, spread, question, preloadedReading, preloadedError } = location.state || {};
   const shareCardRef = useRef(null);
-  
+
   // preloadedReading이 있으면 바로 사용
   const [aiReading, setAiReading] = useState(preloadedReading || '');
   const [isLoading, setIsLoading] = useState(false);
@@ -52,14 +52,14 @@ const Result = () => {
   // 공유용 메시지 추출 - 요약본 (이미지 크기 최적화)
   const extractShareMessage = () => {
     if (!aiReading) return '';
-    
+
     // 종합 해석 또는 조언 섹션 찾기
     const patterns = [
       /## ✨.*?\n([\s\S]*?)(?=\n##|$)/,
       /## 🎯.*?\n([\s\S]*?)(?=\n##|$)/,
       /## 💫.*?\n([\s\S]*?)(?=\n##|$)/
     ];
-    
+
     for (const pattern of patterns) {
       const match = aiReading.match(pattern);
       if (match) {
@@ -67,7 +67,7 @@ const Result = () => {
         return text;
       }
     }
-    
+
     // 첫 번째 섹션이라도 반환
     const firstSection = aiReading.split('##')[1];
     if (firstSection) {
@@ -75,14 +75,14 @@ const Result = () => {
       const text = content.replace(/\*\*/g, '');
       return text;
     }
-    
+
     return '';
   };
 
   const handleSaveImage = async () => {
     if (!shareCardRef.current) return;
     setIsGeneratingImage(true);
-    
+
     // 이미지 로딩 대기
     const images = shareCardRef.current.querySelectorAll('img');
     await Promise.all(
@@ -95,13 +95,13 @@ const Result = () => {
         });
       })
     );
-    
+
     // 추가 대기 (렌더링 완료 보장)
     await new Promise(resolve => setTimeout(resolve, 300));
-    
+
     try {
       const originalElement = shareCardRef.current;
-      
+
       // 요소를 body에 임시로 복제 (모달의 영향을 받지 않도록)
       const clonedElement = originalElement.cloneNode(true);
       clonedElement.style.position = 'fixed';
@@ -111,7 +111,7 @@ const Result = () => {
       clonedElement.style.transform = 'none';
       clonedElement.style.margin = '0 auto';
       document.body.appendChild(clonedElement);
-      
+
       // 복제된 요소의 이미지도 로드 대기
       const clonedImages = clonedElement.querySelectorAll('img');
       await Promise.all(
@@ -124,9 +124,9 @@ const Result = () => {
           });
         })
       );
-      
+
       await new Promise(resolve => setTimeout(resolve, 100));
-      
+
       const canvas = await html2canvas(clonedElement, {
         backgroundColor: '#0f0f1a',
         scale: 3,
@@ -135,10 +135,10 @@ const Result = () => {
         allowTaint: false,
         imageTimeout: 10000,
       });
-      
+
       // 복제된 요소 제거
       document.body.removeChild(clonedElement);
-      
+
       // JPEG로 변환, 품질 0.92로 화질 개선 (약 5MB 목표)
       const link = document.createElement('a');
       link.download = `tarotaro-${Date.now()}.jpg`;
@@ -205,7 +205,7 @@ const Result = () => {
     <div className="result">
       <div className="stars"></div>
       <Navbar showBack />
-      
+
       <main className="result-content">
         {question && (
           <motion.div className="result-question" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -214,14 +214,14 @@ const Result = () => {
         )}
 
         {/* 카드 */}
-        <motion.div 
+        <motion.div
           className={`result-cards cards-${cards.length}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
           {cards.map((card, index) => (
-            <motion.div 
-              key={card.id} 
+            <motion.div
+              key={card.id}
               className="result-card-item"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -229,14 +229,14 @@ const Result = () => {
               onClick={() => setSelectedCard(card)}
             >
               <TarotCard card={card} isRevealed={true} size="small" />
-              <span className="result-card-label">{card.position.name}</span>
+              <span className="result-card-label">{card.position.name[language] || card.position.name.ko}</span>
             </motion.div>
           ))}
         </motion.div>
         <p className="card-tap-hint">{t('clickToEnlarge')}</p>
 
         {/* AI 해석 */}
-        <motion.div 
+        <motion.div
           className="result-reading"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -263,7 +263,7 @@ const Result = () => {
 
         {/* 버튼들 */}
         {aiReading && !isLoading && (
-          <motion.div 
+          <motion.div
             className="result-buttons"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -283,14 +283,14 @@ const Result = () => {
       {/* 카드 상세 모달 */}
       <AnimatePresence>
         {selectedCard && (
-          <motion.div 
+          <motion.div
             className="modal-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedCard(null)}
           >
-            <motion.div 
+            <motion.div
               className="card-detail-modal"
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
@@ -303,7 +303,7 @@ const Result = () => {
               </div>
               <div className="card-detail-info">
                 <h3>{selectedCard.name.ko || selectedCard.name.en}</h3>
-                <p className="card-detail-position">{selectedCard.position.name}</p>
+                <p className="card-detail-position">{selectedCard.position.name[language] || selectedCard.position.name.ko}</p>
                 {selectedCard.isReversed && <span className="reversed-badge">{t('reversed')}</span>}
               </div>
             </motion.div>
@@ -314,14 +314,14 @@ const Result = () => {
       {/* 공유 모달 */}
       <AnimatePresence>
         {showShareModal && (
-          <motion.div 
+          <motion.div
             className="modal-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setShowShareModal(false)}
           >
-            <motion.div 
+            <motion.div
               className="share-modal"
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
@@ -329,7 +329,7 @@ const Result = () => {
               onClick={e => e.stopPropagation()}
             >
               <button className="modal-close" onClick={() => setShowShareModal(false)}>×</button>
-              
+
               {/* 공유용 이미지 - 예쁜 디자인, 전체 내용 */}
               <div ref={shareCardRef} className="share-card">
                 <div className="share-header">
@@ -339,14 +339,14 @@ const Result = () => {
                 <div className="share-body">
                   <p className="share-spread">{getSpreadName()}</p>
                   {question && <p className="share-question">"{question}"</p>}
-                  
+
                   {/* 카드 이미지들 - 모든 카드 표시 */}
                   <div className={`share-cards-row cards-${cards.length}`}>
                     {cards.map((card, i) => (
                       <div key={i} className={`share-card-img ${card.isReversed ? 'reversed' : ''}`}>
-                        <img 
-                          src={card.image} 
-                          alt="" 
+                        <img
+                          src={card.image}
+                          alt=""
                           crossOrigin="anonymous"
                           loading="eager"
                           decoding="sync"
@@ -354,7 +354,7 @@ const Result = () => {
                       </div>
                     ))}
                   </div>
-                  
+
                   {/* 카드 이름들 */}
                   <div className="share-card-names">
                     {cards.map((card, i) => (
@@ -363,7 +363,7 @@ const Result = () => {
                       </span>
                     ))}
                   </div>
-                  
+
                   {/* 요약 메시지 */}
                   <div className="share-message">
                     {extractShareMessage()}

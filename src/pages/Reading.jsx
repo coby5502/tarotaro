@@ -13,7 +13,7 @@ const Reading = () => {
   const navigate = useNavigate();
   const { t, language } = useLanguage();
   const spread = spreads[spreadType];
-  
+
   const [phase, setPhase] = useState('question');
   const [question, setQuestion] = useState('');
   const [shuffledDeck, setShuffledDeck] = useState([]);
@@ -21,7 +21,7 @@ const Reading = () => {
   const [selectedCards, setSelectedCards] = useState([]);
   const [revealedCount, setRevealedCount] = useState(0);
   const [clickingCardId, setClickingCardId] = useState(null);
-  
+
   // API 프리로딩 상태
   const [aiReading, setAiReading] = useState(null);
   const [isLoadingAI, setIsLoadingAI] = useState(false);
@@ -73,10 +73,10 @@ const Reading = () => {
 
   // 모든 카드 공개되면 API 호출 시작
   useEffect(() => {
-    if (revealedCount === selectedCards.length && 
-        selectedCards.length > 0 && 
-        !hasFetchedRef.current &&
-        !aiReading) {
+    if (revealedCount === selectedCards.length &&
+      selectedCards.length > 0 &&
+      !hasFetchedRef.current &&
+      !aiReading) {
       hasFetchedRef.current = true;
       fetchAiReading();
     }
@@ -85,19 +85,19 @@ const Reading = () => {
   const fetchAiReading = async () => {
     setIsLoadingAI(true);
     setAiError(null);
-    
+
     try {
       const reading = await generateTarotReading(
-        selectedCards, 
-        spread, 
-        getFinalQuestion(), 
+        selectedCards,
+        spread,
+        getFinalQuestion(),
         language
       );
       setAiReading(reading);
     } catch (err) {
       setAiError(err.message);
     }
-    
+
     setIsLoadingAI(false);
   };
 
@@ -115,17 +115,17 @@ const Reading = () => {
 
     // 클릭 애니메이션 시작
     setClickingCardId(card.id);
-    
+
     setTimeout(() => {
       const drawnCard = {
         ...card,
         isReversed: Math.random() < 0.5,
         position: spread.positions[selectedCards.length]
       };
-      
+
       setSelectedCardIds(prev => [...prev, card.id]);
       setSelectedCards(prev => [...prev, drawnCard]);
-      
+
       // 애니메이션 완료 후 상태 초기화
       setTimeout(() => {
         setClickingCardId(null);
@@ -148,14 +148,14 @@ const Reading = () => {
   };
 
   const goToResult = () => {
-    navigate('/result', { 
-      state: { 
-        cards: selectedCards, 
-        spread, 
+    navigate('/result', {
+      state: {
+        cards: selectedCards,
+        spread,
         question: getFinalQuestion(),
         preloadedReading: aiReading,
         preloadedError: aiError
-      } 
+      }
     });
   };
 
@@ -172,16 +172,16 @@ const Reading = () => {
         <AnimatePresence mode="wait">
           {/* 질문 입력 */}
           {phase === 'question' && (
-            <motion.div 
+            <motion.div
               className="phase question-phase"
               key="question"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
             >
-              <motion.div 
+              <motion.div
                 className="question-icon"
-                animate={{ 
+                animate={{
                   scale: [1, 1.1, 1],
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
@@ -189,7 +189,7 @@ const Reading = () => {
                 🔮
               </motion.div>
               <p className="phase-hint">{t('enterQuestion')}</p>
-              
+
               <textarea
                 className="question-input"
                 value={question}
@@ -197,8 +197,8 @@ const Reading = () => {
                 placeholder={t('questionPlaceholder')}
                 rows={2}
               />
-              
-              <motion.button 
+
+              <motion.button
                 className="btn btn-primary btn-glow"
                 onClick={startShuffle}
                 whileHover={{ scale: 1.03 }}
@@ -211,7 +211,7 @@ const Reading = () => {
 
           {/* 셔플 */}
           {phase === 'shuffling' && (
-            <motion.div 
+            <motion.div
               className="phase shuffle-phase"
               key="shuffling"
               initial={{ opacity: 0 }}
@@ -238,7 +238,7 @@ const Reading = () => {
                   />
                 ))}
               </div>
-              <motion.p 
+              <motion.p
                 className="shuffle-text"
                 animate={{ opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
@@ -250,7 +250,7 @@ const Reading = () => {
 
           {/* 카드 선택 - 그리드 레이아웃 */}
           {phase === 'selecting' && (
-            <motion.div 
+            <motion.div
               className="phase selecting-phase"
               key="selecting"
               initial={{ opacity: 0 }}
@@ -266,15 +266,15 @@ const Reading = () => {
                 {spread.positions.map((pos, i) => {
                   const card = selectedCards[i];
                   return (
-                    <div 
-                      key={i} 
+                    <div
+                      key={i}
                       className={`slot ${card ? 'filled' : ''}`}
                     >
                       {card ? (
                         <div className="slot-card">
-                          <TarotCard 
-                            card={card} 
-                            isRevealed={false} 
+                          <TarotCard
+                            card={card}
+                            isRevealed={false}
                             size="small"
                           />
                         </div>
@@ -290,7 +290,7 @@ const Reading = () => {
 
               {/* 카드 부채꼴 배치 - 스크롤 가능 */}
               <div className="card-fan-container" ref={containerRef}>
-                <div 
+                <div
                   className="card-fan-scroll"
                   ref={scrollRef}
                   onMouseDown={(e) => {
@@ -310,10 +310,10 @@ const Reading = () => {
                   }}
                   onMouseMove={(e) => {
                     if (!isDraggingScroll || !scrollRef.current || !dragStartRef.current) return;
-                    
+
                     const deltaX = Math.abs(e.pageX - dragStartRef.current.x);
                     const deltaY = Math.abs(e.pageY - dragStartRef.current.y);
-                    
+
                     // 가로 드래그가 세로 드래그보다 크면 스크롤 (감도 개선)
                     if (deltaX > deltaY && deltaX > 15) {
                       e.preventDefault();
@@ -335,10 +335,10 @@ const Reading = () => {
                       const isSelected = selectedCardIds.includes(card.id);
                       const isDisabled = selectedCards.length >= spread.cardCount;
                       const isClicking = clickingCardId === card.id;
-                      
+
                       // 가로 위치 - 첫 카드가 왼쪽에서 시작, 35px 간격으로 배치
                       const horizontalOffset = index * 35;
-                      
+
                       return (
                         <motion.div
                           key={card.id}
@@ -359,7 +359,7 @@ const Reading = () => {
                             if (dragStartRef.current && scrollRef.current) {
                               const deltaX = Math.abs(info.point.x - dragStartRef.current.x);
                               const deltaY = Math.abs(info.point.y - dragStartRef.current.y);
-                              
+
                               // 가로 드래그가 세로보다 크면 가로 드래그로 표시
                               if (deltaX > deltaY && deltaX > 10) {
                                 cardDragDirectionRef.current.set(card.id, 'horizontal');
@@ -383,22 +383,22 @@ const Reading = () => {
                           onDragEnd={(e, info) => {
                             const dragDirection = cardDragDirectionRef.current.get(card.id);
                             cardDragDirectionRef.current.delete(card.id);
-                            
+
                             // 세로 드래그일 때만 카드 선택 (가로 드래그 중에는 선택 안 함)
                             if (dragDirection !== 'horizontal' && info.offset.y < -80 && Math.abs(info.offset.x) < Math.abs(info.offset.y) * 0.8) {
                               selectCard(card);
                             }
-                            
+
                             // 드래그 끝난 후 transform 리셋 (framer-motion이 다시 제어하도록)
                             if (e.target) {
                               e.target.style.transform = '';
                             }
                           }}
-                          initial={{ 
+                          initial={{
                             opacity: 0,
                             scale: 0.9,
                           }}
-                          animate={{ 
+                          animate={{
                             opacity: isSelected ? 0 : 1,
                             x: 0,
                             y: isClicking ? -200 : 0,
@@ -406,7 +406,7 @@ const Reading = () => {
                             scale: isClicking ? 1.3 : 1,
                           }}
                           whileTap={!isSelected && !isDisabled && !isClicking ? { scale: 0.95 } : {}}
-                          transition={{ 
+                          transition={{
                             delay: index * 0.01,
                             type: "spring",
                             stiffness: isClicking ? 400 : 200,
@@ -423,9 +423,9 @@ const Reading = () => {
                           }}
                           onClick={() => !isSelected && !isDisabled && !isClicking && selectCard(card)}
                         >
-                          <TarotCard 
-                            card={card} 
-                            isRevealed={false} 
+                          <TarotCard
+                            card={card}
+                            isRevealed={false}
                             size="small"
                           />
                         </motion.div>
@@ -439,7 +439,7 @@ const Reading = () => {
 
           {/* 카드 공개 */}
           {phase === 'revealing' && (
-            <motion.div 
+            <motion.div
               className="phase revealing-phase"
               key="revealing"
               initial={{ opacity: 0 }}
@@ -447,11 +447,11 @@ const Reading = () => {
               exit={{ opacity: 0 }}
             >
               <p className="phase-hint">{t('tapToReveal')}</p>
-              
+
               <div className={`reveal-grid grid-${spread.cardCount}`}>
                 {selectedCards.map((card, index) => (
-                  <motion.div 
-                    key={card.id} 
+                  <motion.div
+                    key={card.id}
                     className="reveal-item"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -463,15 +463,15 @@ const Reading = () => {
                       onClick={() => index === revealedCount && revealNext()}
                       size="small"
                     />
-                    <span className="reveal-label">{card.position.name}</span>
+                    <span className="reveal-label">{card.position.name[language] || card.position.name.ko}</span>
                   </motion.div>
                 ))}
               </div>
-              
+
               {/* 버튼 */}
               <div className="reveal-actions">
                 {!allRevealed ? (
-                  <motion.button 
+                  <motion.button
                     className="btn btn-primary"
                     onClick={revealAll}
                     whileHover={{ scale: 1.03 }}
@@ -480,7 +480,7 @@ const Reading = () => {
                     {spread && spread.cardCount === 1 ? t('flipCard') : t('revealAll')}
                   </motion.button>
                 ) : (
-                  <motion.button 
+                  <motion.button
                     className="btn btn-primary btn-glow"
                     onClick={goToResult}
                     initial={{ opacity: 0 }}
