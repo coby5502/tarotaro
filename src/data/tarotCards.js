@@ -544,7 +544,7 @@ export const majorArcana = [
 export const wands = [
   {
     id: "wands-ace",
-    name: { ko: "완드 에이스", en: "Ace of Wands" },
+    name: { ko: "완드 에이스", en: "Ace of Wands", ja: "ワンドのエース" },
     number: "Ace",
     image: "/cards/minor/wands/wands-ace.jpg",
     type: "minor",
@@ -560,7 +560,7 @@ export const wands = [
   },
   {
     id: "wands-02",
-    name: { ko: "완드 2", en: "Two of Wands" },
+    name: { ko: "완드 2", en: "Two of Wands", ja: "ワンドの2" },
     number: "2",
     image: "/cards/minor/wands/wands-02.jpg",
     type: "minor",
@@ -576,7 +576,7 @@ export const wands = [
   },
   {
     id: "wands-03",
-    name: { ko: "완드 3", en: "Three of Wands" },
+    name: { ko: "완드 3", en: "Three of Wands", ja: "ワンドの3" },
     number: "3",
     image: "/cards/minor/wands/wands-03.jpg",
     type: "minor",
@@ -592,7 +592,7 @@ export const wands = [
   },
   {
     id: "wands-04",
-    name: { ko: "완드 4", en: "Four of Wands" },
+    name: { ko: "완드 4", en: "Four of Wands", ja: "ワンドの4" },
     number: "4",
     image: "/cards/minor/wands/wands-04.jpg",
     type: "minor",
@@ -608,7 +608,7 @@ export const wands = [
   },
   {
     id: "wands-05",
-    name: { ko: "완드 5", en: "Five of Wands" },
+    name: { ko: "완드 5", en: "Five of Wands", ja: "ワンドの5" },
     number: "5",
     image: "/cards/minor/wands/wands-05.jpg",
     type: "minor",
@@ -624,7 +624,7 @@ export const wands = [
   },
   {
     id: "wands-06",
-    name: { ko: "완드 6", en: "Six of Wands" },
+    name: { ko: "완드 6", en: "Six of Wands", ja: "ワンドの6" },
     number: "6",
     image: "/cards/minor/wands/wands-06.jpg",
     type: "minor",
@@ -640,7 +640,7 @@ export const wands = [
   },
   {
     id: "wands-07",
-    name: { ko: "완드 7", en: "Seven of Wands" },
+    name: { ko: "완드 7", en: "Seven of Wands", ja: "ワンドの7" },
     number: "7",
     image: "/cards/minor/wands/wands-07.jpg",
     type: "minor",
@@ -656,7 +656,7 @@ export const wands = [
   },
   {
     id: "wands-08",
-    name: { ko: "완드 8", en: "Eight of Wands" },
+    name: { ko: "완드 8", en: "Eight of Wands", ja: "ワンドの8" },
     number: "8",
     image: "/cards/minor/wands/wands-08.jpg",
     type: "minor",
@@ -672,7 +672,7 @@ export const wands = [
   },
   {
     id: "wands-09",
-    name: { ko: "완드 9", en: "Nine of Wands" },
+    name: { ko: "완드 9", en: "Nine of Wands", ja: "ワンドの9" },
     number: "9",
     image: "/cards/minor/wands/wands-09.jpg",
     type: "minor",
@@ -688,7 +688,7 @@ export const wands = [
   },
   {
     id: "wands-10",
-    name: { ko: "완드 10", en: "Ten of Wands" },
+    name: { ko: "완드 10", en: "Ten of Wands", ja: "ワンドの10" },
     number: "10",
     image: "/cards/minor/wands/wands-10.jpg",
     type: "minor",
@@ -704,7 +704,7 @@ export const wands = [
   },
   {
     id: "wands-page",
-    name: { ko: "완드 페이지", en: "Page of Wands" },
+    name: { ko: "완드 페이지", en: "Page of Wands", ja: "ワンドのペイジ" },
     number: "Page",
     image: "/cards/minor/wands/wands-page.jpg",
     type: "minor",
@@ -720,7 +720,7 @@ export const wands = [
   },
   {
     id: "wands-knight",
-    name: { ko: "완드 기사", en: "Knight of Wands" },
+    name: { ko: "완드 기사", en: "Knight of Wands", ja: "ワンドのナイト" },
     number: "Knight",
     image: "/cards/minor/wands/wands-knight.jpg",
     type: "minor",
@@ -736,7 +736,7 @@ export const wands = [
   },
   {
     id: "wands-queen",
-    name: { ko: "완드 여왕", en: "Queen of Wands" },
+    name: { ko: "완드 여왕", en: "Queen of Wands", ja: "ワンドのクイーン" },
     number: "Queen",
     image: "/cards/minor/wands/wands-queen.jpg",
     type: "minor",
@@ -752,7 +752,7 @@ export const wands = [
   },
   {
     id: "wands-king",
-    name: { ko: "완드 왕", en: "King of Wands" },
+    name: { ko: "완드 왕", en: "King of Wands", ja: "ワンドのキング" },
     number: "King",
     image: "/cards/minor/wands/wands-king.jpg",
     type: "minor",
@@ -775,7 +775,7 @@ export const wands = [
 export const cups = [
   {
     id: "cups-ace",
-    name: { ko: "컵 에이스", en: "Ace of Cups" },
+    name: { ko: "컵 에이스", en: "Ace of Cups", ja: "カップのエース" },
     number: "Ace",
     image: "/cards/minor/cups/cups-ace.jpg",
     type: "minor",
@@ -791,7 +791,7 @@ export const cups = [
   },
   {
     id: "cups-02",
-    name: { ko: "컵 2", en: "Two of Cups" },
+    name: { ko: "컵 2", en: "Two of Cups", ja: "カップの2" },
     number: "2",
     image: "/cards/minor/cups/cups-02.jpg",
     type: "minor",
@@ -807,7 +807,7 @@ export const cups = [
   },
   {
     id: "cups-03",
-    name: { ko: "컵 3", en: "Three of Cups" },
+    name: { ko: "컵 3", en: "Three of Cups", ja: "カップの3" },
     number: "3",
     image: "/cards/minor/cups/cups-03.jpg",
     type: "minor",
@@ -823,7 +823,7 @@ export const cups = [
   },
   {
     id: "cups-04",
-    name: { ko: "컵 4", en: "Four of Cups" },
+    name: { ko: "컵 4", en: "Four of Cups", ja: "カップの4" },
     number: "4",
     image: "/cards/minor/cups/cups-04.jpg",
     type: "minor",
@@ -839,7 +839,7 @@ export const cups = [
   },
   {
     id: "cups-05",
-    name: { ko: "컵 5", en: "Five of Cups" },
+    name: { ko: "컵 5", en: "Five of Cups", ja: "カップの5" },
     number: "5",
     image: "/cards/minor/cups/cups-05.jpg",
     type: "minor",
@@ -855,7 +855,7 @@ export const cups = [
   },
   {
     id: "cups-06",
-    name: { ko: "컵 6", en: "Six of Cups" },
+    name: { ko: "컵 6", en: "Six of Cups", ja: "カップの6" },
     number: "6",
     image: "/cards/minor/cups/cups-06.jpg",
     type: "minor",
@@ -871,7 +871,7 @@ export const cups = [
   },
   {
     id: "cups-07",
-    name: { ko: "컵 7", en: "Seven of Cups" },
+    name: { ko: "컵 7", en: "Seven of Cups", ja: "カップの7" },
     number: "7",
     image: "/cards/minor/cups/cups-07.jpg",
     type: "minor",
@@ -887,7 +887,7 @@ export const cups = [
   },
   {
     id: "cups-08",
-    name: { ko: "컵 8", en: "Eight of Cups" },
+    name: { ko: "컵 8", en: "Eight of Cups", ja: "カップの8" },
     number: "8",
     image: "/cards/minor/cups/cups-08.jpg",
     type: "minor",
@@ -903,7 +903,7 @@ export const cups = [
   },
   {
     id: "cups-09",
-    name: { ko: "컵 9", en: "Nine of Cups" },
+    name: { ko: "컵 9", en: "Nine of Cups", ja: "カップの9" },
     number: "9",
     image: "/cards/minor/cups/cups-09.jpg",
     type: "minor",
@@ -919,7 +919,7 @@ export const cups = [
   },
   {
     id: "cups-10",
-    name: { ko: "컵 10", en: "Ten of Cups" },
+    name: { ko: "컵 10", en: "Ten of Cups", ja: "カップの10" },
     number: "10",
     image: "/cards/minor/cups/cups-10.jpg",
     type: "minor",
@@ -935,7 +935,7 @@ export const cups = [
   },
   {
     id: "cups-page",
-    name: { ko: "컵 페이지", en: "Page of Cups" },
+    name: { ko: "컵 페이지", en: "Page of Cups", ja: "カップのペイジ" },
     number: "Page",
     image: "/cards/minor/cups/cups-page.jpg",
     type: "minor",
@@ -951,7 +951,7 @@ export const cups = [
   },
   {
     id: "cups-knight",
-    name: { ko: "컵 기사", en: "Knight of Cups" },
+    name: { ko: "컵 기사", en: "Knight of Cups", ja: "カップのナイト" },
     number: "Knight",
     image: "/cards/minor/cups/cups-knight.jpg",
     type: "minor",
@@ -967,7 +967,7 @@ export const cups = [
   },
   {
     id: "cups-queen",
-    name: { ko: "컵 여왕", en: "Queen of Cups" },
+    name: { ko: "컵 여왕", en: "Queen of Cups", ja: "カップのクイーン" },
     number: "Queen",
     image: "/cards/minor/cups/cups-queen.jpg",
     type: "minor",
@@ -983,7 +983,7 @@ export const cups = [
   },
   {
     id: "cups-king",
-    name: { ko: "컵 왕", en: "King of Cups" },
+    name: { ko: "컵 왕", en: "King of Cups", ja: "カップのキング" },
     number: "King",
     image: "/cards/minor/cups/cups-king.jpg",
     type: "minor",
@@ -1006,7 +1006,7 @@ export const cups = [
 export const swords = [
   {
     id: "swords-ace",
-    name: { ko: "소드 에이스", en: "Ace of Swords" },
+    name: { ko: "소드 에이스", en: "Ace of Swords", ja: "ソードのエース" },
     number: "Ace",
     image: "/cards/minor/swords/swords-ace.jpg",
     type: "minor",
@@ -1022,7 +1022,7 @@ export const swords = [
   },
   {
     id: "swords-02",
-    name: { ko: "소드 2", en: "Two of Swords" },
+    name: { ko: "소드 2", en: "Two of Swords", ja: "ソードの2" },
     number: "2",
     image: "/cards/minor/swords/swords-02.jpg",
     type: "minor",
@@ -1038,7 +1038,7 @@ export const swords = [
   },
   {
     id: "swords-03",
-    name: { ko: "소드 3", en: "Three of Swords" },
+    name: { ko: "소드 3", en: "Three of Swords", ja: "ソードの3" },
     number: "3",
     image: "/cards/minor/swords/swords-03.jpg",
     type: "minor",
@@ -1054,7 +1054,7 @@ export const swords = [
   },
   {
     id: "swords-04",
-    name: { ko: "소드 4", en: "Four of Swords" },
+    name: { ko: "소드 4", en: "Four of Swords", ja: "ソードの4" },
     number: "4",
     image: "/cards/minor/swords/swords-04.jpg",
     type: "minor",
@@ -1070,7 +1070,7 @@ export const swords = [
   },
   {
     id: "swords-05",
-    name: { ko: "소드 5", en: "Five of Swords" },
+    name: { ko: "소드 5", en: "Five of Swords", ja: "ソードの5" },
     number: "5",
     image: "/cards/minor/swords/swords-05.jpg",
     type: "minor",
@@ -1086,7 +1086,7 @@ export const swords = [
   },
   {
     id: "swords-06",
-    name: { ko: "소드 6", en: "Six of Swords" },
+    name: { ko: "소드 6", en: "Six of Swords", ja: "ソードの6" },
     number: "6",
     image: "/cards/minor/swords/swords-06.jpg",
     type: "minor",
@@ -1102,7 +1102,7 @@ export const swords = [
   },
   {
     id: "swords-07",
-    name: { ko: "소드 7", en: "Seven of Swords" },
+    name: { ko: "소드 7", en: "Seven of Swords", ja: "ソードの7" },
     number: "7",
     image: "/cards/minor/swords/swords-07.jpg",
     type: "minor",
@@ -1118,7 +1118,7 @@ export const swords = [
   },
   {
     id: "swords-08",
-    name: { ko: "소드 8", en: "Eight of Swords" },
+    name: { ko: "소드 8", en: "Eight of Swords", ja: "ソードの8" },
     number: "8",
     image: "/cards/minor/swords/swords-08.jpg",
     type: "minor",
@@ -1134,7 +1134,7 @@ export const swords = [
   },
   {
     id: "swords-09",
-    name: { ko: "소드 9", en: "Nine of Swords" },
+    name: { ko: "소드 9", en: "Nine of Swords", ja: "ソードの9" },
     number: "9",
     image: "/cards/minor/swords/swords-09.jpg",
     type: "minor",
@@ -1150,7 +1150,7 @@ export const swords = [
   },
   {
     id: "swords-10",
-    name: { ko: "소드 10", en: "Ten of Swords" },
+    name: { ko: "소드 10", en: "Ten of Swords", ja: "ソードの10" },
     number: "10",
     image: "/cards/minor/swords/swords-10.jpg",
     type: "minor",
@@ -1166,7 +1166,7 @@ export const swords = [
   },
   {
     id: "swords-page",
-    name: { ko: "소드 페이지", en: "Page of Swords" },
+    name: { ko: "소드 페이지", en: "Page of Swords", ja: "ソードのペイジ" },
     number: "Page",
     image: "/cards/minor/swords/swords-page.jpg",
     type: "minor",
@@ -1182,7 +1182,7 @@ export const swords = [
   },
   {
     id: "swords-knight",
-    name: { ko: "소드 기사", en: "Knight of Swords" },
+    name: { ko: "소드 기사", en: "Knight of Swords", ja: "ソードのナイト" },
     number: "Knight",
     image: "/cards/minor/swords/swords-knight.jpg",
     type: "minor",
@@ -1198,7 +1198,7 @@ export const swords = [
   },
   {
     id: "swords-queen",
-    name: { ko: "소드 여왕", en: "Queen of Swords" },
+    name: { ko: "소드 여왕", en: "Queen of Swords", ja: "ソードのクイーン" },
     number: "Queen",
     image: "/cards/minor/swords/swords-queen.jpg",
     type: "minor",
@@ -1214,7 +1214,7 @@ export const swords = [
   },
   {
     id: "swords-king",
-    name: { ko: "소드 왕", en: "King of Swords" },
+    name: { ko: "소드 왕", en: "King of Swords", ja: "ソードのキング" },
     number: "King",
     image: "/cards/minor/swords/swords-king.jpg",
     type: "minor",
@@ -1237,7 +1237,7 @@ export const swords = [
 export const pentacles = [
   {
     id: "pentacles-ace",
-    name: { ko: "펜타클 에이스", en: "Ace of Pentacles" },
+    name: { ko: "펜타클 에이스", en: "Ace of Pentacles", ja: "ペンタクルのエース" },
     number: "Ace",
     image: "/cards/minor/pentacles/pentacles-ace.jpg",
     type: "minor",
@@ -1253,7 +1253,7 @@ export const pentacles = [
   },
   {
     id: "pentacles-02",
-    name: { ko: "펜타클 2", en: "Two of Pentacles" },
+    name: { ko: "펜타클 2", en: "Two of Pentacles", ja: "ペンタクルの2" },
     number: "2",
     image: "/cards/minor/pentacles/pentacles-02.jpg",
     type: "minor",
@@ -1269,7 +1269,7 @@ export const pentacles = [
   },
   {
     id: "pentacles-03",
-    name: { ko: "펜타클 3", en: "Three of Pentacles" },
+    name: { ko: "펜타클 3", en: "Three of Pentacles", ja: "ペンタクルの3" },
     number: "3",
     image: "/cards/minor/pentacles/pentacles-03.jpg",
     type: "minor",
@@ -1285,7 +1285,7 @@ export const pentacles = [
   },
   {
     id: "pentacles-04",
-    name: { ko: "펜타클 4", en: "Four of Pentacles" },
+    name: { ko: "펜타클 4", en: "Four of Pentacles", ja: "ペンタクルの4" },
     number: "4",
     image: "/cards/minor/pentacles/pentacles-04.jpg",
     type: "minor",
@@ -1301,7 +1301,7 @@ export const pentacles = [
   },
   {
     id: "pentacles-05",
-    name: { ko: "펜타클 5", en: "Five of Pentacles" },
+    name: { ko: "펜타클 5", en: "Five of Pentacles", ja: "ペンタクルの5" },
     number: "5",
     image: "/cards/minor/pentacles/pentacles-05.jpg",
     type: "minor",
@@ -1317,7 +1317,7 @@ export const pentacles = [
   },
   {
     id: "pentacles-06",
-    name: { ko: "펜타클 6", en: "Six of Pentacles" },
+    name: { ko: "펜타클 6", en: "Six of Pentacles", ja: "ペンタクルの6" },
     number: "6",
     image: "/cards/minor/pentacles/pentacles-06.jpg",
     type: "minor",
@@ -1333,7 +1333,7 @@ export const pentacles = [
   },
   {
     id: "pentacles-07",
-    name: { ko: "펜타클 7", en: "Seven of Pentacles" },
+    name: { ko: "펜타클 7", en: "Seven of Pentacles", ja: "ペンタクルの7" },
     number: "7",
     image: "/cards/minor/pentacles/pentacles-07.jpg",
     type: "minor",
@@ -1349,7 +1349,7 @@ export const pentacles = [
   },
   {
     id: "pentacles-08",
-    name: { ko: "펜타클 8", en: "Eight of Pentacles" },
+    name: { ko: "펜타클 8", en: "Eight of Pentacles", ja: "ペンタクルの8" },
     number: "8",
     image: "/cards/minor/pentacles/pentacles-08.jpg",
     type: "minor",
@@ -1365,7 +1365,7 @@ export const pentacles = [
   },
   {
     id: "pentacles-09",
-    name: { ko: "펜타클 9", en: "Nine of Pentacles" },
+    name: { ko: "펜타클 9", en: "Nine of Pentacles", ja: "ペンタクルの9" },
     number: "9",
     image: "/cards/minor/pentacles/pentacles-09.jpg",
     type: "minor",
@@ -1381,7 +1381,7 @@ export const pentacles = [
   },
   {
     id: "pentacles-10",
-    name: { ko: "펜타클 10", en: "Ten of Pentacles" },
+    name: { ko: "펜타클 10", en: "Ten of Pentacles", ja: "ペンタクルの10" },
     number: "10",
     image: "/cards/minor/pentacles/pentacles-10.jpg",
     type: "minor",
@@ -1397,7 +1397,7 @@ export const pentacles = [
   },
   {
     id: "pentacles-page",
-    name: { ko: "펜타클 페이지", en: "Page of Pentacles" },
+    name: { ko: "펜타클 페이지", en: "Page of Pentacles", ja: "ペンタクルのペイジ" },
     number: "Page",
     image: "/cards/minor/pentacles/pentacles-page.jpg",
     type: "minor",
@@ -1413,7 +1413,7 @@ export const pentacles = [
   },
   {
     id: "pentacles-knight",
-    name: { ko: "펜타클 기사", en: "Knight of Pentacles" },
+    name: { ko: "펜타클 기사", en: "Knight of Pentacles", ja: "ペンタクルのナイト" },
     number: "Knight",
     image: "/cards/minor/pentacles/pentacles-knight.jpg",
     type: "minor",
@@ -1429,7 +1429,7 @@ export const pentacles = [
   },
   {
     id: "pentacles-queen",
-    name: { ko: "펜타클 여왕", en: "Queen of Pentacles" },
+    name: { ko: "펜타클 여왕", en: "Queen of Pentacles", ja: "ペンタクルのクイーン" },
     number: "Queen",
     image: "/cards/minor/pentacles/pentacles-queen.jpg",
     type: "minor",
@@ -1445,7 +1445,7 @@ export const pentacles = [
   },
   {
     id: "pentacles-king",
-    name: { ko: "펜타클 왕", en: "King of Pentacles" },
+    name: { ko: "펜타클 왕", en: "King of Pentacles", ja: "ペンタクルのキング" },
     number: "King",
     image: "/cards/minor/pentacles/pentacles-king.jpg",
     type: "minor",
