@@ -152,7 +152,7 @@ const Result = () => {
   };
 
   const handleCopyText = () => {
-    const cardNames = cards.map(c => `${c.name.ko || c.name.en}${c.isReversed ? '(역방향)' : ''}`).join(', ');
+    const cardNames = cards.map(c => `${c.name[language] || c.name.ko}${c.isReversed ? `(${t('reversed')})` : ''}`).join(', ');
     const text = `🔮 TaroTaro - ${getSpreadName()}\n\n${question ? `Q: ${question}\n\n` : ''}🃏 ${cardNames}\n\n${extractShareMessage()}\n\n👉 www.tarotaro.co.kr`;
     navigator.clipboard.writeText(text);
     alert(t('copied') || 'Copied!');
@@ -299,10 +299,10 @@ const Result = () => {
             >
               <button className="modal-close" onClick={() => setSelectedCard(null)}>×</button>
               <div className={`card-detail-img ${selectedCard.isReversed ? 'reversed' : ''}`}>
-                <img src={selectedCard.image} alt={selectedCard.name.ko} />
+                <img src={selectedCard.image} alt={selectedCard.name[language] || selectedCard.name.ko} />
               </div>
               <div className="card-detail-info">
-                <h3>{selectedCard.name.ko || selectedCard.name.en}</h3>
+                <h3>{selectedCard.name[language] || selectedCard.name.ko}</h3>
                 <p className="card-detail-position">{selectedCard.position.name[language] || selectedCard.position.name.ko}</p>
                 {selectedCard.isReversed && <span className="reversed-badge">{t('reversed')}</span>}
               </div>
@@ -359,7 +359,7 @@ const Result = () => {
                   <div className="share-card-names">
                     {cards.map((card, i) => (
                       <span key={i} className={`share-card-name ${card.isReversed ? 'reversed' : ''}`}>
-                        {card.name.ko || card.name.en}
+                        {card.name[language] || card.name.ko}
                       </span>
                     ))}
                   </div>

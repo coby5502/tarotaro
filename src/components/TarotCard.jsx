@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../i18n/LanguageContext';
 import '../styles/TarotCard.css';
 
 const TarotCard = ({ card, isRevealed, onClick, size = 'normal' }) => {
   const [flipped, setFlipped] = useState(false);
+  const { language } = useLanguage();
 
   useEffect(() => {
     if (isRevealed && !flipped) {
@@ -30,14 +32,14 @@ const TarotCard = ({ card, isRevealed, onClick, size = 'normal' }) => {
       <div className="card-inner">
         {/* 앞면 (카드 이미지) */}
         <div className="card-front">
-          <img 
-            src={card?.image} 
-            alt={card?.name?.ko || ''} 
+          <img
+            src={card?.image}
+            alt={card?.name?.[language] || card?.name?.ko || ''}
             loading="lazy"
             decoding="async"
           />
         </div>
-        
+
         {/* 뒷면 */}
         <div className="card-back">
           <div className="card-back-design">
